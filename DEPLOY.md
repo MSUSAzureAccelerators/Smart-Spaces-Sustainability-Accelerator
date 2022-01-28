@@ -9,10 +9,6 @@ To start, clone or download this repository and navigate to the project's root d
 
 ## Step 4. Security Access
 
-## Step 5. text here
-
-## Step 6. text here
-
 # Congratulations
 You have completed this solution accelerator and should now have a report to explore the personalized recommendations:
 
