@@ -2,7 +2,9 @@
 # Smart Spaces Sustainability Solution Accelerator
 
 ## About this repository
-Born in pro football, genericized to become an IP solution available for anyone looking to visualize their sustainability journey.  Read prerequisites closely.  Accelerator currently built using the Trane BMS layer for HVAC and Chiller data, along with Open Source Weather and Azure Custom Vision plug in for Horizon 3 Waste inclusion with gamification applied (Customer/Fan Engagement for proper waste diversion)
+Builds smart buildings that can prove to be a gold standard in reducing environment impact and cost by driving energy efficiency, green purchasing, waste diversion, and water efficiency.  Solution leverages building management system (TRANE data), weather stem, air quality, wind speeds, water, gas, work order systems, and waste data.
+
+The Smart Spaces Solution for the Raiders enables the stadium operations staff to monitor stadium Chiller operations. The dashboard provides the additional capability to predict the correct building facility energy sources setpoint temperature and lead-time (taking into account the weather forecast) – in order to program the stadium to reach a desired temperature by a certain day/time.
 
 ## Getting Started 
 
