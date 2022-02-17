@@ -1,20 +1,8 @@
 ![MSUS Solution Accelerator](./images/MSUS%20Solution%20Accelerator%20Banner%20Two_981.jpg)
+
 # Smart Spaces Sustainability Solution Accelerator
 
-## About this repository
-Builds smart buildings that can prove to be a gold standard in reducing environment impact and cost by driving energy efficiency, green purchasing, waste diversion, and water efficiency.  Solution leverages building management system (TRANE data), weather stem, air quality, wind speeds, water, gas, work order systems, and waste data.
-
-The Smart Spaces Solution for the Raiders enables the stadium operations staff to monitor stadium Chiller operations. The dashboard provides the additional capability to predict the correct building facility energy sources setpoint temperature and lead-time (taking into account the weather forecast) – in order to program the stadium to reach a desired temperature by a certain day/time.
-
-## Getting Started 
-
-## Prerequisites
-
-### Optional
-
-## Azure Platform
-
-## Process Overview  
+![Coming Soon](./images/ComingSoon.png)
 
 ## License
 Copyright (c) Microsoft Corporation
