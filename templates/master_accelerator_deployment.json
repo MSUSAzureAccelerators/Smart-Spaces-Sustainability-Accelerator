@@ -35,7 +35,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/dataFactory/dataFactory.json')]",
+                    "uri": "https://raw.githubusercontent.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/dataFactory/dataFactory.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -53,7 +53,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/secret_vault.json')]",
+                    "uri": "https://raw.githubusercontent.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/secret_vault.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -83,7 +83,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/linked_sql_server_db.json')]",
+                    "uri": "https://raw.githubusercontent.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/linked_sql_server_db.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -95,9 +95,6 @@
                     },
                     "serverName": {
                         "value": "[variables('serverName')]"
-                    },
-                    "publicGitUrl": {
-                        "value": "[parameters('publicGitUrl')]"
                     }
                 }
             },
@@ -113,7 +110,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/blob_storage_w_containers.json')]",
+                    "uri": "https://raw.githubusercontent.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/blob_storage_w_containers.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -136,7 +133,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/batch.json')]",
+                    "uri": "https://raw.githubusercontent.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/batch.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -164,7 +161,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/azure_ml.json')]",
+                    "uri": "https://raw.githubusercontent.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/azure_ml.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -199,7 +196,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/datafactory/dataFactoryProperties.json')]",
+                    "uri": "https://raw.githubusercontent.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/datafactory/dataFactoryProperties.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -246,7 +243,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedIdentity.json')]",
+                    "uri": "https://raw.githubusercontent.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/managedIdentity.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -266,7 +263,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedIdentityRoleAssign.json')]",
+                    "uri": "https://raw.githubusercontent.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/managedIdentityRoleAssign.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
