@@ -35,8 +35,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/datafactory/dataFactory.json')]",
-                    "contentVersion": "1.0.0.0"
+                    "relativePath": "templates/datafactory/dataFactory.json"
                 },
                 "parameters": {
                     "factoryName": {
@@ -53,8 +52,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/secret_vault.json')]",
-                    "contentVersion": "1.0.0.0"
+                    "relativePath": "templates/secret_vault.json')]"
                 },
                 "parameters": {
                     "objectId": {
@@ -83,8 +81,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/linked_sql_server_db.json')]",
-                    "contentVersion": "1.0.0.0"
+                    "relativePath": "templates/linked_sql_server_db.json"
                 },
                 "parameters": {
                     "KeyVaultName": {
@@ -113,8 +110,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/blob_storage_w_containers.json')]",
-                    "contentVersion": "1.0.0.0"
+                    "relativePath": "templates/blob_storage_w_containers.json"
                 },
                 "parameters": {
                     "storageAccountName": {
@@ -136,8 +132,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/batch.json')]",
-                    "contentVersion": "1.0.0.0"
+                    "relativePath": "templates/batch.json"
                 },
                 "parameters": {
                     "dataFactoryName": {
@@ -164,8 +159,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/azure_ml.json')]",
-                    "contentVersion": "1.0.0.0"
+                    "relativePath": "templates/azure_ml.json"
                 },
                 "parameters": {
                     "workspaceName": {
@@ -199,8 +193,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/datafactory/dataFactoryProperties.json')]",
-                    "contentVersion": "1.0.0.0"
+                    "relativePath": "templates/datafactory/dataFactoryProperties.json"
                 },
                 "parameters": {
                     "factoryName": {
@@ -246,8 +239,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedItendity.json')]",
-                    "contentVersion": "1.0.0.0"
+                    "relativePath": "templates/managedItendity.json"
                 },
                 "parameters": {
                     "managedidentityName": {
@@ -266,8 +258,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedItendityRoleAssign.json')]",
-                    "contentVersion": "1.0.0.0"
+                    "relativePath": "templates/managedItendityRoleAssign.json"
                 },
                 "parameters": {
                     "managedidentityName": {
