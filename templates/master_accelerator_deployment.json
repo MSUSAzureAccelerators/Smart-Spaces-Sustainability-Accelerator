@@ -27,7 +27,7 @@
     "resources": [
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "adf",
             "properties": {
                 "mode": "Incremental",
@@ -44,7 +44,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "CreateVault",
             "properties": {
                 "mode": "Incremental",
@@ -73,7 +73,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "sqlServerDbwithVault",
             "properties": {
                 "mode": "Incremental",
@@ -99,7 +99,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "storage",
             "properties": {
                 "mode": "Incremental",
@@ -121,7 +121,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "batchAccount",
             "properties": {
                 "mode": "Incremental",
@@ -148,7 +148,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "azureML",
             "properties": {
                 "mode": "Incremental",
@@ -182,7 +182,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "adfpipelines",
             "properties": {
                 "mode": "Incremental",
@@ -228,7 +228,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "managedItendityforDeployScripts",
             "properties": {
                 "mode": "Incremental",
@@ -247,7 +247,7 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
+            "apiVersion": "2021-04-01",
             "name": "managedItendityRoleAssign",
             "properties": {
                 "mode": "Incremental",
