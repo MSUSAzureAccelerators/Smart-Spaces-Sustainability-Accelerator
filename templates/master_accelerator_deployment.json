@@ -22,9 +22,6 @@
     "parameters": {
         "objectId": {
             "type": "string"
-        },
-        "publicGitUrl": {
-            "type": "string"
         }
     },
     "resources": [
