@@ -279,7 +279,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'managedItendityforDeployScripts')]"
+                "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]"
             ]
         }
     ]
