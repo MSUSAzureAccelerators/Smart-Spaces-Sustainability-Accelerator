@@ -22,17 +22,21 @@
     "parameters": {
         "objectId": {
             "type": "string"
+        },
+        "publicGitUrl": {
+            "type": "string"
         }
     },
     "resources": [
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
+            "apiVersion": "2020-10-01",
             "name": "adf",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "templates/datafactory/dataFactory.json"
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/datafactory/dataFactory.json')]",
+                    "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "factoryName": {
@@ -44,12 +48,13 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
+            "apiVersion": "2020-10-01",
             "name": "CreateVault",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "templates/secret_vault.json')]"
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/secret_vault.json')]",
+                    "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "objectId": {
@@ -73,12 +78,13 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
+            "apiVersion": "2020-10-01",
             "name": "sqlServerDbwithVault",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "templates/linked_sql_server_db.json"
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/linked_sql_server_db.json')]",
+                    "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "KeyVaultName": {
@@ -89,6 +95,9 @@
                     },
                     "serverName": {
                         "value": "[variables('serverName')]"
+                    },
+                    "publicGitUrl": {
+                        "value": "[parameters('publicGitUrl')]"
                     }
                 }
             },
@@ -99,12 +108,13 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
+            "apiVersion": "2020-10-01",
             "name": "storage",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "templates/blob_storage_w_containers.json"
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/blob_storage_w_containers.json')]",
+                    "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "storageAccountName": {
@@ -121,12 +131,13 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
+            "apiVersion": "2020-10-01",
             "name": "batchAccount",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "templates/batch.json"
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/batch.json')]",
+                    "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "dataFactoryName": {
@@ -148,12 +159,13 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
+            "apiVersion": "2020-10-01",
             "name": "azureML",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "templates/azure_ml.json"
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/azure_ml.json')]",
+                    "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "workspaceName": {
@@ -182,12 +194,13 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
+            "apiVersion": "2020-10-01",
             "name": "adfpipelines",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "templates/datafactory/dataFactoryProperties.json"
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/datafactory/dataFactoryProperties.json')]",
+                    "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "factoryName": {
@@ -228,12 +241,13 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
+            "apiVersion": "2020-10-01",
             "name": "managedItendityforDeployScripts",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "templates/managedItendity.json"
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedItendity.json')]",
+                    "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "managedidentityName": {
@@ -247,12 +261,13 @@
         },
         {
             "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2021-04-01",
+            "apiVersion": "2020-10-01",
             "name": "managedItendityRoleAssign",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "templates/managedItendityRoleAssign.json"
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedItendityRoleAssign.json')]",
+                    "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "managedidentityName": {

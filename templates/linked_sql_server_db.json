@@ -19,6 +19,9 @@
         },
         "serverName": {
             "type": "string"
+        },
+        "publicGitUrl": {
+            "type": "string"
         }
     },
     "resources": [
@@ -29,7 +32,8 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "relativePath": "templates/sql_server_db.json"
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/sql_server_db.json')]",
+                    "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
                     "administratorLoginPassword": {
