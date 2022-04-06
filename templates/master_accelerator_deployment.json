@@ -22,9 +22,6 @@
     "parameters": {
         "objectId": {
             "type": "string"
-        },
-        "publicGitUrl": {
-            "type": "string"
         }
     },
     "resources": [
@@ -92,9 +89,6 @@
                     },
                     "serverName": {
                         "value": "[variables('serverName')]"
-                    },
-                    "publicGitUrl": {
-                        "value": "[parameters('publicGitUrl')]"
                     }
                 }
             },
