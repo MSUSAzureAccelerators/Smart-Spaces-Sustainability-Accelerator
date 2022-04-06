@@ -35,7 +35,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/datafactory/dataFactory.json')]",
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/dataFactory/dataFactory.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -246,7 +246,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedItendity.json')]",
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedIdentity.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -266,7 +266,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedItendityRoleAssign.json')]",
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedIdentityRoleAssign.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
