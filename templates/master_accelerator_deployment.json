@@ -35,7 +35,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/dataFactory/dataFactory.json",
+                    "uri": "[concat(parameters('publicGitUrl'), 'templates/dataFactory/dataFactory.json')]",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
