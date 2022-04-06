@@ -1,0 +1,122 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "type": "string",
+            "defaultValue": "[resourceGroup().location]",
+            "metadata": {
+                "description": "Specifies the location in which the Azure Storage resources should be deployed."
+            }
+        },
+        "batchAccountName": {
+            "type": "string"
+        },
+        "roleNameGuid": {
+            "type": "string",
+            "defaultValue": "[newGuid()]",
+            "metadata": {
+                "description": "A new GUID used to identify the role assignment"
+            }
+        },
+        "batchPoolName": {
+            "type": "string"
+        },
+        "dataFactoryName": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "identity_resource_id": "[concat(resourceId('Microsoft.DataFactory/factories', parameters('dataFactoryName')), '/providers/Microsoft.ManagedIdentity/Identities/default')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Batch/batchAccounts",
+            "apiVersion": "2021-06-01",
+            "name": "[parameters('batchAccountName')]",
+            "location": "[parameters('location')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "poolAllocationMode": "BatchService",
+                "publicNetworkAccess": "Enabled",
+                "encryption": {
+                    "keySource": "Microsoft.Batch"
+                },
+                "allowedAuthenticationModes": [
+                    "SharedKey",
+                    "AAD",
+                    "TaskAuthenticationToken"
+                ]
+            }
+        },
+        {
+            "type": "Microsoft.Batch/batchAccounts/pools",
+            "apiVersion": "2021-06-01",
+            "name": "[concat(parameters('batchAccountName'), '/', parameters('batchPoolName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Batch/batchAccounts', parameters('batchAccountName'))]"
+            ],
+            "properties": {
+                "vmSize": "STANDARD_A2m_V2",
+                "interNodeCommunication": "Disabled",
+                "taskSlotsPerNode": 1,
+                "taskSchedulingPolicy": {
+                    "nodeFillType": "Pack"
+                },
+                "deploymentConfiguration": {
+                    "virtualMachineConfiguration": {
+                        "imageReference": {
+                            "publisher": "microsoft-dsvm",
+                            "offer": "dsvm-win-2019",
+                            "sku": "server-2019",
+                            "version": "latest"
+                        },
+                        "nodeAgentSkuId": "batch.node.windows amd64",
+                        "nodePlacementConfiguration": {
+                            "policy": "Regional"
+                        }
+                    }
+                },
+                "networkConfiguration": {
+                    "publicIPAddressConfiguration": {
+                        "provision": "BatchManaged"
+                    }
+                },
+                "scaleSettings": {
+                    "fixedScale": {
+                        "targetDedicatedNodes": 1,
+                        "targetLowPriorityNodes": 0,
+                        "resizeTimeout": "PT15M"
+                    }
+                },
+                "startTask": {
+                    "commandLine": "cmd /c \"pip install azure-storage-blob && pip install azure-appconfiguration && pip install sqlalchemy && pip install pyodbc && pip install statsmodels\"",
+                    "userIdentity": {
+                        "autoUser": {
+                            "scope": "Pool",
+                            "elevationLevel": "NonAdmin"
+                        }
+                    },
+                    "maxTaskRetryCount": 1,
+                    "waitForSuccess": true
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "2020-04-01-preview",
+            "name": "[parameters('roleNameGuid')]",
+            "scope": "[concat('Microsoft.Batch/batchAccounts', '/', parameters('batchAccountName'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Batch/batchAccounts', parameters('batchAccountName'))]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+                "principalId": "[reference(variables('identity_resource_id'), '2015-08-31-PREVIEW').principalId]"
+            }
+        }
+    ],
+    "outputs": {}
+}

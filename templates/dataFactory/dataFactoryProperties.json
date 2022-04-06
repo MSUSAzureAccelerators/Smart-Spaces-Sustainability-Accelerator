@@ -1,0 +1,1094 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "factoryName": {
+            "type": "string",
+            "metadata": "Data Factory name"
+        },
+        "batchUri": {
+            "type": "string"
+        },
+        "batchPoolName": {
+            "type": "string"
+        },
+        "batchAccountName": {
+            "type": "string"
+        },
+        "blobStorageName": {
+            "type": "string"
+        },
+        "sqlDBName": {
+            "type": "string"
+        },
+        "keyVaultName": {
+            "type": "string"
+        },
+        "databaseConnectionString": {
+            "type": "string"
+        },
+        "storageAccountKey": {
+            "type": "secureString"
+        }
+    },
+    "variables": {
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat(parameters('factoryName'), '/', parameters('batchAccountName'))]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBatch",
+                "typeProperties": {
+                    "accessKey": {
+                        "value": "[listKeys(resourceId('Microsoft.Batch/batchAccounts', parameters('batchAccountName')), '2017-09-01').primary]",
+                        "type": "secureString"
+                    },
+                    "batchUri": "[parameters('batchUri')]",
+                    "poolName": "[parameters('batchPoolName')]",
+                    "accountName": "[parameters('batchAccountName')]",
+                    "linkedServiceName": {
+                        "referenceName": "[parameters('blobStorageName')]",
+                        "type": "LinkedServiceReference"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('blobStorageName'))]",
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('keyVaultName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/', parameters('keyVaultName'))]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureKeyVault",
+                "typeProperties": {
+                    "baseUrl": "[concat('https://', parameters('keyVaultName'), '.vault.azure.net/')]"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/', parameters('blobStorageName'))]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureBlobStorage",
+                "typeProperties": {
+                    "accountKind": "StorageV2",
+                    "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('blobStorageName'),';AccountKey=',parameters('storageAccountKey'))]"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('keyVaultName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/', parameters('sqlDBName'))]",
+            "type": "Microsoft.DataFactory/factories/linkedServices",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "type": "AzureSqlDatabase",
+                "typeProperties": {
+                    "connectionString": "[parameters('databaseConnectionString')]",
+                    "userName": "testAdmin",
+                    "password": {
+                        "type": "AzureKeyVaultSecret",
+                        "store": {
+                            "referenceName": "[parameters('keyVaultName')]",
+                            "type": "LinkedServiceReference"
+                        },
+                        "secretName": "sqlpwd"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('keyVaultName'))]"
+            ]
+
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/setpointFinal')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "SpaceSetPointFinal"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/SetPointIOT')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "Datetime",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "Point-Value",
+                        "type": "float",
+                        "precision": 15
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "SpaceSetPointIntermediate"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/TempFinal')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "SpaceTempFinal"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/TempIOT')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "Datetime",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "Point-Value",
+                        "type": "float",
+                        "precision": 15
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "SpaceTempIntermediate"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/HvacUnitsFinal')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "HVACUnitsFinal"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/HvacIntervalReading')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "HvacIntervalReading"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/HvacSummaryFinal')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "HvacSummaryFinal"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/EnergyDataFinal')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "EnergyDataFinal"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/EnergyIntervalReading')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "EnergyIntervalReading"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/EnergyDataIOT')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "DateTimeUTC",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "PlantName",
+                        "type": "varchar"
+                    },
+                    {
+                        "name": "REALPOWER",
+                        "type": "float",
+                        "precision": 15
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "EnergyDataIntermediate"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/HvacUnitIOT')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "DateTimeUTC",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "ChillerName",
+                        "type": "nvarchar"
+                    },
+                    {
+                        "name": "ChillerTempEnter",
+                        "type": "float",
+                        "precision": 15
+                    },
+                    {
+                        "name": "ChillerTempLeave",
+                        "type": "float",
+                        "precision": 15
+                    },
+                    {
+                        "name": "HvacRunStatus",
+                        "type": "nvarchar"
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "HVACUnitIntermediate"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/HvacSummaryIOT')]",
+            "type": "Microsoft.DataFactory/factories/datasets",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "linkedServiceName": {
+                    "referenceName": "[parameters('sqlDBName')]",
+                    "type": "LinkedServiceReference"
+                },
+                "annotations": [],
+                "type": "AzureSqlTable",
+                "schema": [
+                    {
+                        "name": "Datetime",
+                        "type": "datetime",
+                        "precision": 23,
+                        "scale": 3
+                    },
+                    {
+                        "name": "SystemChilledWaterSetpoint",
+                        "type": "float",
+                        "precision": 15
+                    },
+                    {
+                        "name": "SystemChilledWaterSupplyTemperature",
+                        "type": "float",
+                        "precision": 15
+                    },
+                    {
+                        "name": "SystemChilledWaterReturnTemperature",
+                        "type": "float",
+                        "precision": 15
+                    }
+                ],
+                "typeProperties": {
+                    "schema": "dbo",
+                    "table": "HVACSummaryIntermediate"
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('sqlDBName'))]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/iot_data_to_SQL')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "Space Setpoint to final SQL",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "SpaceSetPointtoFinal",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "SetPointIntermediate": {},
+                                    "SetPointFinal": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    },
+                    {
+                        "name": "Space Temp to Final SQL",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "SpaceTemptoFinal",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "TempIntermediate": {},
+                                    "TempFinal": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    },
+                    {
+                        "name": "HVACUnitstoFinal",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "HvacUnitstoFinal",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "source1": {},
+                                    "sink1": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    },
+                    {
+                        "name": "HvacIntervalReading",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [
+                            {
+                                "activity": "HVACUnitstoFinal",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "HvacIntervalReading",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "source1": {},
+                                    "sink1": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    },
+                    {
+                        "name": "HvacSummarytoFinal",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "HvacSummarytoFinal",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "source1": {},
+                                    "sink1": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    },
+                    {
+                        "name": "EnergyDatatoFinal",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "EnergyDatatoFinal",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "source1": {},
+                                    "sink1": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    },
+                    {
+                        "name": "EnergyIntervalReading",
+                        "type": "ExecuteDataFlow",
+                        "dependsOn": [
+                            {
+                                "activity": "EnergyDatatoFinal",
+                                "dependencyConditions": [
+                                    "Succeeded"
+                                ]
+                            }
+                        ],
+                        "policy": {
+                            "timeout": "1.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "dataflow": {
+                                "referenceName": "EnergyIntervalReading",
+                                "type": "DataFlowReference",
+                                "parameters": {},
+                                "datasetParameters": {
+                                    "source1": {},
+                                    "sink1": {}
+                                }
+                            },
+                            "staging": {},
+                            "compute": {
+                                "coreCount": 8,
+                                "computeType": "General"
+                            },
+                            "traceLevel": "Fine"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": [],
+                "lastPublishTime": "2022-03-31T17:48:44Z"
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/dataflows/SpaceSetPointtoFinal')]",
+                "[concat(variables('factoryId'), '/dataflows/SpaceTemptoFinal')]",
+                "[concat(variables('factoryId'), '/dataflows/HvacUnitstoFinal')]",
+                "[concat(variables('factoryId'), '/dataflows/HvacIntervalReading')]",
+                "[concat(variables('factoryId'), '/dataflows/HvacSummarytoFinal')]",
+                "[concat(variables('factoryId'), '/dataflows/EnergyDatatoFinal')]",
+                "[concat(variables('factoryId'), '/dataflows/EnergyIntervalReading')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/SpaceTemptoFinal')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "TempIOT",
+                                "type": "DatasetReference"
+                            },
+                            "name": "TempIntermediate"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "TempFinal",
+                                "type": "DatasetReference"
+                            },
+                            "name": "TempFinal"
+                        }
+                    ],
+                    "transformations": [],
+                    "scriptLines": [
+                        "source(output(",
+                        "          Datetime as timestamp,",
+                        "          {Point-Value} as double",
+                        "     ),",
+                        "     allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     isolationLevel: 'READ_UNCOMMITTED',",
+                        "     format: 'table') ~> TempIntermediate",
+                        "TempIntermediate sink(allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     deletable:false,",
+                        "     insertable:true,",
+                        "     updateable:false,",
+                        "     upsertable:false,",
+                        "     format: 'table',",
+                        "     postSQLs:['DELETE FROM [DBO].[SpaceTempIntermediate]'],",
+                        "     skipDuplicateMapInputs: true,",
+                        "     skipDuplicateMapOutputs: true,",
+                        "     errorHandlingOption: 'stopOnFirstError') ~> TempFinal"
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/TempIOT')]",
+                "[concat(variables('factoryId'), '/datasets/TempFinal')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/SpaceSetPointtoFinal')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "SetPointIOT",
+                                "type": "DatasetReference"
+                            },
+                            "name": "SetPointIntermediate"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "setpointFinal",
+                                "type": "DatasetReference"
+                            },
+                            "name": "SetPointFinal"
+                        }
+                    ],
+                    "transformations": [],
+                    "scriptLines": [
+                        "source(output(",
+                        "          Datetime as timestamp,",
+                        "          {Point-Value} as double",
+                        "     ),",
+                        "     allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     isolationLevel: 'READ_UNCOMMITTED',",
+                        "     format: 'table') ~> SetPointIntermediate",
+                        "SetPointIntermediate sink(allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     deletable:false,",
+                        "     insertable:true,",
+                        "     updateable:false,",
+                        "     upsertable:false,",
+                        "     format: 'table',",
+                        "     postSQLs:['DELETE FROM [DBO].[SpaceSetPointIntermediate]'],",
+                        "     skipDuplicateMapInputs: true,",
+                        "     skipDuplicateMapOutputs: true,",
+                        "     errorHandlingOption: 'stopOnFirstError') ~> SetPointFinal"
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/SetPointIOT')]",
+                "[concat(variables('factoryId'), '/datasets/setpointFinal')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/HvacUnitstoFinal')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "HvacUnitIOT",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source1"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "HvacUnitsFinal",
+                                "type": "DatasetReference"
+                            },
+                            "name": "sink1"
+                        }
+                    ],
+                    "transformations": [],
+                    "scriptLines": [
+                        "source(output(",
+                        "          DateTimeUTC as timestamp,",
+                        "          ChillerName as string,",
+                        "          ChillerTempEnter as double,",
+                        "          ChillerTempLeave as double,",
+                        "          HvacRunStatus as string",
+                        "     ),",
+                        "     allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     isolationLevel: 'READ_UNCOMMITTED',",
+                        "     format: 'table') ~> source1",
+                        "source1 sink(allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     deletable:false,",
+                        "     insertable:true,",
+                        "     updateable:false,",
+                        "     upsertable:false,",
+                        "     format: 'table',",
+                        "     skipDuplicateMapInputs: true,",
+                        "     skipDuplicateMapOutputs: true,",
+                        "     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/HvacUnitIOT')]",
+                "[concat(variables('factoryId'), '/datasets/HvacUnitsFinal')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/HvacIntervalReading')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "HvacUnitIOT",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source1"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "HvacIntervalReading",
+                                "type": "DatasetReference"
+                            },
+                            "name": "sink1"
+                        }
+                    ],
+                    "transformations": [],
+                    "scriptLines": [
+                        "source(output(",
+                        "          DateTimeUTC as timestamp,",
+                        "          ChillerName as string,",
+                        "          ChillerTempEnter as double,",
+                        "          ChillerTempLeave as double,",
+                        "          HvacRunStatus as string",
+                        "     ),",
+                        "     allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     isolationLevel: 'READ_UNCOMMITTED',",
+                        "     query: 'SELECT CAST(PERIOD AS DateTime) PERIOD\\n,INTERVAL\\n,[TIME]\\n,[ChillerName]\\n,[HvacRunStatus]\\n,LEFT(REPLACE([TIME],\\':\\',\\'\\'),4)[MINUTE]\\n,cast(ChillerTempEnter as int)ChillerTempEnter\\n,cast(ChillerTempLeave as int) ChillerTempLeave\\n,CAST(PERIOD AS DATE) AS [DATE]\\n,FORMAT(PERIOD, N\\'yyyymmddhhmmss\\')TIMEKEY\\nFROM(\\n\\n\\n\\n\\n/******15 MINUTES INTERVALS ******/\\n\\n\\n\\n\\n\\n(SELECT DATEADD(MINUTE, [15 MINUTES] * 15, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'15 MINUTES\\' AS INTERVAL\\n,[ChillerName]\\n,[HvacRunStatus]\\n,[TIME]\\n,AVG(ChillerTempEnter) ChillerTempEnter\\n,AVG(ChillerTempLeave)ChillerTempLeave\\nFROM(SELECT DISTINCT CAST([DatetimeUTC] AS DATE) [DATE],[ChillerTempEnter],[ChillerTempLeave],[ChillerName]\\n,[HvacRunStatus]\\n,CAST(DateTimeUTC as time) [TIME]\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DateTimeUTC])/15 AS [15 MINUTES]\\nFROM [DBO].[HVACUnitIntermediate]\\nwhere [ChillerName] in (\\'SMARTSPACE-HVAC01\\', \\'SMARTSPACE-HVAC02\\', \\'SMARTSPACE-HVAC03\\')\\n\\n\\n\\n)A\\nGROUP BY [15 MINUTES],[ChillerName],[HvacRunStatus], [TIME]\\n)\\nUNION ALL\\n\\n\\n\\n\\n\\n/****** HOURLY INTERVALS *****/\\n\\n\\n\\n\\n\\n(SELECT DATEADD(MINUTE, [HOURLY] * 60, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'HOURLY\\' AS INTERVAL\\n,[ChillerName]\\n,[HvacRunStatus]\\n,[TIME]\\n,AVG(ChillerTempEnter) ChillerTempEnter\\n,AVG(ChillerTempLeave)ChillerTempLeave\\nFROM(SELECT DISTINCT CAST([DateTimeUTC] AS DATE) [DATE],[ChillerTempEnter],[ChillerTempLeave],[ChillerName]\\n,[HvacRunStatus]\\n,CAST(DateTimeUTC as time) [TIME]\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DateTimeUTC])/60 AS [HOURLY]\\nFROM [DBO].[HVACUnitIntermediate]\\nwhere [ChillerName] in (\\'SMARTSPACE-HVAC01\\', \\'SMARTSPACE-HVAC02\\', \\'SMARTSPACE-HVAC03\\')\\n\\n\\n\\n)A\\nGROUP BY [HOURLY],[ChillerName],[HvacRunStatus]\\n,[TIME]\\n))B',",
+                        "     format: 'query') ~> source1",
+                        "source1 sink(allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     deletable:false,",
+                        "     insertable:true,",
+                        "     updateable:false,",
+                        "     upsertable:false,",
+                        "     format: 'table',",
+                        "     postSQLs:['Delete FROM [DBO].[HVACUnitIntermediate]\\n'],",
+                        "     skipDuplicateMapInputs: true,",
+                        "     skipDuplicateMapOutputs: true,",
+                        "     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/HvacUnitIOT')]",
+                "[concat(variables('factoryId'), '/datasets/HvacIntervalReading')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/HvacSummarytoFinal')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "HvacSummaryIOT",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source1"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "HvacSummaryFinal",
+                                "type": "DatasetReference"
+                            },
+                            "name": "sink1"
+                        }
+                    ],
+                    "transformations": [],
+                    "scriptLines": [
+                        "source(output(",
+                        "          Datetime as timestamp,",
+                        "          SystemChilledWaterSetpoint as double,",
+                        "          SystemChilledWaterSupplyTemperature as double,",
+                        "          SystemChilledWaterReturnTemperature as double",
+                        "     ),",
+                        "     allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     isolationLevel: 'READ_UNCOMMITTED',",
+                        "     format: 'table') ~> source1",
+                        "source1 sink(allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     deletable:false,",
+                        "     insertable:true,",
+                        "     updateable:false,",
+                        "     upsertable:false,",
+                        "     format: 'table',",
+                        "     postSQLs:['DELETE FROM [DBO].[HVACSummaryIntermediate]'],",
+                        "     skipDuplicateMapInputs: true,",
+                        "     skipDuplicateMapOutputs: true,",
+                        "     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/HvacSummaryIOT')]",
+                "[concat(variables('factoryId'), '/datasets/HvacSummaryFinal')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/EnergyDatatoFinal')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "EnergyDataIOT",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source1"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "EnergyDataFinal",
+                                "type": "DatasetReference"
+                            },
+                            "name": "sink1"
+                        }
+                    ],
+                    "transformations": [],
+                    "scriptLines": [
+                        "source(output(",
+                        "          DateTimeUTC as timestamp,",
+                        "          PlantName as string,",
+                        "          REALPOWER as double",
+                        "     ),",
+                        "     allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     isolationLevel: 'READ_UNCOMMITTED',",
+                        "     format: 'table') ~> source1",
+                        "source1 sink(allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     deletable:false,",
+                        "     insertable:true,",
+                        "     updateable:false,",
+                        "     upsertable:false,",
+                        "     format: 'table',",
+                        "     skipDuplicateMapInputs: true,",
+                        "     skipDuplicateMapOutputs: true,",
+                        "     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/EnergyDataIOT')]",
+                "[concat(variables('factoryId'), '/datasets/EnergyDataFinal')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/EnergyIntervalReading')]",
+            "type": "Microsoft.DataFactory/factories/dataflows",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "type": "MappingDataFlow",
+                "typeProperties": {
+                    "sources": [
+                        {
+                            "dataset": {
+                                "referenceName": "EnergyDataIOT",
+                                "type": "DatasetReference"
+                            },
+                            "name": "source1"
+                        }
+                    ],
+                    "sinks": [
+                        {
+                            "dataset": {
+                                "referenceName": "EnergyIntervalReading",
+                                "type": "DatasetReference"
+                            },
+                            "name": "sink1"
+                        }
+                    ],
+                    "transformations": [],
+                    "scriptLines": [
+                        "source(output(",
+                        "          DateTimeUTC as timestamp,",
+                        "          PlantName as string,",
+                        "          REALPOWER as double",
+                        "     ),",
+                        "     allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     isolationLevel: 'READ_UNCOMMITTED',",
+                        "     query: '/****** Script for SelectTopNRows command from SSMS  ******/\\nselect\\ncast( [SMARTSPACE-HVAC01] as int) [SMARTSPACE-HVAC01]\\n,cast( [SMARTSPACE-HVAC02] as int) [SMARTSPACE-HVAC02]\\n,cast( [SMARTSPACE-HVAC03] as int) [SMARTSPACE-HVAC03]\\n,cast((isnull([SMARTSPACE-HVAC01],0)+ isnull([SMARTSPACE-HVAC02],0) + isnull([SMARTSPACE-HVAC03],0))as int) [Total_kW]\\n,cast((isnull([SMARTSPACE-HVAC01],0)+ isnull([SMARTSPACE-HVAC02],0) + isnull([SMARTSPACE-HVAC03],0)) as FLOAT) /4 [Aprx_kWh]\\n,Period [datetime]\\nfrom (SELECT DATEADD(MINUTE, [HOURLY] * 60, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'HOURLY\\' AS INTERVAL\\n,[PlantName]\\n,AVG([REALPOWER]) RealPower\\nFROM(SELECT DISTINCT [DatetimeUTC] AS [DATE],[PlantName],[REALPOWER]\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DatetimeUTC])/60 AS [HOURLY]\\nFROM [DBO].[EnergyDataIntermediate]\\n\\n\\n\\n)A\\nGROUP BY [HOURLY],[PlantName],RealPower\\n)b\\nPIVOT\\n(SUM(REALPOWER)\\nFOR [PlantName]\\nIN ([SMARTSPACE-HVAC01],[SMARTSPACE-HVAC02],[SMARTSPACE-HVAC03])\\n)\\nAS PIVOTTABLE\\nWHERE [SMARTSPACE-HVAC01] IS NOT NULL OR [SMARTSPACE-HVAC02] IS NOT NULL OR [SMARTSPACE-HVAC03] IS NOT NULL',",
+                        "     format: 'query') ~> source1",
+                        "source1 sink(allowSchemaDrift: true,",
+                        "     validateSchema: false,",
+                        "     deletable:false,",
+                        "     insertable:true,",
+                        "     updateable:false,",
+                        "     upsertable:false,",
+                        "     format: 'table',",
+                        "     postSQLs:['DELETE FROM [DBO].[EnergyDataIntermediate]\\n'],",
+                        "     skipDuplicateMapInputs: true,",
+                        "     skipDuplicateMapOutputs: true,",
+                        "     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/datasets/EnergyDataIOT')]",
+                "[concat(variables('factoryId'), '/datasets/EnergyIntervalReading')]"
+            ]
+        }        
+    ]
+}
