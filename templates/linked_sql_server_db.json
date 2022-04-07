@@ -20,8 +20,17 @@
         "serverName": {
             "type": "string"
         },
-        "publicGitUrl": {
-            "type": "string"
+        "storageAccountKey": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the key of the storage account where the BACPAC file is stored."
+            }
+        },
+        "bacpacUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the URL of the BACPAC file."
+            }
         }
     },
     "resources": [
@@ -32,7 +41,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/sql_server_db.json')]",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/sql_server_db.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -50,18 +59,24 @@
                     "administratorLogin": {
                         "value": "testAdmin"
                     },
-                     "sqlDBName": {
+                    "sqlDBName": {
                         "value": "[parameters('sqlDBName')]"
                     },
                     "serverName": {
                         "value": "[parameters('serverName')]"
+                    },
+                    "storageAccountKey": {
+                        "value": "[parameters('storageAccountKey')]"
+                    },
+                    "bacpacUrl": {
+                        "value": "[parameters('bacpacUrl')]"
                     }
                 }
             }
         }
     ],
     "outputs": {
-        "connectionString":{
+        "connectionString": {
             "type": "string",
             "value": "[reference('sqlServerDbFromVault').outputs.connectionString.value]"
         }

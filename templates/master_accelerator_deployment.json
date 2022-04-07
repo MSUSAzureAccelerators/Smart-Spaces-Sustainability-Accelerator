@@ -22,9 +22,6 @@
     "parameters": {
         "objectId": {
             "type": "string"
-        },
-        "publicGitUrl": {
-            "type": "string"
         }
     },
     "resources": [
@@ -35,7 +32,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/datafactory/dataFactory.json')]",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/dataFactory/dataFactory.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -53,7 +50,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/secret_vault.json')]",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/secret_vault.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -79,41 +76,11 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "sqlServerDbwithVault",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/linked_sql_server_db.json')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "KeyVaultName": {
-                        "value": "[reference('CreateVault').outputs.keyVaultName.value]"
-                    },
-                    "sqlDBName": {
-                        "value": "[variables('sqlDBName')]"
-                    },
-                    "serverName": {
-                        "value": "[variables('serverName')]"
-                    },
-                    "publicGitUrl": {
-                        "value": "[parameters('publicGitUrl')]"
-                    }
-                }
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'CreateVault')]",
-                "[resourceId('Microsoft.Resources/deployments', 'adf')]"
-            ]
-        },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
             "name": "storage",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/blob_storage_w_containers.json')]",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/blob_storage_w_containers.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -136,7 +103,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/batch.json')]",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/batch.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -153,7 +120,6 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', 'CreateVault')]",
-                "[resourceId('Microsoft.Resources/deployments', 'sqlServerDbwithVault')]",
                 "[resourceId('Microsoft.Resources/deployments', 'adf')]"
             ]
         },
@@ -164,7 +130,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/azure_ml.json')]",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/azure_ml.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -195,11 +161,115 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
+            "name": "managedIdentityforDeployScripts",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/managedIdentity.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "managedidentityName": {
+                        "value": "[variables('managedidentityName')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'storage')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "managedIdentityRoleAssign",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/managedIdentityRoleAssign.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "managedidentityName": {
+                        "value": "[variables('managedidentityName')]"
+                    },
+                    "blobStorageName": {
+                        "value": "[variables('blobStorageName')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "deployScripts",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/deployScripts.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "storageAccountName": {
+                        "value": "[variables('blobStorageName')]"
+                    },
+                    "identityName": {
+                        "value": "[variables('managedidentityName')]"
+                    },
+                    "containerName": {
+                        "value": "scripts"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "sqlServerDbwithVault",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/linked_sql_server_db.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "KeyVaultName": {
+                        "value": "[reference('CreateVault').outputs.keyVaultName.value]"
+                    },
+                    "sqlDBName": {
+                        "value": "[variables('sqlDBName')]"
+                    },
+                    "serverName": {
+                        "value": "[variables('serverName')]"
+                    },
+                    "storageAccountKey": {
+                        "value": "[reference('storage').outputs.storageAccessKey.value]"
+                    },
+                    "bacpacUrl": {
+                        "value": "[concat('https://', variables('blobStorageName'), '.blob.core.windows.net/scripts/smart-spaces-db.bacpac')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'CreateVault')]",
+                "[resourceId('Microsoft.Resources/deployments', 'adf')]",
+                "[resourceId('Microsoft.Resources/deployments', 'deployScripts')]",
+                "[resourceId('Microsoft.Resources/deployments', 'storage')]"
+            ]
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
             "name": "adfpipelines",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/datafactory/dataFactoryProperties.json')]",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/dataFactory/dataFactoryProperties.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -237,49 +307,6 @@
                 "[resourceId('Microsoft.Resources/deployments', 'sqlServerDbwithVault')]",
                 "[resourceId('Microsoft.Resources/deployments', 'batchAccount')]",
                 "[resourceId('Microsoft.Resources/deployments', 'azureML')]"
-            ]
-        },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "managedItendityforDeployScripts",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedItendity.json')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "managedidentityName": {
-                        "value": "[variables('managedidentityName')]"
-                    }
-                }
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'adfpipelines')]"
-            ]
-        },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-10-01",
-            "name": "managedItendityRoleAssign",
-            "properties": {
-                "mode": "Incremental",
-                "templateLink": {
-                    "uri": "[concat(parameters('publicGitUrl'), 'templates/managedItendityRoleAssign.json')]",
-                    "contentVersion": "1.0.0.0"
-                },
-                "parameters": {
-                    "managedidentityName": {
-                        "value": "[variables('managedidentityName')]"
-                    },
-                    "blobStorageName": {
-                        "value": "[variables('blobStorageName')]"
-                    }
-                }
-            },
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'managedItendityforDeployScripts')]"
             ]
         }
     ]
