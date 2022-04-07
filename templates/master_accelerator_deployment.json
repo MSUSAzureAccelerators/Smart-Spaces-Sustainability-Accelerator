@@ -120,7 +120,6 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', 'CreateVault')]",
-                "[resourceId('Microsoft.Resources/deployments', 'sqlServerDbwithVault')]",
                 "[resourceId('Microsoft.Resources/deployments', 'adf')]"
             ]
         },
