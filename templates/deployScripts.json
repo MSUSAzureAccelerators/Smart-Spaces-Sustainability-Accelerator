@@ -32,7 +32,7 @@
                 "timeout": "PT30M",
                 "arguments": "[concat(parameters('storageAccountName'), ' ', parameters('containerName'))]",
                 "scriptContent": "git clone https://github.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator --depth 1 --branch=feature/ARMDeploy /sustaingit && cd / && az storage blob upload-batch -d $2 -s sustaingit/scripts/ --account-name $1 --auth-mode login",
-                "cleanupPreference": "OnExpiration",
+                "cleanupPreference": "OnSuccess",
                 "retentionInterval": "P1D"
             }
         }
