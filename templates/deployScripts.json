@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-         "storageAccountName": {
+        "storageAccountName": {
             "type": "string"
         },
         "identityName": {
@@ -16,25 +16,25 @@
     "variables": {},
     "resources": [
         {
-    "type": "Microsoft.Resources/deploymentScripts",
-    "apiVersion": "2020-10-01",
-    "name": "UploadFilesToADLS",
-    "location": "[resourceGroup().location]",
-    "kind": "AzureCLI",
-    "identity": {
-        "type": "UserAssigned",
-        "userAssignedIdentities": {
-            "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]": {}
+            "type": "Microsoft.Resources/deploymentScripts",
+            "apiVersion": "2020-10-01",
+            "name": "UploadFilesToADLS",
+            "location": "[resourceGroup().location]",
+            "kind": "AzureCLI",
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]": {}
+                }
+            },
+            "properties": {
+                "AzCliVersion": "2.2.0",
+                "timeout": "PT30M",
+                "arguments": "[concat(parameters('storageAccountName'), ' ', parameters('containerName'))]",
+                "scriptContent": "git clone https://github.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator --depth 1 --branch=feature/ARMDeploy /sustaingit && cd / && az storage blob upload-batch -d $2 -s sustaingit/scripts/ --account-name $1 --auth-mode login",
+                "cleanupPreference": "OnExpiration",
+                "retentionInterval": "P1D"
+            }
         }
-    },
-    "properties": {
-        "AzCliVersion": "2.2.0",
-        "timeout": "PT30M",
-        "arguments": "[concat(parameters('storageAccountName'), ' ', parameters('containerName'))]",
-        "scriptContent": "git clone https://github.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator --depth 1 --branch=feature/ARMDeploy ~/sustaingit ; az storage blob upload-batch -d $2 -s sustaingit/scripts/ --account-name $1",
-        "cleanupPreference": "OnSuccess",
-        "retentionInterval": "P1D"
-    }
-}
     ]
 }
