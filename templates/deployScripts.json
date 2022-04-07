@@ -31,7 +31,7 @@
         "AzCliVersion": "2.2.0",
         "timeout": "PT30M",
         "arguments": "[concat(parameters('storageAccountName'), ' ', parameters('containerName'))]",
-        "scriptContent": "wget -O files.zip 'https://some-public-url/files.zip' ; unzip files.zip ; az storage blob upload-batch -d $2 -s datafolder --account-name $1",
+        "scriptContent": "git clone https://github.com/JloeJane/Smart-Spaces-Sustainability-Solution-Accelerator --depth 1 --branch=feature/ARMDeploy ~/sustaingit ; az storage blob upload-batch -d $2 -s sustaingit/scripts/ --account-name $1",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
     }
