@@ -194,8 +194,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'storage')]",
-                "[resourceId('Microsoft.Resources/deployments', 'CreateVault')]"
+                "[resourceId('Microsoft.Resources/deployments', 'storage')]"
             ]
         },
         {
