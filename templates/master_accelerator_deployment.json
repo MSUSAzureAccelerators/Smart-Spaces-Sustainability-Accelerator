@@ -77,12 +77,16 @@
                     },
                     "storageAccessKey": {
                         "value": "[reference('storage').outputs.storageAccessKey.value]"
+                    },
+                    "managedIdentityName": {
+                        "value": "[variables('managedidentityName')]"
                     }
                 }
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', 'adf')]",
-                "[resourceId('Microsoft.Resources/deployments', 'storage')]"
+                "[resourceId('Microsoft.Resources/deployments', 'storage')]",
+                "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]"
             ]
         },
         {
@@ -190,7 +194,8 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'storage')]"
+                "[resourceId('Microsoft.Resources/deployments', 'storage')]",
+                "[resourceId('Microsoft.Resources/deployments', 'CreateVault')]"
             ]
         },
         {
@@ -239,7 +244,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]"
+                "[resourceId('Microsoft.Resources/deployments', 'managedIdentityRoleAssign')]"
             ]
         },
         {

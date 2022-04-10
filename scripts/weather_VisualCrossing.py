@@ -137,9 +137,9 @@ if __name__ == "__main__":
     
     location = data['typeProperties']['extendedProperties']['location']
     
-    api_key = client.get_secret('visualCrossingAPIKey')
+    api_key = str(client.get_secret('visualCrossingAPIKey'))
 
-    connect_str = client.get_secret('storageConnectString')
+    connect_str = str(client.get_secret('storageConnectString'))
     
     container = 'weather'
 
