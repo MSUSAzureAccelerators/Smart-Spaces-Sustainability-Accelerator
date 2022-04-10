@@ -316,7 +316,7 @@
                         "value": "[reference('storage').outputs.storageAccessKey.value]"
                     },
                     "kvURI": {
-                        "value": "[concat('https://', variables('keyVaultName'), '.vault.azure.net/')]"
+                        "value": "[concat('https://', reference('CreateVault').outputs.keyVaultName.value, '.vault.azure.net/')]"
                     },
                     "location": {
                         "value": "[parameters('location')]"
