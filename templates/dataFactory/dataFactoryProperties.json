@@ -30,15 +30,13 @@
         "storageAccountKey": {
             "type": "secureString"
         },
-        "kvURI": {
-            "type": "string"
-        },
         "location": {
             "type": "string"
         }
     },
     "variables": {
-        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+        "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]",
+        "kvURI": "[concat('https://', parameters('keyVaultName'), '.vault.azure.net/')]"
     },
     "resources": [
         {
@@ -1197,7 +1195,7 @@
                             },
                             "folderPath": "scripts",
                             "extendedProperties": {
-                                "kvURI": "[parameters('kvURI')]",
+                                "kvURI": "[variables('kvURI')]",
                                 "location": "[parameters('location')]"
                             },
                             "referenceObjects": {
@@ -1811,7 +1809,7 @@
                             },
                             "folderPath": "scripts",
                             "extendedProperties": {
-                                "kvURI": "[parameters('kvURI')]",
+                                "kvURI": "[variables('kvURI')]",
                                 "location": "[parameters('location')]"
                             },
                             "referenceObjects": {
