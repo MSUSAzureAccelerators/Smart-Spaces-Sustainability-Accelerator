@@ -93,6 +93,7 @@ def transform_result(result, datetime_format):
                 row_datetime.strftime(datetime_format),
                 hour['windspeed'] or 0.0,
                 hour['windgust'] or 0.0,
+                hour['humidity'] or 0.0,
                 hour['solarradiation'] or 0.0,
                 hour['temp'] or 0.0
             ]
@@ -137,9 +138,13 @@ if __name__ == "__main__":
     
     location = data['typeProperties']['extendedProperties']['location']
     
-    api_key = str(client.get_secret('visualCrossingAPIKey'))
+    api_key = client.get_secret('visualCrossingAPIKey')
 
-    connect_str = str(client.get_secret('storageConnectString'))
+    api_key = api_key.value
+
+    connect_str = client.get_secret('storageConnectString')
+
+    connect_str = connect_str.value
     
     container = 'weather'
 

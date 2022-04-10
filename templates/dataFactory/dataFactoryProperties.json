@@ -1188,7 +1188,7 @@
                         },
                         "userProperties": [],
                         "typeProperties": {
-                            "command": "python weather_VisualCrossing.py since_last",
+                            "command": "python weather_VisualCrossing.py full_history",
                             "resourceLinkedService": {
                                 "referenceName": "[parameters('blobStorageName')]",
                                 "type": "LinkedServiceReference"
