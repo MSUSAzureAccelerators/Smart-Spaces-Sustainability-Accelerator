@@ -76,7 +76,7 @@
                         "value": "[parameters('visualCrossingAPIKey')]"
                     },
                     "storageAccessKey": {
-                        "value": "[reference('CreateVault').outputs.storageAccessKey.value]"
+                        "value": "[reference('storage').outputs.storageAccessKey.value]"
                     }
                 }
             },
