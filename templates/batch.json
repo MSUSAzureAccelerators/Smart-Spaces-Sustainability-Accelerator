@@ -24,6 +24,9 @@
         },
         "dataFactoryName": {
             "type": "string"
+        },
+        "managedIdentity": {
+            "type": "string"
         }
     },
     "variables": {
@@ -58,8 +61,14 @@
             "dependsOn": [
                 "[resourceId('Microsoft.Batch/batchAccounts', parameters('batchAccountName'))]"
             ],
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "[resourceID('Microsoft.ManagedIdentity/userAssignedIdentities/',parameters('managedIdentity'))]": {}
+                 }
+            },
             "properties": {
-                "vmSize": "STANDARD_A2m_V2",
+                "vmSize": "STANDARD_d11",
                 "interNodeCommunication": "Disabled",
                 "taskSlotsPerNode": 1,
                 "taskSchedulingPolicy": {
@@ -88,11 +97,11 @@
                     "fixedScale": {
                         "targetDedicatedNodes": 1,
                         "targetLowPriorityNodes": 0,
-                        "resizeTimeout": "PT15M"
+                        "resizeTimeout": "PT30M"
                     }
                 },
                 "startTask": {
-                    "commandLine": "cmd /c \"pip install azure-storage-blob && pip install azure-appconfiguration && pip install sqlalchemy && pip install pyodbc && pip install statsmodels\"",
+                    "commandLine": "cmd /c \"pip install azure-storage-blob && pip install azure-appconfiguration && pip install azure-identity && pip install azure-keyvault-secrets && pip install sqlalchemy && pip install pyodbc && pip install statsmodels\"",
                     "userIdentity": {
                         "autoUser": {
                             "scope": "Pool",
