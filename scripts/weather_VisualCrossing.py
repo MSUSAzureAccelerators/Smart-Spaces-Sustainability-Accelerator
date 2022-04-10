@@ -66,7 +66,7 @@ def pull_weather_data(from_date, location, key):
     }
 
     response = requests.get(full_url, params=params)
-    
+    response.raise_for_status()
     result = response.json()
 
     return result
