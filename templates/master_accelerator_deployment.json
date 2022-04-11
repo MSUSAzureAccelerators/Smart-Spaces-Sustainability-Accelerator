@@ -218,7 +218,7 @@
             },
             "dependsOn": [
                 "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]",
-                "[resourceId('Microsoft.Resources/deployments', 'sqlServerDbwithVault')]"
+                "[resourceId('Microsoft.Resources/deployments', 'batchAccount')]"
             ]
         },
         {
