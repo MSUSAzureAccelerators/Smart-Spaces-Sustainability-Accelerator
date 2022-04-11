@@ -17,5 +17,10 @@
             "location": "[resourceGroup().location]"
         }
     ],
-    "outputs": {}
+    "outputs": {
+        "managedIdentityName": {
+            "type": "string",
+            "value": "[parameters('managedIdentityName')]"
+        }
+    }
 }
