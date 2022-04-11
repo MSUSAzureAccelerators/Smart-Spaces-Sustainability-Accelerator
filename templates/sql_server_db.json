@@ -110,7 +110,7 @@
       "apiVersion": "2021-04-01-preview",
       "name": "[format('{0}/{1}', parameters('keyVaultName'), 'sqlConnectString')]",
       "properties": {
-        "value": "[concat('Server=tcp:',parameters('serverName'),'.database.windows.net,1433;Database=acceleratorDatabase;User ID=',parameters('administratorLogin'),';Password=',parameters('administratorLoginPassword'),';Trusted_Connection=False;Encrypt=True;Connection Timeout=30')]"
+        "value": "[concat('Driver={ODBC Driver 17 for SQL Server};Server=tcp:',parameters('serverName'),'.database.windows.net,1433;Database=', parameters('sqlDBName'), ';Uid=',parameters('administratorLogin'),';Pwd=',parameters('administratorLoginPassword'),';Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')]"
       },
       "dependsOn": [
         "[resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('sqlDBName'))]"
@@ -120,7 +120,7 @@
   "outputs": {
     "connectionString": {
       "type": "string",
-      "value": "[concat('Server=tcp:',parameters('serverName'),'.database.windows.net,1433;Database=acceleratorDatabase;User ID=',parameters('administratorLogin'),';Password=',parameters('administratorLoginPassword'),';Trusted_Connection=False;Encrypt=True;Connection Timeout=30')]"
+      "value": "[concat('Server=tcp:',parameters('serverName'),'.database.windows.net,1433;Database=', parameters('sqlDBName'), ';User ID=',parameters('administratorLogin'),';Password=',parameters('administratorLoginPassword'),';Trusted_Connection=False;Encrypt=True;Connection Timeout=30;')]"
     }
   }
 }
