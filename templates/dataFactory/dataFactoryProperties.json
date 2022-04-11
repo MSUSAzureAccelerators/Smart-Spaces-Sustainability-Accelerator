@@ -907,7 +907,7 @@
                         "     allowSchemaDrift: true,",
                         "     validateSchema: false,",
                         "     isolationLevel: 'READ_UNCOMMITTED',",
-                        "     query: 'SELECT CAST(PERIOD AS DateTime) PERIOD\\n,INTERVAL\\n,[TIME]\\n,[ChillerName]\\n,[HvacRunStatus]\\n,LEFT(REPLACE([TIME],\\':\\',\\'\\'),4)[MINUTE]\\n,cast(ChillerTempEnter as int)ChillerTempEnter\\n,cast(ChillerTempLeave as int) ChillerTempLeave\\n,CAST(PERIOD AS DATE) AS [DATE]\\n,FORMAT(PERIOD, N\\'yyyymmddhhmmss\\')TIMEKEY\\nFROM(\\n\\n\\n\\n\\n/******15 MINUTES INTERVALS ******/\\n\\n\\n\\n\\n\\n(SELECT DATEADD(MINUTE, [15 MINUTES] * 15, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'15 MINUTES\\' AS INTERVAL\\n,[ChillerName]\\n,[HvacRunStatus]\\n,[TIME]\\n,AVG(ChillerTempEnter) ChillerTempEnter\\n,AVG(ChillerTempLeave)ChillerTempLeave\\nFROM(SELECT DISTINCT CAST([DatetimeUTC] AS DATE) [DATE],[ChillerTempEnter],[ChillerTempLeave],[ChillerName]\\n,[HvacRunStatus]\\n,CAST(DateTimeUTC as time) [TIME]\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DateTimeUTC])/15 AS [15 MINUTES]\\nFROM [DBO].[HVACUnitIntermediate]\\nwhere [ChillerName] in (\\'SMARTSPACE-HVAC01\\', \\'SMARTSPACE-HVAC02\\', \\'SMARTSPACE-HVAC03\\')\\n\\n\\n\\n)A\\nGROUP BY [15 MINUTES],[ChillerName],[HvacRunStatus], [TIME]\\n)\\nUNION ALL\\n\\n\\n\\n\\n\\n/****** HOURLY INTERVALS *****/\\n\\n\\n\\n\\n\\n(SELECT DATEADD(MINUTE, [HOURLY] * 60, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'HOURLY\\' AS INTERVAL\\n,[ChillerName]\\n,[HvacRunStatus]\\n,[TIME]\\n,AVG(ChillerTempEnter) ChillerTempEnter\\n,AVG(ChillerTempLeave)ChillerTempLeave\\nFROM(SELECT DISTINCT CAST([DateTimeUTC] AS DATE) [DATE],[ChillerTempEnter],[ChillerTempLeave],[ChillerName]\\n,[HvacRunStatus]\\n,CAST(DateTimeUTC as time) [TIME]\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DateTimeUTC])/60 AS [HOURLY]\\nFROM [DBO].[HVACUnitIntermediate]\\nwhere [ChillerName] in (\\'SMARTSPACE-HVAC01\\', \\'SMARTSPACE-HVAC02\\', \\'SMARTSPACE-HVAC03\\')\\n\\n\\n\\n)A\\nGROUP BY [HOURLY],[ChillerName],[HvacRunStatus]\\n,[TIME]\\n))B',",
+                        "     query: 'SELECT CAST(PERIOD AS DateTime) PERIOD\\n,INTERVAL\\n,[TIME]\\n,[ChillerName]\\n,[HvacRunStatus]\\n,LEFT(REPLACE([TIME],\\':\\',\\'\\'),4)[MINUTE]\\n,cast(ChillerTempEnter as int)ChillerTempEnter\\n,cast(ChillerTempLeave as int) ChillerTempLeave\\n,CAST(PERIOD AS DATE) AS [DATE]\\n,FORMAT(PERIOD, N\\'yyyymmddhhmmss\\')TIMEKEY\\nFROM(\\n\\n\\n\\n\\n/******15 MINUTES INTERVALS ******/\\n\\n\\n\\n\\n\\n(SELECT DATEADD(MINUTE, [15 MINUTES] * 15, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'15 MINUTES\\' AS INTERVAL\\n,[ChillerName]\\n,[HvacRunStatus]\\n,[TIME]\\n,AVG(ChillerTempEnter) ChillerTempEnter\\n,AVG(ChillerTempLeave)ChillerTempLeave\\nFROM(SELECT DISTINCT CAST([DatetimeUTC] AS DATE) [DATE],[ChillerTempEnter],[ChillerTempLeave],[ChillerName]\\n,[HvacRunStatus]\\n,CAST(DateTimeUTC as time) [TIME]\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DateTimeUTC])/15 AS [15 MINUTES]\\nFROM [DBO].[HVACUnitIntermediate]\\nwhere [ChillerName] in (\\'SMARTSPACE-HVAC01-IOTDEVICE\\', \\'SMARTSPACE-HVAC02-IOTDEVICE\\', \\'SMARTSPACE-HVAC03-IOTDEVICE\\')\\n\\n\\n\\n)A\\nGROUP BY [15 MINUTES],[ChillerName],[HvacRunStatus], [TIME]\\n)\\nUNION ALL\\n\\n\\n\\n\\n\\n/****** HOURLY INTERVALS *****/\\n\\n\\n\\n\\n\\n(SELECT DATEADD(MINUTE, [HOURLY] * 60, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'HOURLY\\' AS INTERVAL\\n,[ChillerName]\\n,[HvacRunStatus]\\n,[TIME]\\n,AVG(ChillerTempEnter) ChillerTempEnter\\n,AVG(ChillerTempLeave)ChillerTempLeave\\nFROM(SELECT DISTINCT CAST([DateTimeUTC] AS DATE) [DATE],[ChillerTempEnter],[ChillerTempLeave],[ChillerName]\\n,[HvacRunStatus]\\n,CAST(DateTimeUTC as time) [TIME]\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DateTimeUTC])/60 AS [HOURLY]\\nFROM [DBO].[HVACUnitIntermediate]\\nwhere [ChillerName] in (\\'SMARTSPACE-HVAC01-IOTDEVICE\\', \\'SMARTSPACE-HVAC02-IOTDEVICE\\', \\'SMARTSPACE-HVAC03-IOTDEVICE\\')\\n\\n\\n\\n)A\\nGROUP BY [HOURLY],[ChillerName],[HvacRunStatus]\\n,[TIME]\\n))B',",
                         "     format: 'query') ~> source1",
                         "source1 sink(allowSchemaDrift: true,",
                         "     validateSchema: false,",
@@ -1073,7 +1073,7 @@
                         "     allowSchemaDrift: true,",
                         "     validateSchema: false,",
                         "     isolationLevel: 'READ_UNCOMMITTED',",
-                        "     query: '/****** Script for SelectTopNRows command from SSMS  ******/\\nselect\\ncast( [SMARTSPACE-HVAC01] as int) [SMARTSPACE-HVAC01]\\n,cast( [SMARTSPACE-HVAC02] as int) [SMARTSPACE-HVAC02]\\n,cast( [SMARTSPACE-HVAC03] as int) [SMARTSPACE-HVAC03]\\n,cast((isnull([SMARTSPACE-HVAC01],0)+ isnull([SMARTSPACE-HVAC02],0) + isnull([SMARTSPACE-HVAC03],0))as int) [Total_kW]\\n,cast((isnull([SMARTSPACE-HVAC01],0)+ isnull([SMARTSPACE-HVAC02],0) + isnull([SMARTSPACE-HVAC03],0)) as FLOAT) /4 [Aprx_kWh]\\n,Period [datetime]\\nfrom (SELECT DATEADD(MINUTE, [HOURLY] * 60, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'HOURLY\\' AS INTERVAL\\n,[PlantName]\\n,AVG([REALPOWER]) RealPower\\nFROM(SELECT DISTINCT [DatetimeUTC] AS [DATE],[PlantName],[REALPOWER]\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DatetimeUTC])/60 AS [HOURLY]\\nFROM [DBO].[EnergyDataIntermediate]\\n\\n\\n\\n)A\\nGROUP BY [HOURLY],[PlantName],RealPower\\n)b\\nPIVOT\\n(SUM(REALPOWER)\\nFOR [PlantName]\\nIN ([SMARTSPACE-HVAC01],[SMARTSPACE-HVAC02],[SMARTSPACE-HVAC03])\\n)\\nAS PIVOTTABLE\\nWHERE [SMARTSPACE-HVAC01] IS NOT NULL OR [SMARTSPACE-HVAC02] IS NOT NULL OR [SMARTSPACE-HVAC03] IS NOT NULL',",
+                        "     query: '/****** Script for SelectTopNRows command from SSMS  ******/\\nselect\\ncast( [SMARTSPACE-HVAC01-IOTDEVICE] as int) [SMARTSPACE-HVAC01-IOTDEVICE]\\n,cast( [SMARTSPACE-HVAC02-IOTDEVICE] as int) [SMARTSPACE-HVAC02-IOTDEVICE]\\n,cast( [SMARTSPACE-HVAC03-IOTDEVICE] as int) [SMARTSPACE-HVAC03-IOTDEVICE]\\n,cast((isnull([SMARTSPACE-HVAC01-IOTDEVICE],0)+ isnull([SMARTSPACE-HVAC02-IOTDEVICE],0) + isnull([SMARTSPACE-HVAC03-IOTDEVICE],0))as int) [Total_kW]\\n,cast((isnull([SMARTSPACE-HVAC01-IOTDEVICE],0)+ isnull([SMARTSPACE-HVAC02-IOTDEVICE],0) + isnull([SMARTSPACE-HVAC03-IOTDEVICE],0)) as FLOAT) /4 [Aprx_kWh]\\n,Period [datetime]\\nfrom (SELECT DATEADD(MINUTE, [HOURLY] * 60, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'HOURLY\\' AS INTERVAL\\n,[PlantName]\\n,AVG([REALPOWER]) RealPower\\nFROM(SELECT DISTINCT [DatetimeUTC] AS [DATE],[PlantName],[REALPOWER]\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DatetimeUTC])/60 AS [HOURLY]\\nFROM [DBO].[EnergyDataIntermediate]\\n\\n\\n\\n)A\\nGROUP BY [HOURLY],[PlantName],RealPower\\n)b\\nPIVOT\\n(SUM(REALPOWER)\\nFOR [PlantName]\\nIN ([SMARTSPACE-HVAC01-IOTDEVICE],[SMARTSPACE-HVAC02-IOTDEVICE],[SMARTSPACE-HVAC03-IOTDEVICE])\\n)\\nAS PIVOTTABLE\\nWHERE [SMARTSPACE-HVAC01-IOTDEVICE] IS NOT NULL OR [SMARTSPACE-HVAC02-IOTDEVICE] IS NOT NULL OR [SMARTSPACE-HVAC03-IOTDEVICE] IS NOT NULL',",
                         "     format: 'query') ~> source1",
                         "source1 sink(allowSchemaDrift: true,",
                         "     validateSchema: false,",
@@ -1223,7 +1223,7 @@
                 "[concat(variables('factoryId'), '/linkedServices/', parameters('blobStorageName'))]"
             ]
         },
-        
+
         {
             "name": "[concat(parameters('factoryName'), '/InsertHistoricWeather')]",
             "type": "Microsoft.DataFactory/factories/dataflows",
@@ -1525,21 +1525,22 @@
                     "transformations": [],
                     "scriptLines": [
                         "source(output(",
-                        "          Timestamp as timestamp,",
-                        "          {_10_Minute_Wind_Gust} as double,",
-                        "          Anemometer as double,",
-                        "          Hygrometer as double,",
-                        "          Solar_Radiation_Sensor as double,",
-                        "          Thermometer as double,",
-                        "          date as string,",
-                        "          time as string,",
-                        "          datetime as timestamp",
+                        "          PERIOD as timestamp,",
+                        "          INTERVAL as string,",
+                        "          THERMOMETER as double,",
+                        "          ANEMOMETER as double,",
+                        "          HYGROMETER as double,",
+                        "          SOLAR_RADIATION_SENSOR as double,",
+                        "          {_10_MINUTE_WIND_GUST} as double,",
+                        "          DATE as date,",
+                        "          TIMEKEY as string",
                         "     ),",
                         "     allowSchemaDrift: true,",
                         "     validateSchema: false,",
-                        "     isolationLevel: 'READ_UNCOMMITTED',",
-                        "     query: 'SELECT CAST(PERIOD AS DATETIME) PERIOD, INTERVAL\\n,ROUND(THERMOMETER,0)THERMOMETER\\n,ROUND(ANEMOMETER,0) ANEMOMETER\\n,ROUND(HYGROMETER,0) HYGROMETER\\n,ROUND(SOLAR_RADIATION_SENSOR,0) SOLAR_RADIATION_SENSOR\\n,ROUND(_10_MINUTE_WIND_GUST,0) _10_MINUTE_WIND_GUST\\n,CAST(PERIOD AS DATE) AS [DATE]\\n,FORMAT(PERIOD, N\\'yyyyMMddHHmmss\\')TIMEKEY\\nFROM(\\n\\n/******15 MINUTES INTERVALS ******/\\n\\n(SELECT DATEADD(MINUTE, [15 MINUTES] * 15, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'15 MINUTES\\' AS INTERVAL\\n,AVG(THERMOMETER) THERMOMETER\\n,AVG([ANEMOMETER])ANEMOMETER\\n,AVG([HYGROMETER])HYGROMETER\\n,AVG([SOLAR_RADIATION_SENSOR])SOLAR_RADIATION_SENSOR\\n,AVG([_10_MINUTE_WIND_GUST])_10_MINUTE_WIND_GUST\\nFROM(SELECT DISTINCT CAST([DATE] AS DATE) [DATE], THERMOMETER\\n,ANEMOMETER\\n,HYGROMETER\\n,SOLAR_RADIATION_SENSOR\\n,_10_MINUTE_WIND_GUST\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DATETIME])/15 AS [15 MINUTES]\\nFROM [DBO].[WeatherHistoricIntermediate]\\n)A\\nGROUP BY [15 MINUTES]\\n)\\nUNION ALL\\n\\n/****** HOURLY INTERVALS *****/\\n\\n(SELECT DATEADD(MINUTE, [HOURLY] * 60, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'HOURLY\\' AS INTERVAL\\n,AVG(THERMOMETER) THERMOMETER\\n,AVG([ANEMOMETER])ANEMOMETER\\n,AVG([HYGROMETER])HYGROMETER\\n,AVG([SOLAR_RADIATION_SENSOR])SOLAR_RADIATION_SENSOR\\n,AVG([_10_MINUTE_WIND_GUST])_10_MINUTE_WIND_GUST\\nFROM(SELECT DISTINCT CAST([DATE] AS DATE) [DATE], THERMOMETER\\n,ANEMOMETER\\n,HYGROMETER\\n,SOLAR_RADIATION_SENSOR\\n,_10_MINUTE_WIND_GUST\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DATETIME])/60 AS [HOURLY]\\nFROM [DBO].[WeatherHistoricIntermediate]\\n)A\\nGROUP BY [HOURLY]\\n))B',",
-                        "     format: 'query') ~> source1",
+                        "     format: 'query',",
+                        "     store: 'sqlserver',",
+                        "     query: 'SELECT CAST(PERIOD AS DATETIME) PERIOD, INTERVAL\\n,ROUND(THERMOMETER,0)THERMOMETER\\n,ROUND(ANEMOMETER,0) ANEMOMETER\\n,ROUND(HYGROMETER,0) HYGROMETER\\n,ROUND(SOLAR_RADIATION_SENSOR,0) SOLAR_RADIATION_SENSOR\\n,ROUND(_10_MINUTE_WIND_GUST,0) _10_MINUTE_WIND_GUST\\n,CAST(PERIOD AS DATE) AS [DATE]\\n,FORMAT(PERIOD, N\\'yyyyMMddHHmmss\\')TIMEKEY\\nFROM(\\n\\n/******15 MINUTES INTERVALS ******/\\n\\n(SELECT DATEADD(MINUTE, [15 MINUTES] * 15, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'15 MINUTES\\' AS INTERVAL\\n,AVG(THERMOMETER) THERMOMETER\\n,AVG([ANEMOMETER])ANEMOMETER\\n,AVG([HYGROMETER])HYGROMETER\\n,AVG([SOLAR_RADIATION_SENSOR])SOLAR_RADIATION_SENSOR\\n,AVG([_10_MINUTE_WIND_GUST])_10_MINUTE_WIND_GUST\\nFROM(SELECT DISTINCT CAST([DATE] AS DATE) [DATE], THERMOMETER\\n,ANEMOMETER\\n,HYGROMETER\\n,SOLAR_RADIATION_SENSOR\\n,_10_MINUTE_WIND_GUST\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DATETIME])/15 AS [15 MINUTES]\\nFROM [DBO].[WeatherHistoric]\\n)A\\nGROUP BY [15 MINUTES]\\n)\\nUNION ALL\\n\\n/****** HOURLY INTERVALS *****/\\n\\n(SELECT DATEADD(MINUTE, [HOURLY] * 60, \\'2010-01-01T00:00:00\\') AS PERIOD\\n,\\'HOURLY\\' AS INTERVAL\\n,AVG(THERMOMETER) THERMOMETER\\n,AVG([ANEMOMETER])ANEMOMETER\\n,AVG([HYGROMETER])HYGROMETER\\n,AVG([SOLAR_RADIATION_SENSOR])SOLAR_RADIATION_SENSOR\\n,AVG([_10_MINUTE_WIND_GUST])_10_MINUTE_WIND_GUST\\nFROM(SELECT DISTINCT CAST([DATE] AS DATE) [DATE], THERMOMETER\\n,ANEMOMETER\\n,HYGROMETER\\n,SOLAR_RADIATION_SENSOR\\n,_10_MINUTE_WIND_GUST\\n,DATEDIFF(MINUTE, \\'2010-01-01T00:00:00\\',[DATETIME])/60 AS [HOURLY]\\nFROM [DBO].[WeatherHistoric]\\n)A\\nGROUP BY [HOURLY]\\n))B',",
+                        "     isolationLevel: 'READ_UNCOMMITTED') ~> source1",
                         "source1 sink(allowSchemaDrift: true,",
                         "     validateSchema: false,",
                         "     input(",
@@ -1561,7 +1562,18 @@
                         "     postSQLs:['DELETE FROM [DBO].[WeatherHistoricIntermediate]'],",
                         "     skipDuplicateMapInputs: true,",
                         "     skipDuplicateMapOutputs: true,",
-                        "     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+                        "     errorHandlingOption: 'stopOnFirstError',",
+                        "     mapColumn(",
+                        "          Period = PERIOD,",
+                        "          Interval = INTERVAL,",
+                        "          Thermometer = THERMOMETER,",
+                        "          Anemometer = ANEMOMETER,",
+                        "          Hygrometer = HYGROMETER,",
+                        "          Solar_Radiation_Sensor = SOLAR_RADIATION_SENSOR,",
+                        "          {_10_Minute_Wind_Gust} = {_10_MINUTE_WIND_GUST},",
+                        "          Date = DATE,",
+                        "          TimeKey = TIMEKEY",
+                        "     )) ~> sink1"
                     ]
                 }
             },
@@ -2029,6 +2041,56 @@
             "dependsOn": [
                 "[concat(variables('factoryId'), '/linkedServices/', parameters('blobStorageName'))]"
             ]
-        }       
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/HVAC_Model_Forecast')]",
+            "type": "Microsoft.DataFactory/factories/pipelines",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "activities": [
+                    {
+                        "name": "HVAC and Weather Forecasting",
+                        "type": "Custom",
+                        "dependsOn": [],
+                        "policy": {
+                            "timeout": "7.00:00:00",
+                            "retry": 0,
+                            "retryIntervalInSeconds": 30,
+                            "secureOutput": false,
+                            "secureInput": false
+                        },
+                        "userProperties": [],
+                        "typeProperties": {
+                            "command": "python Train_Chiller_Model_v4.py",
+                            "resourceLinkedService": {
+                                "referenceName": "[parameters('blobStorageName')]",
+                                "type": "LinkedServiceReference"
+                            },
+                            "folderPath": "scripts",
+                            "extendedProperties": {
+                                "kvURI": "[variables('kvURI')]"
+                            },
+                            "referenceObjects": {
+                                "linkedServices": [],
+                                "datasets": []
+                            }
+                        },
+                        "linkedServiceName": {
+                            "referenceName": "[parameters('batchAccountName')]",
+                            "type": "LinkedServiceReference"
+                        }
+                    }
+                ],
+                "policy": {
+                    "elapsedTimeMetric": {},
+                    "cancelAfter": {}
+                },
+                "annotations": []
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('batchAccountName'))]",
+                "[concat(variables('factoryId'), '/linkedServices/', parameters('blobStorageName'))]"
+            ]
+        }
     ]
 }

@@ -70,6 +70,9 @@
                     },
                     "bacpacUrl": {
                         "value": "[parameters('bacpacUrl')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('KeyVaultName')]"
                     }
                 }
             }

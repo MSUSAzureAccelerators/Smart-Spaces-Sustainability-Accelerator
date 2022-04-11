@@ -6,7 +6,7 @@ import os
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from azure.appconfiguration import AzureAppConfigurationClient
 from azure.keyvault.secrets import SecretClient
-from azure.identity import DefaultAzureCredential, ManagedIdentityCredential
+from azure.identity import ManagedIdentityCredential
 import sys
 import re
 import ast

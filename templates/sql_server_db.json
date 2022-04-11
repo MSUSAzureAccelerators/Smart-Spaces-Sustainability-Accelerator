@@ -42,7 +42,10 @@
       "metadata": {
         "description": "Specifies the URL of the BACPAC file."
       }
-    }
+    },
+    "keyVaultName": {
+        "type": "string"
+      }
   },
   "variables": {},
   "resources": [
@@ -101,6 +104,17 @@
         "startIpAddress": "0.0.0.0",
         "endIpAddress": "0.0.0.0"
       }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2021-04-01-preview",
+      "name": "[format('{0}/{1}', parameters('keyVaultName'), 'sqlConnectString')]",
+      "properties": {
+        "value": "[concat('Server=tcp:',parameters('serverName'),'.database.windows.net,1433;Database=acceleratorDatabase;User ID=',parameters('administratorLogin'),';Password=',parameters('administratorLoginPassword'),';Trusted_Connection=False;Encrypt=True;Connection Timeout=30')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Sql/servers/databases', parameters('serverName'), parameters('sqlDBName'))]"
+      ]
     }
   ],
   "outputs": {

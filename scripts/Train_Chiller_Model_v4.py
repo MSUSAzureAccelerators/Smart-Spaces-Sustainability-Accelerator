@@ -24,6 +24,8 @@ import json
 import os
 import numpy as np
 from statsmodels.tsa.statespace.sarimax import SARIMAX
+from azure.keyvault.secrets import SecretClient
+from azure.identity import ManagedIdentityCredential
 
 # ## Load data sources
 
@@ -42,26 +44,24 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 with open('activity.json', 'r') as params:
     data = json.load(params)
 
-app_config_conn_str = data['typeProperties']['extendedProperties']['appConfig']
+kv_uri = data['typeProperties']['extendedProperties']['kvURI']
 
-client = AzureAppConfigurationClient.from_connection_string(app_config_conn_str)
+credential = ManagedIdentityCredential()
 
-azure_storage_connect_str = client.get_configuration_setting(
-    key="AZURE_STORAGE_CONNECTION_STRING"
-)
+client = SecretClient(vault_url=kv_uri, credential=credential)
+
+azure_storage_connect_str = client.get_secret('storageConnectString')
 
 storage_connect_str = azure_storage_connect_str.value
 
-azure_sql_connect_str = client.get_configuration_setting(
-    key="AZURE_SQL_CONNECTION_STRING"
-)
+azure_sql_connect_str = client.get_secret('sqlConnectString')
 
 sql_connect_str = azure_sql_connect_str.value
 
 conn = sql_connect_str
 engine = sqlalchemy.create_engine('mssql+pyodbc:///?odbc_connect={}'.format(conn))
 
-table_name = 'HistoricWeatherAlegiant'
+table_name = 'WeatherHistoric'
 
 query = f"SELECT * FROM {table_name}"
 weather_data = pd.read_sql(query, engine)
@@ -111,7 +111,7 @@ del weather_data
 
 # Load Setpoint Data
 
-table_name = 'BowlConditionsSetpointFinal'
+table_name = 'SpaceSetPointFinal'
 
 query = f"SELECT Datetime as Datetime, [Point-Value] as Setpoint FROM {table_name}"
 
@@ -164,7 +164,7 @@ setpoint_changes = setpoint_changes[setpoint_changes["Setpoint_end"] < 71]
 #                 header=0,
 #                 names=["Datetime","Bowl_temp"])
 
-table_name = 'BowlConditionsBowlTempFinal'
+table_name = 'SpaceTempFinal'
 
 query = f"SELECT Datetime as Datetime, [Point-Value] as Bowl_temp FROM {table_name}"
 
