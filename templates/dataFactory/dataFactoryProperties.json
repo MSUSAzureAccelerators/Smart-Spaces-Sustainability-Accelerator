@@ -40,7 +40,9 @@
     },
     "variables": {
         "factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]",
-        "kvURI": "[concat('https://', parameters('keyVaultName'), '.vault.azure.net/')]"
+        "kvURI": "[concat('https://', parameters('keyVaultName'), '.vault.azure.net/')]",
+        "inOneHr": "[dateTimeAdd(parameters('baseTime'), 'PT1H')]",
+        "inOneDay": "[dateTimeAdd(parameters('baseTime'), 'P1D')]"
     },
     "resources": [
         {
@@ -2117,8 +2119,8 @@
                     "recurrence": {
                         "frequency": "Day",
                         "interval": 1,
-                        "startTime": "[dateTimeAdd(parameters('baseTime'), 'PT1H')]",
-                        "endTime": "[dateTimeAdd(parameters('baseTime'), 'P1D')]",
+                        "startTime": "[variables('inOneHr')]",
+                        "endTime": "[variables('inOneDay')]",
                         "timeZone": "UTC",
                         "schedule": {}
                     }
@@ -2149,7 +2151,7 @@
                     "recurrence": {
                         "frequency": "Hour",
                         "interval": 1,
-                        "startTime": "[dateTimeAdd(parameters('baseTime'), 'P1D')]",
+                        "startTime": "[variables('inOneDay')]",
                         "timeZone": "UTC"
                     }
                 }
@@ -2179,7 +2181,7 @@
                     "recurrence": {
                         "frequency": "Hour",
                         "interval": 1,
-                        "startTime": "[dateTimeAdd(parameters('baseTime'), 'PT1H')]",
+                        "startTime": "[variables('inOneHr')]",
                         "timeZone": "UTC"
                     }
                 }
@@ -2209,7 +2211,7 @@
                     "recurrence": {
                         "frequency": "Day",
                         "interval": 1,
-                        "startTime": "[dateTimeAdd(parameters('baseTime'), 'P1D')]",
+                        "startTime": "[variables('inOneHr')]",
                         "timeZone": "UTC",
                         "schedule": {
                             "minutes": [
