@@ -35,7 +35,7 @@
         },
         "baseTime": {
             "type": "string",
-            "defaultValue": "[parameters('baseTime')]"
+            "defaultValue": "[utcNow('u')]"
         }
     },
     "variables": {
