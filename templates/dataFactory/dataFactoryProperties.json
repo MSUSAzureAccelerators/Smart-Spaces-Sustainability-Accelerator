@@ -32,6 +32,10 @@
         },
         "location": {
             "type": "string"
+        },
+        "baseTime": {
+            "type": "string",
+            "defaultValue": "[parameters('baseTime')]"
         }
     },
     "variables": {
@@ -2113,8 +2117,8 @@
                     "recurrence": {
                         "frequency": "Day",
                         "interval": 1,
-                        "startTime": "[dateTimeAdd(utcNow('u'), 'PT1H')]",
-                        "endTime": "[dateTimeAdd(utcNow('u'), 'P1D')]",
+                        "startTime": "[dateTimeAdd(parameters('baseTime'), 'PT1H')]",
+                        "endTime": "[dateTimeAdd(parameters('baseTime'), 'P1D')]",
                         "timeZone": "UTC",
                         "schedule": {}
                     }
@@ -2145,7 +2149,7 @@
                     "recurrence": {
                         "frequency": "Hour",
                         "interval": 1,
-                        "startTime": "[dateTimeAdd(utcNow('u'), 'P1D')]",
+                        "startTime": "[dateTimeAdd(parameters('baseTime'), 'P1D')]",
                         "timeZone": "UTC"
                     }
                 }
@@ -2175,7 +2179,7 @@
                     "recurrence": {
                         "frequency": "Hour",
                         "interval": 1,
-                        "startTime": "[dateTimeAdd(utcNow('u'), 'PT1H')]",
+                        "startTime": "[dateTimeAdd(parameters('baseTime'), 'PT1H')]",
                         "timeZone": "UTC"
                     }
                 }
@@ -2205,7 +2209,7 @@
                     "recurrence": {
                         "frequency": "Day",
                         "interval": 1,
-                        "startTime": "[dateTimeAdd(utcNow('u'), 'P1D')]",
+                        "startTime": "[dateTimeAdd(parameters('baseTime'), 'P1D')]",
                         "timeZone": "UTC",
                         "schedule": {
                             "minutes": [
