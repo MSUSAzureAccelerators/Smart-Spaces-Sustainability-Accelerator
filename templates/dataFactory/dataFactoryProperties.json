@@ -2091,6 +2091,136 @@
                 "[concat(variables('factoryId'), '/linkedServices/', parameters('batchAccountName'))]",
                 "[concat(variables('factoryId'), '/linkedServices/', parameters('blobStorageName'))]"
             ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/PullWeatherHistory')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Started",
+                "pipelines": [
+                    {
+                        "pipelineReference": {
+                            "referenceName": "historic_weather_pull",
+                            "type": "PipelineReference"
+                        },
+                        "parameters": {}
+                    }
+                ],
+                "type": "ScheduleTrigger",
+                "typeProperties": {
+                    "recurrence": {
+                        "frequency": "Day",
+                        "interval": 1,
+                        "startTime": "[dateTimeAdd(utcNow('u'), 'PT1H')]",
+                        "endTime": "[dateTimeAdd(utcNow('u'), 'P1D')]",
+                        "timeZone": "UTC",
+                        "schedule": {}
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/pipelines/historic_weather_pull')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/HourlyWeatherPull')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Started",
+                "pipelines": [
+                    {
+                        "pipelineReference": {
+                            "referenceName": "historic_weather_pull_since_last",
+                            "type": "PipelineReference"
+                        },
+                        "parameters": {}
+                    }
+                ],
+                "type": "ScheduleTrigger",
+                "typeProperties": {
+                    "recurrence": {
+                        "frequency": "Hour",
+                        "interval": 1,
+                        "startTime": "[dateTimeAdd(utcNow('u'), 'P1D')]",
+                        "timeZone": "UTC"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/pipelines/historic_weather_pull_since_last')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/IOTDataToSQL')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Started",
+                "pipelines": [
+                    {
+                        "pipelineReference": {
+                            "referenceName": "iot_data_to_SQL",
+                            "type": "PipelineReference"
+                        },
+                        "parameters": {}
+                    }
+                ],
+                "type": "ScheduleTrigger",
+                "typeProperties": {
+                    "recurrence": {
+                        "frequency": "Hour",
+                        "interval": 1,
+                        "startTime": "[dateTimeAdd(utcNow('u'), 'PT1H')]",
+                        "timeZone": "UTC"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/pipelines/iot_data_to_SQL')]"
+            ]
+        },
+        {
+            "name": "[concat(parameters('factoryName'), '/DailyForecastRun')]",
+            "type": "Microsoft.DataFactory/factories/triggers",
+            "apiVersion": "2018-06-01",
+            "properties": {
+                "annotations": [],
+                "runtimeState": "Started",
+                "pipelines": [
+                    {
+                        "pipelineReference": {
+                            "referenceName": "HVAC_Model_Forecast",
+                            "type": "PipelineReference"
+                        },
+                        "parameters": {}
+                    }
+                ],
+                "type": "ScheduleTrigger",
+                "typeProperties": {
+                    "recurrence": {
+                        "frequency": "Day",
+                        "interval": 1,
+                        "startTime": "[dateTimeAdd(utcNow('u'), 'P1D')]",
+                        "timeZone": "UTC",
+                        "schedule": {
+                            "minutes": [
+                                0
+                            ],
+                            "hours": [
+                                3
+                            ]
+                        }
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat(variables('factoryId'), '/pipelines/HVAC_Model_Forecast')]"
+            ]
         }
     ]
 }
