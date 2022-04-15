@@ -26,7 +26,7 @@ Summary of Resources Deployed:
     5d. Pool Access granted to User Assigned Identity (Not able to grant to System Assigned Identity)
 6. Access to Storage given to User Assigned Managed Identity
 7. Python Scripts and SQL BACPAC are deployed to scripts container of the blob storage using the user assigned managed identity.
-8. SQL Server with Password stored in azure key vault, and database deployed from BACPAC file stored in blob storage.
+8. SQL Server with Password stored in azure key vault, adminusername set to testAdmin, and database deployed from BACPAC file stored in blob storage.
 9. azureML model is deployed and registered, equipt with key vault encryption.
 10. ADF Properties
     10a. linked services created for blob storage, batch account, sql and key vault.
