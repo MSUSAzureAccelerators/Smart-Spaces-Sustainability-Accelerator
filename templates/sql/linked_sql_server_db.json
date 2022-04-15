@@ -54,7 +54,7 @@
                         }
                     },
                     "location": {
-                        "value": "[resourceGroup().location]"
+                        "value": "west us"
                     },
                     "administratorLogin": {
                         "value": "testAdmin"
