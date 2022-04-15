@@ -41,7 +41,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/sql_server_db.json",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/sql/sql_server_db.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -54,7 +54,7 @@
                         }
                     },
                     "location": {
-                        "value": "westus"
+                        "value": "west us"
                     },
                     "administratorLogin": {
                         "value": "testAdmin"
@@ -70,6 +70,9 @@
                     },
                     "bacpacUrl": {
                         "value": "[parameters('bacpacUrl')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('KeyVaultName')]"
                     }
                 }
             }
