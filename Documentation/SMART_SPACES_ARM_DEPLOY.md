@@ -1,6 +1,4 @@
-*Title*
-
-Master Template deployment description High level
+#High Level Description of Resources Included in Deployment and Structure of Templates
 
 The Structure of the ARM templates makes use of a master template that is deployed via the azure deploy button, and linked templates called from the master template.  This repository is public, so each linked template reference is to a specific file in the associated branch.
 
