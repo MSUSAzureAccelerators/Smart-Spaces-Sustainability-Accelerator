@@ -54,7 +54,7 @@
                         }
                     },
                     "location": {
-                        "value": "westus"
+                        "value": "[resourceGroup().location]"
                     },
                     "administratorLogin": {
                         "value": "testAdmin"
