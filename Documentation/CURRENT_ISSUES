@@ -6,5 +6,5 @@ https://docs.microsoft.com/en-us/azure/batch/batch-account-create-portal
 
 
 2. not all regions currently allow sql database provisioning.
-    - Current work arround is to hard code deployment to 'west us' 
+    - Current work arround is to hard code deployment to 'west us' within the templates/sql/linked_sql_server_db.json
 
