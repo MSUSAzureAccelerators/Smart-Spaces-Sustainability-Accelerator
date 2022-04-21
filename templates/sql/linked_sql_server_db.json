@@ -1,0 +1,87 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "metadata": {
+        "_generator": {
+            "name": "bicep",
+            "version": "0.4.1124.51302",
+            "templateHash": "83557446380333556"
+        }
+    },
+    "variables": {
+    },
+    "parameters": {
+        "KeyVaultName": {
+            "type": "string"
+        },
+        "sqlDBName": {
+            "type": "string"
+        },
+        "serverName": {
+            "type": "string"
+        },
+        "storageAccountKey": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the key of the storage account where the BACPAC file is stored."
+            }
+        },
+        "bacpacUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "Specifies the URL of the BACPAC file."
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "sqlServerDbFromVault",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/sql/sql_server_db.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "administratorLoginPassword": {
+                        "reference": {
+                            "keyVault": {
+                                "id": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.KeyVault/vaults', parameters('KeyVaultName'))]"
+                            },
+                            "secretName": "sqlpwd"
+                        }
+                    },
+                    "location": {
+                        "value": "west us"
+                    },
+                    "administratorLogin": {
+                        "value": "testAdmin"
+                    },
+                    "sqlDBName": {
+                        "value": "[parameters('sqlDBName')]"
+                    },
+                    "serverName": {
+                        "value": "[parameters('serverName')]"
+                    },
+                    "storageAccountKey": {
+                        "value": "[parameters('storageAccountKey')]"
+                    },
+                    "bacpacUrl": {
+                        "value": "[parameters('bacpacUrl')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('KeyVaultName')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "connectionString": {
+            "type": "string",
+            "value": "[reference('sqlServerDbFromVault').outputs.connectionString.value]"
+        }
+    }
+}
