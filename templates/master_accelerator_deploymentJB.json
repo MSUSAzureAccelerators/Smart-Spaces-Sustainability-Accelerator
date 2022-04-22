@@ -39,7 +39,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/dataFactory/dataFactory.json",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/dataFactory/dataFactory.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -57,7 +57,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/secretVault/secret_vault.json",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/secretVault/secret_vault.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -97,7 +97,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/storage/blob_storage_w_containers.json",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/storage/blob_storage_w_containers.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -120,7 +120,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/compute/batch.json",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/compute/batch.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -151,7 +151,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/dataScience/azure_ml.json",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/dataScience/azure_ml.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -185,7 +185,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/managedIdentity/managedIdentity.json",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/managedIdentity/managedIdentity.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -205,7 +205,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/managedIdentity/managedIdentityRoleAssign.json",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/managedIdentity/managedIdentityRoleAssign.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -229,7 +229,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/deployScripts.json",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/deployScripts.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -255,7 +255,7 @@
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/sql/linked_sql_server_db.json",
+                    "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/sql/linked_sql_server_db.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -290,7 +290,7 @@
           "properties": {
             "mode": "Incremental",
             "templateLink": {
-              "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/dataFactory/dataFactoryProperties.json",
+              "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/dataFactory/dataFactoryProperties.json",
               "contentVersion": "1.0.0.0"
             },
             "parameters": {
