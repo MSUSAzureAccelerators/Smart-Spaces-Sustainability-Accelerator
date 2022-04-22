@@ -227,32 +227,32 @@
         "[resourceId('Microsoft.Resources/deployments', 'batchAccount')]"
       ]
     },
-    {
-      "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-10-01",
-      "name": "deployScripts",
-      "properties": {
-        "mode": "Incremental",
-        "templateLink": {
-          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/deployScripts.json",
-          "contentVersion": "1.0.0.0"
-        },
-        "parameters": {
-          "storageAccountName": {
-            "value": "[variables('blobStorageName')]"
-          },
-          "identityName": {
-            "value": "[variables('managedidentityName')]"
-          },
-          "containerName": {
-            "value": "scripts"
-          }
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityRoleAssign')]"
-      ]
-    },
+    //{
+    //  "type": "Microsoft.Resources/deployments",
+    //  "apiVersion": "2020-10-01",
+    //  "name": "deployScripts",
+    //  "properties": {
+    //    "mode": "Incremental",
+    //    "templateLink": {
+    //      "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/deployScripts.json",
+    //      "contentVersion": "1.0.0.0"
+    //    },
+    //    "parameters": {
+    //      "storageAccountName": {
+    //        "value": "[variables('blobStorageName')]"
+    //      },
+    //      "identityName": {
+    //        "value": "[variables('managedidentityName')]"
+    //      },
+    //      "containerName": {
+    //        "value": "scripts"
+    //      }
+    //    }
+    //  },
+    //  "dependsOn": [
+    //    "[resourceId('Microsoft.Resources/deployments', 'managedIdentityRoleAssign')]"
+    //  ]
+    //},
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
@@ -375,40 +375,40 @@
         "iotHubPartitionCount": {
           "value": 2
         }
-      },
-      {
-        "type": "Microsoft.Resources/deployments",
-        "apiVersion": "2020-10-01",
-        "name": "deployIotHubScripts",
-        "properties": {
-          "mode": "Incremental",
-          "templateLink": {
-            "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/IoTHub/deployiothubdevicesscript.json",
-            "contentVersion": "1.0.0.0"
-          },
-          "parameters": {
-            "storageAccountName": {
-              "value": "[variables('blobStorageName')]"
-            },
-            "identityName": {
-              "value": "[variables('managedidentityName')]"
-            },
-            "containerName": {
-              "value": "scripts"
-            },
-            "IotHubName": {
-              "type": "string",
-              "value": "[variables('IoTHubName')]"
-            },
-            "NewDeviceID": {
-              "value": "smartspace-iotdevice"
-            }
-          }
+      }
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "deployIotHubScripts",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/IoTHub/deployiothubdevicesscript.json",
+          "contentVersion": "1.0.0.0"
         },
-        "dependsOn": []
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('blobStorageName')]"
+          },
+          "identityName": {
+            "value": "[variables('managedidentityName')]"
+          },
+          "containerName": {
+            "value": "scripts"
+          },
+          "IotHubName": {
+            "type": "string",
+            "value": "[variables('IoTHubName')]"
+          },
+          "NewDeviceID": {
+            "value": "smartspace-iotdevice"
+          }
+        }
       },
- 
-
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityRoleAssign')]"
+      ]
+    }
   ]
-
 }
