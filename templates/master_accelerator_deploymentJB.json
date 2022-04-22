@@ -10,6 +10,7 @@
   },
   "variables": {
     "batchAccountName": "[concat('batch', uniqueString( resourceGroup().id, deployment().name ))]",
+    "batchAccountLocation": "eastus2",
     "batchPoolName": "[concat('batch', uniqueString( resourceGroup().id, deployment().name ), 'pool')]",
     "blobStorageName": "[concat('storage', uniqueString( resourceGroup().id, deployment().name ))]",
     "sqlDBName": "[concat('sqlDB-', uniqueString( resourceGroup().id, deployment().name ))]",
@@ -302,7 +303,7 @@
             "value": "[variables('dataFactoryName')]"
           },
           "batchUri": {
-            "value": "[concat('https://', variables('batchAccountName'), '.', resourceGroup().location, '.batch.azure.com')]"
+            "value": "[concat('https://', variables('batchAccountName'), '.',variables('batchAccountLocation'), '.batch.azure.com')]"
           },
           "batchPoolName": {
             "value": "[variables('batchPoolName')]"
