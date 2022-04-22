@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageAccountName": {
+      "type": "string"
+    },
+    "identityName": {
+      "type": "string"
+    },
+    "containerName": {
+      "type": "string"
+    },
+    "IotHubName": {
+      "type": "string"
+    },
+    "NewDeviceID": {
+      "type": "string"
+    }
+  },
+  "functions": [],
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "CreateIotHubDevices",
+      "location": "[resourceGroup().location]",
+      "kind": "AzureCLI",
+      "identity": {
+        "type": "UserAssigned",
+        "userAssignedIdentities": {
+          "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('identityName'))]": {}
+        }
+      },
+      "properties": {
+        "AzCliVersion": "2.2.0",
+        "timeout": "PT30M",
+        "arguments": "[concat(parameters('storageAccountName'), ' ', parameters('containerName'))]",
+        "scriptContent": "Add-AzIotHubDevice -ResourceGroupName [resourceGroup().name] -IotHubName [variables('IoTHubName')] -DeviceId $newDeviceID",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    }
+  ]
+}

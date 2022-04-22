@@ -376,8 +376,38 @@
           "value": 2
         }
       },
-      "dependsOn": []
-    }
+      {
+        "type": "Microsoft.Resources/deployments",
+        "apiVersion": "2020-10-01",
+        "name": "deployIotHubScripts",
+        "properties": {
+          "mode": "Incremental",
+          "templateLink": {
+            "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/IoTHub/deployiothubdevicesscript.json",
+            "contentVersion": "1.0.0.0"
+          },
+          "parameters": {
+            "storageAccountName": {
+              "value": "[variables('blobStorageName')]"
+            },
+            "identityName": {
+              "value": "[variables('managedidentityName')]"
+            },
+            "containerName": {
+              "value": "scripts"
+            },
+            "IotHubName": {
+              "type": "string",
+              "value": "[variables('IoTHubName')]"
+            },
+            "NewDeviceID": {
+              "value": "smartspace-iotdevice"
+            }
+          }
+        },
+        "dependsOn": []
+      },
+ 
 
   ]
 
