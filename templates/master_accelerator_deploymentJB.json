@@ -398,7 +398,7 @@
           "containerName": {
             "value": "scripts"
           },
-          "IotHubName": {
+          "dIotHubName": {
             "value": "[variables('IoTHubName')]"
           },
           "NewDeviceID": {
