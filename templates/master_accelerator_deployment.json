@@ -353,31 +353,31 @@
               "partitionCount": "3"
             }
           }
-        },
-        {
-          "type": "Microsoft.Resources/deployments",
-          "apiVersion": "2020-10-01",
-          "name": "deployIoTHubScripts",
-          "properties": {
-            "mode": "Incremental",
-            "templateLink": {
-              "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/IoTHub/deployiothubdevicesscript.json",
-              "contentVersion": "1.0.0.0"
-            },
-            "parameters": {
-              "storageAccountName": {
-                "value": "[variables('blobStorageName')]"
-              },
-              "identityName": {
-                "value": "[variables('managedidentityName')]"
-              },
-              "containerName": {
-                "value": "scripts"
-              }
+        }//,
+    //    {
+    //      "type": "Microsoft.Resources/deployments",
+    //      "apiVersion": "2020-10-01",
+    //      "name": "deployIoTHubScripts",
+    //      "properties": {
+    //        "mode": "Incremental",
+    //        "templateLink": {
+    //          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/IoTHub/deployiothubdevicesscript.json",
+    //          "contentVersion": "1.0.0.0"
+    //        },
+    //        "parameters": {
+    //          "storageAccountName": {
+    //            "value": "[variables('blobStorageName')]"
+    //          },
+    //          "identityName": {
+    //            "value": "[variables('managedidentityName')]"
+    //          },
+    //          "containerName": {
+    //            "value": "scripts"
+    //          }
 
-            }
-          },
-          "dependsOn": []
-        }
+    //        }
+    //      },
+    //      "dependsOn": []
+    //    }
     ]
 }
