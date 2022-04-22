@@ -341,7 +341,7 @@
       "type": "Microsoft.Devices/IotHubs",
       "apiVersion": "2018-04-01",
       "name": "[variables('IoTHubName')]",
-      "location": "resourceGroup().location",
+      "location": "[parameters('location')]",
       "sku": {
         "name": "S1",
         "capacity": 1
