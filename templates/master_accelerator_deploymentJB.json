@@ -356,7 +356,7 @@
       },
       "parameters": {
         "iotHubName": {
-          "value": "[variables('dataFactoryName')]"
+          "value": "[variables('IoTHubName')]"
         },
         "iotHubSkuName": {
           "value": "S1"
