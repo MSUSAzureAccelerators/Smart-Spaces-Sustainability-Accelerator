@@ -366,13 +366,13 @@
           "value": "[variables('iotHubSkuName')]"
         },
         "iotHubSkuCapacity": {
-          "value": "[variables('iotHubSkuCapacity')]"
+          "value": 1
         },
         "iotHubMessageRetentionInDays": {
-          "value": "[variables('iotHubMessageRetentionInDays')]"
+          "value": 1
         },
         "iotHubPartitionCount": {
-          "value": "[variables('iotHubPartitionCount')]"
+          "value": 2
         }
       },
       "dependsOn": []
