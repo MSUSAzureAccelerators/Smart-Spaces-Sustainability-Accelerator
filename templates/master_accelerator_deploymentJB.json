@@ -373,7 +373,7 @@
         },
         "iotHubPartitionCount": {
           "value": "[variables('iotHubPartitionCount')]"
-        },
+        }
       },
       "dependsOn": []
     }
