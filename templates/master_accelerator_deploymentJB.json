@@ -18,7 +18,11 @@
     "keyVaultName": "[concat('keyVault', uniqueString( resourceGroup().id, deployment().name ))]",
     "mlWorkspaceName": "[concat('mlWorkspace', uniqueString( resourceGroup().id, deployment().name ))]",
     "managedidentityName": "[concat('mi', uniqueString( resourceGroup().id, deployment().name ))]",
-    "IoTHubName": "[concat('iothub', uniqueString( resourceGroup().id, deployment().name ))]"
+    "IoTHubName": "[concat('iothub', uniqueString( resourceGroup().id, deployment().name ))]",
+    "iotHubSkuName": "S1",
+    "iotHubSkuCapacity": 1,
+    "iotHubMessageRetentionInDays": 1,
+    "iotHubPartitionCount": 2
   },
   "parameters": {
     "objectId": {
@@ -359,16 +363,16 @@
           "value": "[variables('IoTHubName')]"
         },
         "iotHubSkuName": {
-          "value": "S1"
+          "value": "[variables('iotHubSkuName')]"
         },
         "iotHubSkuCapacity": {
-          "value": "1"
+          "value": "[variables('iotHubSkuCapacity')]"
         },
         "iotHubMessageRetentionInDays": {
-          "value": 1
+          "value": "[variables('iotHubMessageRetentionInDays')]"
         },
         "iotHubPartitionCount": {
-          "value": 2
+          "value": "[variables('iotHubPartitionCount')]"
         },
       },
       "dependsOn": []
