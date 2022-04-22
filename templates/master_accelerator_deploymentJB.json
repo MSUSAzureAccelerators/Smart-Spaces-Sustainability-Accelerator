@@ -399,7 +399,6 @@
             "value": "scripts"
           },
           "IotHubName": {
-            "type": "string",
             "value": "[variables('IoTHubName')]"
           },
           "NewDeviceID": {
