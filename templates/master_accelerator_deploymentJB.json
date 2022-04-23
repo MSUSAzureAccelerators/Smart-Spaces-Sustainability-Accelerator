@@ -407,6 +407,7 @@
         }
       },
       "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityRoleAssign')]"
       ]
     }
   ]
