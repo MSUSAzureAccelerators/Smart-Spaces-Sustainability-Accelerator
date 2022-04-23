@@ -409,6 +409,10 @@
       "dependsOn": [
         "[resourceId('Microsoft.Resources/deployments', 'storage')]",
         "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]",
+        "[resourceId('Microsoft.Resources/deployments', 'adf')]",
+        "[resourceId('Microsoft.Resources/deployments', 'sqlServerDbwithVault')]",
+        "[resourceId('Microsoft.Resources/deployments', 'batchAccount')]",
+        "[resourceId('Microsoft.Resources/deployments', 'azureML')]",
         "[resourceId('Microsoft.Resources/deployments', 'managedIdentityRoleAssign')]"
       ]
     }
