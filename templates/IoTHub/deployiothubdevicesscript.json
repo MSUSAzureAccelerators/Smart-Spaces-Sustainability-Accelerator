@@ -37,7 +37,7 @@
         "AzCliVersion": "2.2.0",
         "timeout": "PT30M",
         "arguments": "[concat(parameters('storageAccountName'), ' ', parameters('containerName'))]",
-        "scriptContent": "Add-AzIotHubDevice -ResourceGroupName [resourceGroup().name] -IotHubName [parameters('dIoTHubName')] -DeviceId $newDeviceID",
+        "scriptContent": "Add-AzIotHubDevice -ResourceGroupName [resourceGroup().name] -IotHubName [parameters('dIoTHubName')] -DeviceId [parameters('NewDeviceID')]",
         "cleanupPreference": "OnSuccess",
         "retentionInterval": "P1D"
       }
