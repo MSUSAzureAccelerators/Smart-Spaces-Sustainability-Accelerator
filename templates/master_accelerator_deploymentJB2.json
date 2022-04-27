@@ -339,6 +339,51 @@
         "[resourceId('Microsoft.Resources/deployments', 'azureML')]"
       ]
     },
+
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "managedIdentityforIOTHub",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/managedIdentityIOT/managedIdentityIOT.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "managedidentityIOTName": {
+            "value": "[variables('IOTmanagedIdentityName')]"
+          },
+          "blobStorageName": {
+            "value": "[variables('blobStorageName')]"
+          }
+        }
+      },
+      "dependsOn": [
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "managedIdentityIOTRoleAssign",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/managedIdentityIOT/managedIdentityIOTRoleAssign.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "managedidentityIOTName": {
+            "value": "[variables('IOTmanagedIdentityName')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforIOTHub')]"
+      ]
+    },
+
+
     {
       "type": "Microsoft.Devices/IotHubs",
       "apiVersion": "2018-04-01",
@@ -348,6 +393,13 @@
         "name": "S1",
         "capacity": 1
       },
+      "identity": {
+        "type": "userAssigned",
+        "userAssignedIdentities": {
+          "[variables('IOTmanagedIdentityName')]": {}
+        }
+      },
+
       "properties": {
         "eventHubEndpoints": {
           "events": {
@@ -379,9 +431,11 @@
       }
     },
 
+
+
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2020-10-01",
+      "apiVersion": "2019-10-01",
       "name": "deployIotHubScripts",
       "properties": {
         "mode": "Incremental",
@@ -394,7 +448,7 @@
             "value": "[variables('blobStorageName')]"
           },
           "identityName": {
-            "value": "[variables('managedidentityName')]"
+            "value": "[variables('IOTmanagedIdentityName')]"
           },
           "containerName": {
             "value": "scripts"
@@ -416,77 +470,8 @@
         "[resourceId('Microsoft.Resources/deployments', 'azureML')]",
         "[resourceId('Microsoft.Resources/deployments', 'managedIdentityRoleAssign')]"
       ]
-    },
-    {
-      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-      "apiVersion": "2018-11-30",
-      "name": "[variables('IOTmanagedIdentityName')]",
-      "location": "[parameters('location')]"
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2014-10-01-preview",
-      "name": "IOTRoleAssignment",
-      "dependsOn": [
-        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('IOTmanagedIdentityName'))]"
-      ],
-      "properties": {
-        "description": "Description",
-        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('IOTmanagedIdentityName'))).principalId]",
-        "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-        "principalType": "ServicePrincipal"
-      },
-        "copy": {
-          "name": "roleAssignment",
-          "count": "1"
-        }
-      },
+    }
+    
 
-      {
-        "type": "Microsoft.Resources/deploymentScripts",
-        "apiVersion": "2019-10-01-preview",
-        "name": "AzurePowershellInline",
-        "location": "[resourceGroup().location]",
-        "kind": "AzurePowerShell",
-        "identity": {
-          "type": "userAssigned",
-          "userAssignedIdentities": {
-            "/subscriptions/82d7b191-5a8c-4cbf-a9f9-9aa5fb50feaa/resourceGroups/Accel-Smart-SpacesRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/iothubmanagedidentity": {}
-          }
-        },
-        "properties": {
-          "forceUpdateTag": "11",
-          "containerSettings": {
-            "containerGroupName": "acellcontainers2"
-          },
-          "storageAccountSettings": {
-            "storageAccountName": "acelsalrs",
-            "storageAccountKey": "P8iHvtX1T8U8in39XbHKvREfDTkK+8THLhIznCjPkI0GBevjMrGLwKeCk6lRl33YPnUh8SawBMPMl1xnj4ftfA=="
-          },
-          "azPowerShellVersion": "7.4.0",
-          "arguments": "-RG '[resourceGroup().name]'",
-          "environmentVariables": [
-            {
-              "name": "UserName",
-              "value": "jdole"
-            },
-            {
-              "name": "Password",
-              "secureValue": "jDolePassword"
-            }
-          ],
-          "scriptContent": "Connect-AzAccount -Identity && Add-AzIotHubDevice -ResourceGroupName 'Accel-Smart-SpacesRG' -IotHubName 'accelIoTHuba6pyfofrme6d6' -DeviceId 'smartspace-iotdevice'",
-          "supportingScriptUris": [],
-          "timeout": "PT30M",
-          "cleanupPreference": "OnSuccess",
-          "retentionInterval": "P1D"
-        }
-      },
-      {
-        "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-        "apiVersion": "2018-11-30",
-        "name": "iothubmanagedidentity",
-        "location": "[resourceGroup().location]"
-      }
   ]
 }

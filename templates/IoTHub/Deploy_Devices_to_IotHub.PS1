@@ -6,20 +6,42 @@ function deploydevicestoiothub()
 {
 $RGName = "Accel-Smart-SpacesRG"
 $location = "East US 2"
-$IoTHubName = "iothubdrheiak37umsq"
+$IoTHubName = "accelIoTHuba6pyfofrme6d6"
 
 
    Write-Output "Passed Parms = $RGName $location $IoTHubName"
    $newDeviceID = "smartspace-iotdevice" # New DeviceID
-    Add-AzIotHubDevice -ResourceGroupName $RGName -IotHubName $IoTHubName -DeviceId $newDeviceID
+
+   Add-AzIotHubDevice -ResourceGroupName $RGName -IotHubName $IoTHubName -DeviceId $newDeviceID
+
+<PS> Add-AzIotHubDevice -ResourceGroupName 'Accel-Smart-SpacesRG' -IotHubName 'accelIoTHuba6pyfofrme6d6' -DeviceId 'smartspace-iotdevice'
+
+
     #---
     # Set Digital Twin Properties:
+
+
+&& az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/TEMP_UNITS\", \"value\": \"C\"}' 
+&& az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/SETPOINT\", \"value\": \"67\"}'
+&& az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CURRTEMP\", \"value\": \"67\"}'
+&& az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/LASTUPDT\", \"value\": \"2022-04-15 16:52:16.5\"}'
+&& az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CHILL_RATE\", \"value\": \"-1.5\"}'
+&& az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/RUN_STATE\", \"value\": \"Stopped\"}'
+
+
+
     az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/TEMP_UNITS\", \"value\": \"F\"}' 
     az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/SETPOINT\", \"value\": \"67\"}'
     az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CURRTEMP\", \"value\": \"67\"}'
     az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/LASTUPDT\", \"value\": \"2022-04-15 16:52:16.5\"}'
     az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CHILL_RATE\", \"value\": \"-1.5\"}'
     az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/RUN_STATE\", \"value\": \"Stopped\"}'
+
+
+az iot hub device-twin update -n 'accelIoTHuba6pyfofrme6d6' -d smartspace-iotdevice --set tags='{\"location\":{\"region\":\"US\"}}'
+
+
+
 
     #---
     $newDeviceID = "smartspace-hvac01-iotdevice" # New DeviceID
