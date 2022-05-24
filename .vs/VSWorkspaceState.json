@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\scripts",
+    "\\templates",
+    "\\templates\\dataFactory",
+    "\\templates\\IoTHub",
+    "\\templates\\managedIdentity",
+    "\\templates\\managedIdentityIOT",
+    "\\templates\\sql",
+    "\\templates\\storage"
+  ],
+  "SelectedNode": "\\templates\\IoTHub\\RunPSScript.json",
+  "PreviewInSolutionExplorer": false
+}

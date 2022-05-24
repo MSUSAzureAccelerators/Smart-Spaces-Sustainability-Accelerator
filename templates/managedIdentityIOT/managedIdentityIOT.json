@@ -1,0 +1,26 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "managedidentityIOTName": {
+      "defaultValue": "managedIdentityIOT1",
+      "type": "string"
+    }
+  },
+    "functions": [],
+    "variables": {},
+    "resources": [
+      {
+        "name": "[parameters('managedidentityIOTName')]",
+        "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+        "apiVersion": "2018-11-30",
+        "location": "[resourceGroup().location]"
+      }
+    ],
+    "outputs": {
+      "managedIdentityName": {
+        "type": "string",
+        "value": "[parameters('managedidentityIOTName')]"
+      }
+    }
+}
