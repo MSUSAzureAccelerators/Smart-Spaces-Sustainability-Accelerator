@@ -20,13 +20,15 @@ $IoTHubName = "accelIoTHuba6pyfofrme6d6"
     #---
     # Set Digital Twin Properties:
 
-
-&& az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/TEMP_UNITS\", \"value\": \"C\"}' 
-&& az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/SETPOINT\", \"value\": \"67\"}'
-&& az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CURRTEMP\", \"value\": \"67\"}'
-&& az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/LASTUPDT\", \"value\": \"2022-04-15 16:52:16.5\"}'
-&& az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CHILL_RATE\", \"value\": \"-1.5\"}'
-&& az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/RUN_STATE\", \"value\": \"Stopped\"}'
+az login --identity
+&& az config set extension.use_dynamic_install=yes_without_prompt 
+&& az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/TEMP_UNITS\", \"value\": \"F\"}'
+&& az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/TEMP_UNITS\", \"value\": \"F\"}' 
+&& az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/SETPOINT\", \"value\": \"67\"}'
+&& az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/CURRTEMP\", \"value\": \"67\"}'
+&& az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/LASTUPDT\", \"value\": \"2022-04-15 16:52:16.5\"}'
+&& az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/CHILL_RATE\", \"value\": \"-1.5\"}'
+&& az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/RUN_STATE\", \"value\": \"Stopped\"}'",
 
 
 

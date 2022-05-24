@@ -3,9 +3,13 @@
     "",
     "\\scripts",
     "\\templates",
+    "\\templates\\dataFactory",
     "\\templates\\IoTHub",
-    "\\templates\\managedIdentity"
+    "\\templates\\managedIdentity",
+    "\\templates\\managedIdentityIOT",
+    "\\templates\\sql",
+    "\\templates\\storage"
   ],
-  "SelectedNode": "\\templates\\managedIdentity\\managedIdentityRoleAssign.json",
+  "SelectedNode": "\\templates\\IoTHub\\RunPSScript.json",
   "PreviewInSolutionExplorer": false
 }
