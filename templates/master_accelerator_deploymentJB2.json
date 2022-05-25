@@ -1,0 +1,477 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.1124.51302",
+      "templateHash": "83557446380333556"
+    }
+  },
+  "variables": {
+    "batchAccountName": "[concat('batch', uniqueString( resourceGroup().id, deployment().name ))]",
+    "batchAccountLocation": "eastus2",
+    "batchPoolName": "[concat('batch', uniqueString( resourceGroup().id, deployment().name ), 'pool')]",
+    "blobStorageName": "[concat('storage', uniqueString( resourceGroup().id, deployment().name ))]",
+    "sqlDBName": "[concat('sqlDB-', uniqueString( resourceGroup().id, deployment().name ))]",
+    "serverName": "[concat('sqlserver-', uniqueString( resourceGroup().id, deployment().name ))]",
+    "dataFactoryName": "[concat('dataFactory', uniqueString( resourceGroup().id, deployment().name ))]",
+    "keyVaultName": "[concat('keyVault', uniqueString( resourceGroup().id, deployment().name ))]",
+    "mlWorkspaceName": "[concat('mlWorkspace', uniqueString( resourceGroup().id, deployment().name ))]",
+    "managedidentityName": "[concat('mi', uniqueString( resourceGroup().id, deployment().name ))]",
+    "IoTHubName": "[concat('iothub', uniqueString( resourceGroup().id, deployment().name ))]",
+    "iotHubSkuName": "S1",
+    "iotHubSkuCapacity": 1,
+    "iotHubMessageRetentionInDays": 1,
+    "iotHubPartitionCount": 2,
+    "IOTmanagedIdentityName": "[concat('mngdid', uniqueString( resourceGroup().id, deployment().name ))]"
+  },
+  "parameters": {
+    "objectId": {
+      "type": "string"
+    },
+    "visualCrossingAPIKey": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "adf",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/dataFactory/dataFactory.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "factoryName": {
+            "value": "[variables('dataFactoryName')]"
+          }
+        }
+      },
+      "dependsOn": []
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "CreateVault",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/secretVault/secret_vault.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "objectId": {
+            "value": "[parameters('objectId')]"
+          },
+          "dataFactoryName": {
+            "value": "[variables('dataFactoryName')]"
+          },
+          "keyVaultName": {
+            "value": "[variables('keyVaultName')]"
+          },
+          "storageAccountName": {
+            "value": "[variables('blobStorageName')]"
+          },
+          "visualCrossingAPIKey": {
+            "value": "[parameters('visualCrossingAPIKey')]"
+          },
+          "storageAccessKey": {
+            "value": "[reference('storage').outputs.storageAccessKey.value]"
+          },
+          "managedIdentityName": {
+            "value": "[variables('managedidentityName')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'adf')]",
+        "[resourceId('Microsoft.Resources/deployments', 'storage')]",
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "storage",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/storage/blob_storage_w_containers.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('blobStorageName')]"
+          },
+          "dataFactoryName": {
+            "value": "[variables('dataFactoryName')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'adf')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "batchAccount",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/compute/batch.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "dataFactoryName": {
+            "value": "[variables('dataFactoryName')]"
+          },
+          "batchAccountName": {
+            "value": "[variables('batchAccountName')]"
+          },
+          "batchPoolName": {
+            "value": "[variables('batchPoolName')]"
+          },
+          "managedIdentity": {
+            "value": "[variables('managedidentityName')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'CreateVault')]",
+        "[resourceId('Microsoft.Resources/deployments', 'adf')]",
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "azureML",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/dataScience/azure_ml.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "workspaceName": {
+            "value": "[variables('mlWorkspaceName')]"
+          },
+          "storageAccountOption": {
+            "value": "existing"
+          },
+          "storageAccountName": {
+            "value": "[variables('blobStorageName')]"
+          },
+          "keyVaultOption": {
+            "value": "existing"
+          },
+          "keyVaultName": {
+            "value": "[variables('keyVaultName')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'adf')]",
+        "[resourceId('Microsoft.Resources/deployments', 'sqlServerDbwithVault')]",
+        "[resourceId('Microsoft.Resources/deployments', 'storage')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "managedIdentityforDeployScripts",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/managedIdentity/managedIdentity.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "managedidentityName": {
+            "value": "[variables('managedidentityName')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "managedIdentityRoleAssign",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/managedIdentity/managedIdentityRoleAssign.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "managedidentityName": {
+            "value": "[variables('managedidentityName')]"
+          },
+          "blobStorageName": {
+            "value": "[variables('blobStorageName')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]",
+        "[resourceId('Microsoft.Resources/deployments', 'batchAccount')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "deployScripts",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/deployScripts.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('blobStorageName')]"
+          },
+          "identityName": {
+            "value": "[variables('managedidentityName')]"
+          },
+          "containerName": {
+            "value": "scripts"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityRoleAssign')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "sqlServerDbwithVault",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/sql/linked_sql_server_db.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "KeyVaultName": {
+            "value": "[reference('CreateVault').outputs.keyVaultName.value]"
+          },
+          "sqlDBName": {
+            "value": "[variables('sqlDBName')]"
+          },
+          "serverName": {
+            "value": "[variables('serverName')]"
+          },
+          "storageAccountKey": {
+            "value": "[reference('storage').outputs.storageAccessKey.value]"
+          },
+          "bacpacUrl": {
+            "value": "[concat('https://', variables('blobStorageName'), '.blob.core.windows.net/scripts/smart-spaces-db.bacpac')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'CreateVault')]",
+        "[resourceId('Microsoft.Resources/deployments', 'adf')]",
+        "[resourceId('Microsoft.Resources/deployments', 'deployScripts')]",
+        "[resourceId('Microsoft.Resources/deployments', 'storage')]"
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "adfpipelines",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/dataFactory/dataFactoryProperties.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "factoryName": {
+            "value": "[variables('dataFactoryName')]"
+          },
+          "batchUri": {
+            "value": "[concat('https://', variables('batchAccountName'), '.',variables('batchAccountLocation'), '.batch.azure.com')]"
+          },
+          "batchPoolName": {
+            "value": "[variables('batchPoolName')]"
+          },
+          "batchAccountName": {
+            "value": "[variables('batchAccountName')]"
+          },
+          "blobStorageName": {
+            "value": "[variables('blobStorageName')]"
+          },
+          "sqlDBName": {
+            "value": "[variables('sqlDBName')]"
+          },
+          "keyVaultName": {
+            "value": "[reference('CreateVault').outputs.keyVaultName.value]"
+          },
+          "databaseConnectionString": {
+            "value": "[reference('sqlServerDbwithVault').outputs.connectionString.value]"
+          },
+          "storageAccountKey": {
+            "value": "[reference('storage').outputs.storageAccessKey.value]"
+          },
+          "location": {
+            "value": "[parameters('location')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'adf')]",
+        "[resourceId('Microsoft.Resources/deployments', 'sqlServerDbwithVault')]",
+        "[resourceId('Microsoft.Resources/deployments', 'batchAccount')]",
+        "[resourceId('Microsoft.Resources/deployments', 'azureML')]"
+      ]
+    },
+
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "managedIdentityforIOTHub",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/managedIdentityIOT/managedIdentityIOT.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "managedidentityIOTName": {
+            "value": "[variables('IOTmanagedIdentityName')]"
+          },
+          "blobStorageName": {
+            "value": "[variables('blobStorageName')]"
+          }
+        }
+      },
+      "dependsOn": [
+      ]
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "managedIdentityIOTRoleAssign",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/managedIdentityIOT/managedIdentityIOTRoleAssign.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "managedidentityIOTName": {
+            "value": "[variables('IOTmanagedIdentityName')]"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforIOTHub')]"
+      ]
+    },
+
+
+    {
+      "type": "Microsoft.Devices/IotHubs",
+      "apiVersion": "2018-04-01",
+      "name": "[variables('IoTHubName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "S1",
+        "capacity": 1
+      },
+      "identity": {
+        "type": "userAssigned",
+        "userAssignedIdentities": {
+          "[variables('IOTmanagedIdentityName')]": {}
+        }
+      },
+
+      "properties": {
+        "eventHubEndpoints": {
+          "events": {
+            "retentionTimeInDays": 7,
+            "partitionCount": 3
+          },
+          "operationsMonitoringEvents": {
+            "retentionTimeInDays": 7,
+            "partitionCount": 3
+          }
+        }
+      },
+      "parameters": {
+        "iotHubName": {
+          "value": "[variables('IoTHubName')]"
+        },
+        "iotHubSkuName": {
+          "value": "[variables('iotHubSkuName')]"
+        },
+        "iotHubSkuCapacity": {
+          "value": 1
+        },
+        "iotHubMessageRetentionInDays": {
+          "value": 1
+        },
+        "iotHubPartitionCount": {
+          "value": 2
+        }
+      }
+    },
+
+
+
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2019-10-01",
+      "name": "deployIotHubScripts",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/IoTHub/deployiothubdevicesscript.json",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "storageAccountName": {
+            "value": "[variables('blobStorageName')]"
+          },
+          "identityName": {
+            "value": "[variables('IOTmanagedIdentityName')]"
+          },
+          "containerName": {
+            "value": "scripts"
+          },
+          "dIotHubName": {
+            "value": "[variables('IoTHubName')]"
+          },
+          "NewDeviceID": {
+            "value": "smartspace-iotdevice"
+          }
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'storage')]",
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]",
+        "[resourceId('Microsoft.Resources/deployments', 'adf')]",
+        "[resourceId('Microsoft.Resources/deployments', 'sqlServerDbwithVault')]",
+        "[resourceId('Microsoft.Resources/deployments', 'batchAccount')]",
+        "[resourceId('Microsoft.Resources/deployments', 'azureML')]",
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityRoleAssign')]"
+      ]
+    }
+    
+
+  ]
+}

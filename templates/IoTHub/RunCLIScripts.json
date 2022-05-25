@@ -1,0 +1,59 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "storageAccountName": {
+      "type": "String"
+    },
+    "identityName": {
+      "type": "String"
+    },
+    "containerName": {
+      "type": "String"
+    }
+  },
+  "variables": {},
+  "functions": [],
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "AzureCLIInline",
+      "location": "[resourceGroup().location]",
+      "kind": "AzureCLI",
+      "identity": {
+        "type": "userAssigned",
+        "userAssignedIdentities": {
+          "/subscriptions/82d7b191-5a8c-4cbf-a9f9-9aa5fb50feaa/resourceGroups/Accel-Smart-SpacesRG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/iothubmanagedidentity": {}
+        }
+      },
+      "properties": {
+        "forceUpdateTag": "13",
+        "containerSettings": {
+          "containerGroupName": "acellcontainers2"
+        },
+        "storageAccountSettings": {
+          "storageAccountName": "acelsalrs",
+          "storageAccountKey": "P8iHvtX1T8U8in39XbHKvREfDTkK+8THLhIznCjPkI0GBevjMrGLwKeCk6lRl33YPnUh8SawBMPMl1xnj4ftfA=="
+        },
+        "AzCliVersion": "2.34.1",
+        "arguments": "-RG '[resourceGroup().name]'",
+        "environmentVariables": [
+          {
+            "name": "UserName",
+            "value": "jdole"
+          },
+          {
+            "name": "Password",
+            "secureValue": "jDolePassword"
+          }
+        ],
+        "scriptContent": "az login --identity && az config set extension.use_dynamic_install=yes_without_prompt && az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/TEMP_UNITS\", \"value\": \"F\"}' && az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/TEMP_UNITS\", \"value\": \"F\"}' && az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/SETPOINT\", \"value\": \"67\"}' && az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/CURRTEMP\", \"value\": \"67\"}' && az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/LASTUPDT\", \"value\": \"2022-04-15 16:52:16.5\"}' && az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/CHILL_RATE\", \"value\": \"-1.5\"}' && az iot hub digital-twin update --hub-name 'accelIoTHuba6pyfofrme6d6' --device-id 'smartspace-iotdevice' --json-patch '{\"op\":\"add\", \"path\":\"/RUN_STATE\", \"value\": \"Stopped\"}'",
+        "supportingScriptUris": [],
+        "timeout": "PT30M",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    }
+  ]
+}

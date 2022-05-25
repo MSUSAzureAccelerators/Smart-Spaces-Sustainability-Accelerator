@@ -1,0 +1,72 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "iotHubName": {
+      "type": "string",
+      "defaultValue": "[concat('accelIoTHub', uniqueString(resourceGroup().id))]"
+    },
+    "iotHubSkuName": {
+      "type": "string",
+      "defaultValue": "S1",
+      "allowedValues": [
+        "F1",
+        "B1",
+        "B2",
+        "B3",
+        "S1",
+        "S2",
+        "S3"
+      ]
+    },
+    "iotHubSkuCapacity": {
+      "type": "int",
+      "defaultValue": 1,
+      "minValue": 1
+    },
+    "iotHubMessageRetentionInDays": {
+      "type": "int",
+      "defaultValue": 1,
+      "allowedValues": [ 1, 2, 3, 4, 5, 6, 7 ]
+    },
+    "iotHubPartitionCount": {
+      "type": "int",
+      "defaultValue": 2,
+      "minValue": 2
+    }
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-04-01",
+      "name": "[parameters('iotHubName')]",
+      "type": "Microsoft.Devices/IotHubs",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "[parameters('iotHubSkuName')]",
+        "capacity": "[parameters('iotHubSkuCapacity')]"
+      },
+      "properties": {
+        "eventHubEndpoints": {
+          "events": {
+            "retentionTimeInDays": "[parameters('iotHubMessageRetentionInDays')]",
+            "partitionCount": "[parameters('iotHubPartitionCount')]"
+          },
+          "operationsMonitoringEvents": {
+            "retentionTimeInDays": "[parameters('iotHubMessageRetentionInDays')]",
+            "partitionCount": "[parameters('iotHubPartitionCount')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "IoTHubConnectionString": {
+      "type": "string",
+      "value": "[concat('HostName=', reference(resourceId('Microsoft.Devices/IoTHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).hostName, ';SharedAccessKeyName=iothubowner;SharedAccessKey=', listKeys(resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).value[0].primaryKey)]"
+    },
+    "IoTHubEventHubCompatibleConnectionString": {
+      "type": "string",
+      "value": "[concat('Endpoint=', reference(resourceId('Microsoft.Devices/IoTHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).eventHubEndpoints.events.endpoint, ';SharedAccessKeyName=iothubowner;SharedAccessKey=', listKeys(resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).value[0].primaryKey, ';EntityPath=', reference(resourceId('Microsoft.Devices/IoTHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).eventHubEndpoints.events.path)]"
+    }
+  }
+}
