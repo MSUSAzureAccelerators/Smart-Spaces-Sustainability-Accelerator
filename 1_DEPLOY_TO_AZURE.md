@@ -5,5 +5,5 @@
 
 
 - Make sure that URL used in above button is URL Encoded.  This is the only raw git URL that needs to be encoded. 
-- free encooding website https://www.urlencoder.org/
+- free encoding website https://www.urlencoder.org/
 
