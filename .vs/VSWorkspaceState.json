@@ -1,8 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src"
+    "\\Documentation",
+    "\\scripts",
+    "\\src\\FuncCreateJWTToken",
+    "\\src\\FuncSMARTSPACE",
+    "\\src\\FuncSMARTSPACE-HVAC",
+    "\\templates"
   ],
-  "SelectedNode": "\\DEPLOY_TO_AZURE_JB.md",
+  "SelectedNode": "\\Documentation\\RESOURCE_AUTHENTICATION.md",
   "PreviewInSolutionExplorer": true
 }
