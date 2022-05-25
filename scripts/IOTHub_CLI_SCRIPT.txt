@@ -10,7 +10,6 @@
 #  (7)  CREATE / UPDATE FUNCTION APP SETTINGS:
 #  (8)  Get Function App Principal ID + App Id
 #  (9)  Set Key Vault Access Policy - so can be read from Azure Function App
-
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 ####################################################
 # Set the variables below to match your Azure Environment
