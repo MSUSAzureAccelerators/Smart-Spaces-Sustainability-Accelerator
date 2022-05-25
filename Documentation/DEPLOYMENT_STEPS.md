@@ -1,9 +1,9 @@
 # Deployment Steps
 
-#### Step 0 - Gather Pre-requisites:
+### Step 0 - Gather Pre-requisites:
 Be sure to follow the pre-requisites guidance in the this document: [PREREQUISITES.md](https://github.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/blob/featureIOTHubDeploy/Documentation/PREREQUISITES.md) 
 
-#### Step 1 - Deploy "Back-end" Azure Resources:
+### Step 1 - Deploy "Back-end" Azure Resources:
 This step entails the deployment of the Azure SQL database, an Azure  Data Factory for ingesting inputs, a Machine Learning batch processingenvironment, and reporting functionality.  Please follow these steps for 
 
 
@@ -15,7 +15,7 @@ This step entails the deployment of the Azure SQL database, an Azure  Data Facto
 
 
 
-#### Step 2 - Deploy "Front-end" Azure IOTHub Simulator Resources:
+### Step 2 - Deploy "Front-end" Azure IOTHub Simulator Resources:
 This step entails the deployment of the IotHub "Simulator" resources; namely an IotHub with (4) devices, along with supporting Azure Functions, Logic Apps and an Azure Stream Anlytics job - which all work together to produce simulated temperature and HVAC cooling information readings for a representative "Smart Space".  
 
 ##### Note: #####
@@ -72,7 +72,7 @@ Now you can complete the deployment by selecting the appropriate deployment sett
       - (6) Logic Apps
       - (1) Stream Analytics job
 
-#### Step 3 - Run a Script in the Cloud Shell in the Azure Portal:
+### Step 3 - Run a Script in the Cloud Shell in the Azure Portal:
 1. Please wait for the previous step to complete before running this next step.
 2. This step entails navigating to the Azure Portal in a web browser, and then clicking on the "Cloud Shell" icon in the upper right-hand corner or the Azure Portal screen.
 
@@ -108,7 +108,7 @@ the screen will split - and you will see a blue screen in the bottom portion of 
         (9)  Set Key Vault Access Policy - so secrets can be read from Azure Function App
 
 
-#### Post-Deployment Verification:
+### Post-Deployment Verification:
 To confirm a successful deployment, perform the following Steps:
 
 ##### Confirm Azure Functions - HTTP REST Operations:
