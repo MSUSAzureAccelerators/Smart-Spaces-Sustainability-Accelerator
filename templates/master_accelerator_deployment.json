@@ -289,7 +289,7 @@
       "properties": {
         "mode": "Incremental",
         "templateLink": {
-          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/feature/ARMDeploy/templates/dataFactory/dataFactoryProperties.json",
+          "uri": "https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/templates/dataFactory/dataFactoryProperties.json",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
