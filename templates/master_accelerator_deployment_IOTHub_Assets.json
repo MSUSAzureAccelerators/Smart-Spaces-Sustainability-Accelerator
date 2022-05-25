@@ -1,0 +1,1454 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "iotHubName": {
+      "defaultValue": "[concat('accelIoTHub', uniqueString(resourceGroup().id))]",
+      "type": "String"
+    },
+    "iotHubSkuName": {
+      "defaultValue": "S1",
+      "allowedValues": [
+        "F1",
+        "B1",
+        "B2",
+        "B3",
+        "S1",
+        "S2",
+        "S3"
+      ],
+      "type": "String"
+    },
+    "iotHubSkuCapacity": {
+      "defaultValue": 1,
+      "minValue": 1,
+      "type": "Int"
+    },
+    "iotHubMessageRetentionInDays": {
+      "defaultValue": 1,
+      "allowedValues": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "type": "Int"
+    },
+    "iotHubPartitionCount": {
+      "defaultValue": 2,
+      "minValue": 2,
+      "type": "Int"
+    },
+    "userAssignedIdentities_accelmanagedIOTHubIdentity_name": {
+      "defaultValue": "accelmanagedIOTHubIdentity2",
+      "type": "String"
+    },
+    "roleNameGuid": {
+      "defaultValue": "[newGuid()]",
+      "type": "String",
+      "metadata": {
+        "description": "A new GUID used to identify the role assignment"
+      }
+    },
+    "IoTmanagedidentityName": {
+      "defaultValue": "IoTManagedIdentity1",
+      "type": "String"
+    },
+    "blobStorageName": {
+      "defaultValue": "acelsalrs2",
+      "type": "String"
+    },
+    "managedIdentityName": {
+      "defaultValue": "[concat('miiot', uniqueString( resourceGroup().id, deployment().name))]",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the managed identity resource."
+      }
+    },
+    "roleDefinitionIds": {
+      "defaultValue": [
+        "b24988ac-6180-42a0-ab88-20f7382dd24c"
+      ],
+      "type": "Array",
+      "metadata": {
+        "description": "The IDs of the role definitions to assign to the managed identity. Each role assignment is created at the resource group scope. Role definition IDs are GUIDs. To find the GUID for built-in Azure role definitions, see https://docs.microsoft.com/azure/role-based-access-control/built-in-roles. You can also use IDs of custom role definitions."
+      }
+    },
+    "roleAssignmentDescription": {
+      "defaultValue": "Contributor",
+      "type": "String",
+      "metadata": {
+        "description": "An optional description to apply to each role assignment, such as the reason this managed identity needs to be granted the role."
+      }
+    },
+    "location": {
+      "defaultValue": "[resourceGroup().location]",
+      "type": "String",
+      "metadata": {
+        "description": "The Azure location where the managed identity should be created."
+      }
+    },
+    "containerGroups_script_container_ps_2_7_name": {
+      "defaultValue": "script-container-ps-2-7",
+      "type": "String"
+    },
+
+    "funcsmartspaceAppName": {
+      "defaultValue": "Accel-Smart-Spaces-FuncSMARTSPACEzxy",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure Function app."
+      }
+    },
+    "funcsmartspacepackageuri": {
+      "defaultValue": "https://accelsmartspaceslrs.blob.core.windows.net/zipdeploycode/FuncSMARTSPACE_APP_Code.zip",
+      "type": "String",
+      "metadata": {
+        "description": "The uri of the Azure Function FuncSMARTSPACE app zip file."
+      }
+    },
+
+    "funcsmartspacehvacAppName": {
+      "defaultValue": "Accel-Smart-Spaces-FuncSMARTSPACE-HVACdef",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure Function app."
+      }
+    },
+    "funcsmartspacehvacpackageuri": {
+      "defaultValue": "https://accelsmartspaceslrs.blob.core.windows.net/zipdeploycode/FuncSMARTSPACE-HVAC_App_Code.zip",
+      "type": "String",
+      "metadata": {
+        "description": "The uri of the Azure Function FuncSMARTSPACE-HVAC app zip file."
+      }
+    },
+
+    "funccreatetokenjwtAppName": {
+      "defaultValue": "accel-Smart-Spaces-FuncCreateJWTTOKENdef",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure Function app."
+      }
+    },
+    "funccreatetokenjwtpackageuri": {
+      "defaultValue": "https://accelsmartspaceslrs.blob.core.windows.net/zipdeploycode/FuncCreateJWTToken_App_Code.zip",
+      "type": "String",
+      "metadata": {
+        "description": "The uri of the Azure Function funccreatetokenjwt app zip file."
+      }
+    },
+
+    "LogicAppSSMARTSPACEName": {
+      "defaultValue": "accel-Smart-Spaces-SMARTSPACE",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure Logic app for SMARTSPACE."
+      }
+    },
+    "LogicAppSSMARTSPACEHVAC01Name": {
+      "defaultValue": "Accel-Smart-Spaces-SMARTSPACE-HVAC-01-Logic-App",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure Logic app for SMARTSPACE-HVAC-01-Logic-App."
+      }
+    },
+    "LogicAppSSMARTSPACEHVAC02Name": {
+      "defaultValue": "Accel-Smart-Spaces-SMARTSPACE-HVAC-02-Logic-App",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure Logic app for SMARTSPACE-HVAC-02-Logic-App."
+      }
+    },
+    "LogicAppSSMARTSPACEHVAC03Name": {
+      "defaultValue": "Accel-Smart-Spaces-SMARTSPACE-HVAC-03-Logic-App",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure Logic app for SMARTSPACE-HVAC-03-Logic-App."
+      }
+    },
+    "LogicAppStart-ASA_Start_Name": {
+      "defaultValue": "Accel-Smart-Spaces-ASA-Start",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure Logic app to START the ASA job."
+      }
+    },
+    "LogicAppStart-ASA_Stop_Name": {
+      "defaultValue": "Accel-Smart-Spaces-ASA-Stop",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure Logic app to STOP the ASA job."
+      }
+    }
+
+
+  },
+  "variables": {
+    "singlequote": "'",
+    "IOTHubname": "[parameters('iotHubName')]",
+
+    "funcsmartspacehvacName": "funcSmartSpaceHVACzxy",
+    "funcsmartspacehvachostingPlanName": "ahfuncsmartspacehvaczxy",
+    "funcsmartspacehvacapplicationInsightsName": "aifuncsmartspacehvaczxy",
+    "funcsmartspacehvacstorageAccountName": "[toLower('azrstgfuncSMARTSPACEHVAC')]",
+    "funcsmartspacehvacstorageAccountType": "Standard_LRS",
+    "funcsmartspacehvacstorageAccesskey": "[toLower('azrstgfuncSMARTSPACEHVAC')]",
+
+    "funcsmartspaceName": "funcSmartSpacezxy",
+    "funcsmartspacehostingPlanName": "ahfuncsmartspacezxy",
+    "funcsmartspaceapplicationInsightsName": "aifuncsmartspacezxy",
+    "funcsmartspacestorageAccountName": "[toLower('azrstgfuncSMARTSPACE')]",
+    "funcsmartspacestorageAccountType": "Standard_LRS",
+    "funcsmartspacestorageAccesskey": "[toLower('azrstgfuncSMARTSPACE')]",
+
+    "funccreatetokenjwtName": "funccreatetokenjwtzxy",
+    "funccreatetokenjwthostingPlanName": "ahfunccreatetokenjwtzxy",
+    "funccreatetokenjwtapplicationInsightsName": "aifunccreatetokenjwtzxy",
+    "funccreatetokenjwtstorageAccountName": "[toLower('azrstgfunccreatetokenjwt')]",
+    "funccreatetokenjwtstorageAccountType": "Standard_LRS",
+    "funccreatetokenjwtstorageAccesskey": "[toLower('azrstgfunccreatetokenjwt')]",
+
+    "ASAApiVersion": "2021-10-01-preview",
+    "ASA-StreamAnalyticsJobName": "accel-smart-spaces-asa-zxy",
+    "ASA-OutputStartMode": "JobStartTime",
+    "ASA-OutputStartTime": "2022-05-20T10:43:54.173Z",
+    "ASA-DataLocale": "en-US",
+    "ASA-OutputErrorPolicy": "Stop",
+    "ASA-EventsLateArrivalMaxDelayInSeconds": 5,
+    "ASA-EventsOutOfOrderMaxDelayInSeconds": 0,
+    "ASA-EventsOutOfOrderPolicy": "Adjust",
+    "ASA-StreamingUnits": 3,
+    "ASA-CompatibilityLevel": "1.2",
+    "ASA-ContentStoragePolicy": "SystemAccount",
+
+    "ASA-Input_in-iothub_partitionKey": "3",
+    "ASA-Input_in-iothub_iotHubNamespace": "[parameters('iotHubName')]",
+    "ASA-Input_in-iothub_consumerGroupName": "$Default",
+    "ASA-Input_in-iothub_endpoint": "messages/events",
+    "ASA-Input_in-iothub_sharedAccessPolicyName": "iothubowner",
+
+    /*
+    "sqlDBName": "[concat('sqlDB-', uniqueString( resourceGroup().id, deployment().name ))]",
+    "serverName": "[concat('sqlserver-', uniqueString( resourceGroup().id, deployment().name ))]",
+    */
+
+    /* HARDCODE COMMON SQL VALUES FOR NOW */
+    "serverName": "sqlserver-f6loe3b5y7gqw",
+    "sqlDBName": "sqlDB-f6loe3b5y7gqw",
+    "administratorLogin": "testAdmin",
+    "administratorLoginPassword": "Pv34pz7otqyugex!",
+    /*
+        "administratorLoginPassword": {
+          "reference": {
+            "keyVault": {
+              "id": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.KeyVault/vaults', parameters('KeyVaultName'))]"
+            },
+            "secretName": "sqlpwd"
+          }
+        },
+    */
+    "sql_maxWriterCount": 1,
+    "sql_maxBatchCount": 1000,
+    "sql_authenticationMode": "ConnectionString",
+
+    "ASA-Output_out-sql-energydataintermediate_table": "EnergyDataIntermediate",
+    "ASA-Output_out-sql-hvacsummaryIntermediate_table": "HVACSummaryIntermediate",
+    "ASA-Output_out-sql-hvacunitIntermediate_table": "HVACUnitIntermediate",
+    "ASA-Output_out-sql-spacesetpoint_table": "SpaceSetPointIntermediate",
+    "ASA-Output_out-sql-spacetemp_table": "SpaceTempIntermediate",
+
+    "functionWorkerRuntime": "dotnet",
+    "keyVaultName": "keyVaultf6loe3b5y7gqw",
+    "copy": [
+      {
+        "name": "roleAssignmentsToCreate",
+        "count": "[length(parameters('roleDefinitionIds'))]",
+        "input": {
+          "name": "[guid(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName')), resourceGroup().id, parameters('roleDefinitionIds')[copyIndex('roleAssignmentsToCreate')])]",
+          "roleDefinitionId": "[parameters('roleDefinitionIds')[copyIndex('roleAssignmentsToCreate')]]"
+        }
+      }
+    ]
+  },
+  "resources": [
+    /* ManagedIdentity/userAssignedIdentities */
+    {
+      "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+      "apiVersion": "2018-11-30",
+      "name": "[parameters('managedIdentityName')]",
+      "location": "[parameters('location')]"
+    },
+    /* Authorization/roleAssignments */
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2020-04-01-preview",
+      "name": "[variables('roleAssignmentsToCreate')[0].name]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))]"
+      ],
+      "properties": {
+        "description": "[parameters('roleAssignmentDescription')]",
+        "principalId": "[reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))).principalId]",
+        "roleDefinitionId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', variables('roleAssignmentsToCreate')[copyIndex()].roleDefinitionId)]",
+        "principalType": "ServicePrincipal"
+      },
+      "copy": {
+        "name": "roleAssignment",
+        "count": "[length(variables('roleAssignmentsToCreate'))]"
+      }
+    },
+
+    /* Devices/IotHubs */
+    {
+      "type": "Microsoft.Devices/IotHubs",
+      "apiVersion": "2021-07-02",
+      "name": "[parameters('iotHubName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('managedIdentityName'))]",
+        "[resourceId('Microsoft.Authorization/roleAssignments', variables('roleAssignmentsToCreate')[0].name)]"
+      ],
+      "sku": {
+        "name": "[parameters('iotHubSkuName')]",
+        "capacity": "[parameters('iotHubSkuCapacity')]"
+      },
+      "identity": {
+        "type": "userAssigned",
+        "userAssignedIdentities": {
+          "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', ResourceGroup().name, '/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('IoTmanagedIdentityName') )]": {}
+        }
+      },
+      "properties": {
+        "eventHubEndpoints": {
+          "events": {
+            "retentionTimeInDays": "[parameters('iotHubMessageRetentionInDays')]",
+            "partitionCount": "[parameters('iotHubPartitionCount')]"
+          },
+          "operationsMonitoringEvents": {
+            "retentionTimeInDays": "[parameters('iotHubMessageRetentionInDays')]",
+            "partitionCount": "[parameters('iotHubPartitionCount')]"
+          }
+        }
+      }
+    },
+    /* ContainerInstance/containerGroups */
+    {
+      "type": "Microsoft.ContainerInstance/containerGroups",
+      "apiVersion": "2019-12-01",
+      "name": "[parameters('containerGroups_script_container_ps_2_7_name')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
+      ],
+      "properties": {
+        "sku": "Standard",
+        "containers": [
+          {
+            "name": "[parameters('containerGroups_script_container_ps_2_7_name')]",
+            "properties": {
+              "image": "mcr.microsoft.com/azuredeploymentscripts-powershell:az2.7",
+              "ports": [
+                {
+                  "protocol": "TCP",
+                  "port": 80
+                }
+              ],
+              "environmentVariables": [],
+              "resources": {
+                "requests": {
+                  "memoryInGB": 1.5,
+                  "cpu": 1
+                }
+              }
+            }
+          }
+        ],
+        "initContainers": [],
+        "restartPolicy": "Never",
+        "ipAddress": {
+          "ports": [
+            {
+              "protocol": "TCP",
+              "port": 80
+            }
+          ],
+          "type": "Public"
+        },
+        "osType": "Linux"
+      },
+      "identity": {
+        "type": "userAssigned",
+        "userAssignedIdentities": {
+          "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', ResourceGroup().name, '/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('IoTmanagedIdentityName') )]": {}
+        }
+
+      }
+    },
+    /* Resources/deploymentScripts */
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "name": "AzurePowershellInline",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.ContainerInstance/containerGroups', parameters('containerGroups_script_container_ps_2_7_name'))]",
+        "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
+      ],
+      "kind": "AzurePowerShell",
+      "identity": {
+        "type": "userAssigned",
+        "userAssignedIdentities": {
+          "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', ResourceGroup().name, '/providers/Microsoft.ManagedIdentity/userAssignedIdentities/', parameters('IoTmanagedIdentityName') )]": {}
+        }
+      },
+      "properties": {
+        "forceUpdateTag": "13",
+        "containerSettings": {
+          "containerGroupName": "script-container-ps-2-7-tmp"
+        },
+        "storageAccountSettings": {
+          "storageAccountName": "acelsalrs2",
+          "storageAccountKey": "QZovfTI/Z5FH4l2ztp6BkeljJMnVA28vGNa9muy9JaJ9RHPSIRkFzn2cefozv03EO1DR9X2QaVzdSaOVMbqjwA=="
+        },
+        "azPowerShellVersion": "7.4.0",
+        "arguments": "[concat('-RG ',variables('singlequote'), resourceGroup().name,variables('singlequote'), ' -iothubname ',variables('singlequote'), parameters('iotHubName'),variables('singlequote') )]",
+        "environmentVariables": [
+          {
+            "name": "EnvRGName",
+            "value": "resourceGroup().name"
+          },
+          {
+            "name": "EnvIotHubName",
+            "value": "accelIoTHubqwwhy77mmxpzqjb53"
+          }
+        ],
+        "scriptContent": "param([string] $RG, [string] $iothubname) Connect-AzAccount -Identity; echo $args[0]; Add-AzIotHubDevice -ResourceGroupName $RG -IotHubName $iothubname -DeviceId 'smartspace-iotdevice';Add-AzIotHubDevice -ResourceGroupName $RG -IotHubName $iothubname -DeviceId 'smartspace-hvac01-iotdevice';Add-AzIotHubDevice -ResourceGroupName $RG -IotHubName $iothubname -DeviceId 'smartspace-hvac02-iotdevice';Add-AzIotHubDevice -ResourceGroupName $RG -IotHubName $iothubname -DeviceId 'smartspace-hvac03-iotdevice';",
+        "supportingScriptUris": [],
+        "timeout": "PT30M",
+        "cleanupPreference": "OnSuccess",
+        "retentionInterval": "P1D"
+      }
+    },
+
+
+    /***************************************************/
+    /*   FUNC smartspacehvac                           */
+    /***************************************************/
+    /* FUNC smartspacehvac - Storage/storageAccounts */
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('funcsmartspacehvacstorageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[variables('funcsmartspacehvacstorageAccountType')]"
+      },
+      "kind": "Storage"
+    },
+    /* FUNC smartspacehvac - Web/serverfarms */
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('funcsmartspacehvachostingPlanName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic",
+        "size": "Y1",
+        "family": "Y"
+      },
+      "properties": {
+        "computeMode": "Dynamic"
+      }
+    },
+    /* FUNC smartspacehvac - insights/components */
+    {
+      "type": "microsoft.insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[variables('funcsmartspacehvacapplicationInsightsName')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', variables('funcsmartspacehvacapplicationInsightsName')))]": "Resource"
+      },
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web"
+      }
+    },
+    /* FUNC smartspacehvac - KeyVault/vaults/secrets */
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2021-04-01-preview",
+      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funcsmartspacehvacStorageAccountKey')]",
+      "properties": {
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcsmartspacehvacstorageAccountName'), ';AccountKey=', variables('funcsmartspacehvacstorageAccesskey'),';EndpointSuffix=core.windows.net')]"
+      },
+      "dependsOn": [ "[resourceId('Microsoft.Storage/storageAccounts',variables('funcsmartspacehvacstorageAccountName'))]" ]
+    },
+    /* FUNC smartspacehvac - Web/sites */
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('funcsmartspacehvacAppName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacehvacstorageAccountName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehvachostingPlanName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('funcsmartspacehvacapplicationInsightsName'))]",
+        "[resourceId('Microsoft.ContainerInstance/containerGroups', parameters('containerGroups_script_container_ps_2_7_name'))]",
+        "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
+      ],
+      "kind": "functionapp",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "[concat(parameters('funcsmartspacehvacAppName'),'.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(parameters('funcsmartspacehvacAppName'),'.scm.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehvachostingPlanName'))]",
+        "reserved": false,
+        "isXenon": false,
+        "hyperV": false,
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "[variables('functionWorkerRuntime')]"
+            },
+            {
+              "name": "WEBSITE_RUN_FROM_PACKAGE",
+              "value": "1"
+            },
+            {
+              "name": "AzureWebJobsDashboard",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('funcsmartspacehvacstorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacehvacstorageAccountName')), '2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('funcsmartspacehvacstorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacehvacstorageAccountName')), '2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~3"
+            },
+            {
+              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('funcsmartspacehvacstorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacehvacstorageAccountName')), '2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTSHARE",
+              "value": "[toLower(parameters('funcsmartspacehvacAppName'))]"
+            },
+            {
+              "name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "value": "6.5.0"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('microsoft.insights/components', variables('funcsmartspacehvacapplicationInsightsName')), '2015-05-01').InstrumentationKey]"
+            },
+            {
+              "name": "iotHubConnectionStringDevice",
+              "value": "[concat('HostName=', reference(resourceId('Microsoft.Devices/IoTHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).hostName, ';SharedAccessKeyName=iothubowner;SharedAccessKey=', listKeys(resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).value[0].primaryKey)]"
+            }
+          ],
+          "name": "[parameters('funcsmartspacehvacAppName')]",
+          "clientAffinityEnabled": false,
+          "numberOfWorkers": 1,
+          "acrUseManagedIdentityCreds": false,
+          "alwaysOn": false,
+          "http20Enabled": false,
+          "functionAppScaleLimit": 200,
+          "minimumElasticInstanceCount": 0
+        },
+        "scmSiteAlsoStopped": false,
+        "clientAffinityEnabled": false,
+        "clientCertEnabled": false,
+        "clientCertMode": "Required",
+        "hostNamesDisabled": false,
+        "containerSize": 1536,
+        "dailyMemoryTimeQuota": 0,
+        "httpsOnly": false,
+        "redundancyMode": "None",
+        "storageAccountRequired": false,
+        "keyVaultReferenceIdentity": "SystemAssigned"
+      },
+      "resources": [
+        {
+          "type": "extensions",
+          "apiVersion": "2021-02-01",
+          "name": "zipdeploy",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('funcsmartspacehvacAppName'))]"
+          ],
+          "properties": {
+            "packageUri": "[parameters('funcsmartspacehvacpackageuri')]"
+          }
+        }
+      ]
+    },
+
+    /***************************************************/
+    /*   FUNC smartspace                               */
+    /***************************************************/
+    /* FUNC smartspace - Storage/storageAccounts */
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('funcsmartspacestorageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[variables('funcsmartspacestorageAccountType')]"
+      },
+      "kind": "Storage"
+    },
+    /* FUNC smartspace - Web/serverfarms */
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('funcsmartspacehostingPlanName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic",
+        "size": "Y1",
+        "family": "Y"
+      },
+      "properties": {
+        "computeMode": "Dynamic"
+      }
+    },
+    /* FUNC smartspace - insights/components */
+    {
+      "type": "microsoft.insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[variables('funcsmartspaceapplicationInsightsName')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', variables('funcsmartspaceapplicationInsightsName')))]": "Resource"
+      },
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web"
+      }
+    },
+    /* FUNC smartspace - KeyVault/vaults/secrets */
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2021-04-01-preview",
+      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funcsmartspaceStorageAccountKey')]",
+      "properties": {
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcsmartspacestorageAccountName'), ';AccountKey=', variables('funcsmartspacestorageAccesskey'),';EndpointSuffix=core.windows.net')]"
+      },
+      "dependsOn": [ "[resourceId('Microsoft.Storage/storageAccounts',variables('funcsmartspacestorageAccountName'))]" ]
+    },
+    /* FUNC smartspace- Web/sites */
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('funcsmartspaceAppName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacestorageAccountName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehostingPlanName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('funcsmartspaceapplicationInsightsName'))]",
+        "[resourceId('Microsoft.ContainerInstance/containerGroups', parameters('containerGroups_script_container_ps_2_7_name'))]",
+        "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
+      ],
+      "kind": "functionapp",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "[concat(parameters('funcsmartspaceAppName'),'.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(parameters('funcsmartspaceAppName'),'.scm.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehostingPlanName'))]",
+        "reserved": false,
+        "isXenon": false,
+        "hyperV": false,
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "[variables('functionWorkerRuntime')]"
+            },
+            {
+              "name": "WEBSITE_RUN_FROM_PACKAGE",
+              "value": "1"
+            },
+            {
+              "name": "AzureWebJobsDashboard",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('funcsmartspacestorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacestorageAccountName')), '2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('funcsmartspacestorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacestorageAccountName')), '2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~3"
+            },
+            {
+              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('funcsmartspacestorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacestorageAccountName')), '2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTSHARE",
+              "value": "[toLower(parameters('funcsmartspaceAppName'))]"
+            },
+            {
+              "name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "value": "6.5.0"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('microsoft.insights/components', variables('funcsmartspaceapplicationInsightsName')), '2015-05-01').InstrumentationKey]"
+            },
+            {
+              "name": "iotHubConnectionStringDevice",
+              "value": "[concat('HostName=', reference(resourceId('Microsoft.Devices/IoTHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).hostName, ';SharedAccessKeyName=iothubowner;SharedAccessKey=', listKeys(resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).value[0].primaryKey)]"
+            }
+          ],
+          "name": "[parameters('funcsmartspaceAppName')]",
+          "clientAffinityEnabled": false,
+          "numberOfWorkers": 1,
+          "acrUseManagedIdentityCreds": false,
+          "alwaysOn": false,
+          "http20Enabled": false,
+          "functionAppScaleLimit": 200,
+          "minimumElasticInstanceCount": 0
+        },
+        "scmSiteAlsoStopped": false,
+        "clientAffinityEnabled": false,
+        "clientCertEnabled": false,
+        "clientCertMode": "Required",
+        "hostNamesDisabled": false,
+        "containerSize": 1536,
+        "dailyMemoryTimeQuota": 0,
+        "httpsOnly": false,
+        "redundancyMode": "None",
+        "storageAccountRequired": false,
+        "keyVaultReferenceIdentity": "SystemAssigned"
+      },
+      "resources": [
+        {
+          "type": "extensions",
+          "apiVersion": "2021-02-01",
+          "name": "zipdeploy",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('funcsmartspaceAppName'))]"
+          ],
+          "properties": {
+            "packageUri": "[parameters('funcsmartspacepackageuri')]"
+          }
+        }
+      ]
+    },
+
+    /***************************************************/
+    /*   FUNC createtokenjwt                           */
+    /***************************************************/
+    /* FUNC createtokenjwt - Storage/storageAccounts */
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('funccreatetokenjwtstorageAccountName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[variables('funccreatetokenjwtstorageAccountType')]"
+      },
+      "kind": "Storage"
+    },
+    /* FUNC createtokenjwt - Web/serverfarms */
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('funccreatetokenjwthostingPlanName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic",
+        "size": "Y1",
+        "family": "Y"
+      },
+      "properties": {
+        "computeMode": "Dynamic"
+      }
+    },
+    /* FUNC createtokenjwt - insights/components */
+    {
+      "type": "microsoft.insights/components",
+      "apiVersion": "2020-02-02",
+      "name": "[variables('funccreatetokenjwtapplicationInsightsName')]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "[concat('hidden-link:', resourceId('Microsoft.Web/sites', variables('funccreatetokenjwtapplicationInsightsName')))]": "Resource"
+      },
+      "kind": "web",
+      "properties": {
+        "Application_Type": "web"
+      }
+    },
+    /* FUNC createtokenjwt - KeyVault/vaults/secrets */
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "apiVersion": "2021-04-01-preview",
+      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funccreatetokenjwtStorageAccountKey')]",
+      "properties": {
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funccreatetokenjwtstorageAccountName'), ';AccountKey=', variables('funccreatetokenjwtstorageAccesskey'),';EndpointSuffix=core.windows.net')]"
+      },
+      "dependsOn": [ "[resourceId('Microsoft.Storage/storageAccounts',variables('funccreatetokenjwtstorageAccountName'))]" ]
+    },
+    /* FUNC createtokenjwt- Web/sites */
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('funccreatetokenjwtAppName')]",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('funccreatetokenjwtstorageAccountName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('funccreatetokenjwthostingPlanName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('funccreatetokenjwtapplicationInsightsName'))]",
+        "[resourceId('Microsoft.ContainerInstance/containerGroups', parameters('containerGroups_script_container_ps_2_7_name'))]",
+        "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
+      ],
+      "kind": "functionapp",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "enabled": true,
+        "hostNameSslStates": [
+          {
+            "name": "[concat(parameters('funccreatetokenjwtAppName'),'.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Standard"
+          },
+          {
+            "name": "[concat(parameters('funccreatetokenjwtAppName'),'.scm.azurewebsites.net')]",
+            "sslState": "Disabled",
+            "hostType": "Repository"
+          }
+        ],
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('funccreatetokenjwthostingPlanName'))]",
+        "reserved": false,
+        "isXenon": false,
+        "hyperV": false,
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "[variables('functionWorkerRuntime')]"
+            },
+            {
+              "name": "WEBSITE_RUN_FROM_PACKAGE",
+              "value": "1"
+            },
+            {
+              "name": "AzureWebJobsDashboard",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('funccreatetokenjwtstorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funccreatetokenjwtstorageAccountName')), '2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('funccreatetokenjwtstorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funccreatetokenjwtstorageAccountName')), '2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~3"
+            },
+            {
+              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('funccreatetokenjwtstorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funccreatetokenjwtstorageAccountName')), '2015-05-01-preview').key1)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTSHARE",
+              "value": "[toLower(parameters('funccreatetokenjwtAppName'))]"
+            },
+            {
+              "name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "value": "6.5.0"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('microsoft.insights/components', variables('funccreatetokenjwtapplicationInsightsName')), '2015-05-01').InstrumentationKey]"
+            },
+            {
+              "name": "iotHubConnectionStringDevice",
+              "value": "[concat('HostName=', reference(resourceId('Microsoft.Devices/IoTHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).hostName, ';SharedAccessKeyName=iothubowner;SharedAccessKey=', listKeys(resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).value[0].primaryKey)]"
+            }
+          ],
+          "name": "[parameters('funccreatetokenjwtAppName')]",
+          "clientAffinityEnabled": false,
+          "numberOfWorkers": 1,
+          "acrUseManagedIdentityCreds": false,
+          "alwaysOn": false,
+          "http20Enabled": false,
+          "functionAppScaleLimit": 200,
+          "minimumElasticInstanceCount": 0
+        },
+        "scmSiteAlsoStopped": false,
+        "clientAffinityEnabled": false,
+        "clientCertEnabled": false,
+        "clientCertMode": "Required",
+        "hostNamesDisabled": false,
+        "containerSize": 1536,
+        "dailyMemoryTimeQuota": 0,
+        "httpsOnly": false,
+        "redundancyMode": "None",
+        "storageAccountRequired": false,
+        "keyVaultReferenceIdentity": "SystemAssigned"
+      },
+      "resources": [
+        {
+          "type": "extensions",
+          "apiVersion": "2021-02-01",
+          "name": "zipdeploy",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', parameters('funccreatetokenjwtAppName'))]"
+          ],
+          "properties": {
+            "packageUri": "[parameters('funccreatetokenjwtpackageuri')]"
+          }
+        }
+      ]
+    },
+
+    /***************************************************/
+    /* LOGIC APP: SMARTSPACE-HVAC01
+    /***************************************************/
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2017-07-01",
+      "name": "[parameters('LogicAppSSMARTSPACEHVAC01Name')]",
+      "location": "eastus2",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('funcsmartspacehvacAppName'))]"
+      ],
+
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {},
+          "triggers": {
+            "Recurrence": {
+              "recurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "evaluatedRecurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "type": "Recurrence"
+            }
+          },
+          "actions": {
+            "FuncSMARTSPACE-HVAC": {
+              "runAfter": {},
+              "type": "Function",
+              "inputs": {
+                "body": {
+                  "DeviceID": "smartspace-HVAC01-iotdevice"
+                },
+                "function": {
+                  "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', ResourceGroup().name, '/providers/Microsoft.Web/sites/',parameters('funcsmartspacehvacAppName'),'/functions/FuncSMARTSPACE-HVAC'  )]"
+                }
+              }
+            }
+          },
+          "outputs": {}
+        },
+        "parameters": {}
+      }
+    },
+
+    /***************************************************/
+    /* LOGIC APP: SMARTSPACE-HVAC02
+    /***************************************************/
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2017-07-01",
+      "name": "[parameters('LogicAppSSMARTSPACEHVAC02Name')]",
+      "location": "eastus2",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('funcsmartspacehvacAppName'))]"
+      ],
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {},
+          "triggers": {
+            "Recurrence": {
+              "recurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "evaluatedRecurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "type": "Recurrence"
+            }
+          },
+          "actions": {
+            "FuncSMARTSPACE-HVAC": {
+              "runAfter": {},
+              "type": "Function",
+              "inputs": {
+                "body": {
+                  "DeviceID": "smartspace-HVAC02-iotdevice"
+                },
+                "function": {
+                  "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', ResourceGroup().name, '/providers/Microsoft.Web/sites/',parameters('funcsmartspacehvacAppName'),'/functions/FuncSMARTSPACE-HVAC'  )]"
+                }
+              }
+            }
+          },
+          "outputs": {}
+        },
+        "parameters": {}
+      }
+    },
+
+    /***************************************************/
+    /* LOGIC APP: SMARTSPACE-HVAC03
+    /***************************************************/
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2017-07-01",
+      "name": "[parameters('LogicAppSSMARTSPACEHVAC03Name')]",
+      "location": "eastus2",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('funcsmartspacehvacAppName'))]"
+      ],
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {},
+          "triggers": {
+            "Recurrence": {
+              "recurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "evaluatedRecurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "type": "Recurrence"
+            }
+          },
+          "actions": {
+            "FuncSMARTSPACE-HVAC": {
+              "runAfter": {},
+              "type": "Function",
+              "inputs": {
+                "body": {
+                  "DeviceID": "smartspace-HVAC03-iotdevice"
+                },
+                "function": {
+                  "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', ResourceGroup().name, '/providers/Microsoft.Web/sites/',parameters('funcsmartspacehvacAppName'),'/functions/FuncSMARTSPACE-HVAC'  )]"
+                }
+              }
+            }
+          },
+          "outputs": {}
+        },
+        "parameters": {}
+      }
+    },
+
+    /***************************************************/
+    /* LOGIC APP: SMARTSPACE
+    /***************************************************/
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2017-07-01",
+      "name": "[parameters('LogicAppSSMARTSPACEName')]",
+      "location": "eastus2",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('funcsmartspaceAppName'))]"
+
+      ],
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {},
+          "triggers": {
+            "Recurrence": {
+              "recurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "evaluatedRecurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "type": "Recurrence"
+            }
+          },
+          "actions": {
+            "FuncSMARTSPACE": {
+              "runAfter": {},
+              "type": "Function",
+              "inputs": {
+                "function": {
+                  "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', ResourceGroup().name, '/providers/Microsoft.Web/sites/',parameters('funcsmartspaceAppName'),'/functions/FuncSMARTSPACE'  )]"
+                }
+              }
+            }
+          },
+          "outputs": {}
+        },
+        "parameters": {}
+      }
+    },
+
+    /***************************************************/
+    /* LOGIC APP: ASA-Start
+    /***************************************************/
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2017-07-01",
+      "name": "[parameters('LogicAppStart-ASA_Start_Name')]",
+      "location": "eastus2",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('funccreatetokenjwtAppName'))]"
+      ],
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {},
+          "triggers": {
+            "Recurrence": {
+              "recurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "evaluatedRecurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "type": "Recurrence"
+            }
+          },
+          "actions": {
+            "FuncCreateJWTToken": {
+              "runAfter": {},
+              "type": "Function",
+              "inputs": {
+                "body": {
+                  "applicationid": "<Your App ID>",
+                  "clientsecret": "<Your App ID - Client Secret>",
+                  "resource": "https://management.azure.com",
+                  "tenantid": "<Your Tenant ID>"
+                },
+                "function": {
+                  "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', ResourceGroup().name, '/providers/Microsoft.Web/sites/',parameters('funccreatetokenjwtAppName'),'/functions/FuncCreateJWTToken'  )]"
+
+                }
+              }
+            },
+            "HTTP": {
+              "runAfter": {
+                "FuncCreateJWTToken": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "body": {
+                  "outputStartMode": "LastOutputEventTime"
+                },
+                "headers": {
+                  "Authorization": "Bearer @{body('FuncCreateJWTToken')}"
+                },
+                "method": "POST",
+                "uri": "[concat('https://management.azure.com/subscriptions/',subscription().subscriptionId, '/resourceGroups/', ResourceGroup().name,'/providers/Microsoft.StreamAnalytics/streamingjobs/',variables('ASA-StreamAnalyticsJobName'),'/start?api-version=2020-03-01')]"
+              }
+            }
+          },
+          "outputs": {}
+        },
+        "parameters": {}
+      }
+    },
+    /***************************************************/
+    /* LOGIC APP: ASA-Stop
+    /***************************************************/
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2017-07-01",
+      "name": "[parameters('LogicAppStart-ASA_Stop_Name')]",
+      "location": "eastus2",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('funccreatetokenjwtAppName'))]"
+      ],
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {},
+          "triggers": {
+            "Recurrence": {
+              "recurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "evaluatedRecurrence": {
+                "frequency": "Hour",
+                "interval": 1
+              },
+              "type": "Recurrence"
+            }
+          },
+          "actions": {
+            "FuncCreateJWTToken": {
+              "runAfter": {},
+              "type": "Function",
+              "inputs": {
+                "body": {
+                  "applicationid": "<Your App ID>",
+                  "clientsecret": "<Your App ID - Client Secret>",
+                  "resource": "https://management.azure.com",
+                  "tenantid": "<Your Tenant ID>"
+                },
+                "function": {
+                  "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', ResourceGroup().name, '/providers/Microsoft.Web/sites/',parameters('funccreatetokenjwtAppName'),'/functions/FuncCreateJWTToken'  )]"
+                }
+              }
+            },
+            "HTTP": {
+              "runAfter": {
+                "FuncCreateJWTToken": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Http",
+              "inputs": {
+                "headers": {
+                  "Authorization": "Bearer @{body('FuncCreateJWTToken')}",
+                  "Content-type": "application/json"
+                },
+                "method": "POST",
+                "uri": "[concat('https://management.azure.com/subscriptions/',subscription().subscriptionId, '/resourceGroups/', ResourceGroup().name,'/providers/Microsoft.StreamAnalytics/streamingjobs/',variables('ASA-StreamAnalyticsJobName'),'/stop?api-version=2020-03-01')]"
+
+              }
+            }
+          },
+          "outputs": {}
+        },
+        "parameters": {}
+      }
+    },
+
+    /***************************************************/
+    /* Stream Analytics Job
+    /***************************************************/
+    {
+      "type": "Microsoft.StreamAnalytics/StreamingJobs",
+      "apiVersion": "[variables('ASAApiVersion')]",
+      "name": "[variables('ASA-StreamAnalyticsJobName')]",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/sites', parameters('funcsmartspacehvacAppName'))]",
+        "[resourceId('Microsoft.Web/sites', parameters('funcsmartspaceAppName'))]",
+        "[resourceId('Microsoft.ContainerInstance/containerGroups', parameters('containerGroups_script_container_ps_2_7_name'))]",
+        "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
+      ],
+
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "outputStartMode": "[variables('ASA-OutputStartMode')]",
+        "outputStartTime": "[if(equals(variables('ASA-OutputStartMode'),'CustomTime'), variables('ASA-OutputStartTime'), json('null'))]",
+        "sku": {
+          "name": "standard"
+        },
+        "jobType": "Cloud",
+        "eventsOutOfOrderPolicy": "[variables('ASA-EventsOutOfOrderPolicy')]",
+        "outputErrorPolicy": "[variables('ASA-OutputErrorPolicy')]",
+        "eventsOutOfOrderMaxDelayInSeconds": "[variables('ASA-EventsOutOfOrderMaxDelayInSeconds')]",
+        "eventsLateArrivalMaxDelayInSeconds": "[variables('ASA-EventsLateArrivalMaxDelayInSeconds')]",
+        "dataLocale": "[variables('ASA-DataLocale')]",
+        "compatibilityLevel": "[variables('ASA-CompatibilityLevel')]",
+        "contentStoragePolicy": "[variables('ASA-ContentStoragePolicy')]",
+        "transformation": {
+          "name": "Transformation",
+          "properties": {
+            "streamingUnits": "[variables('ASA-StreamingUnits')]",
+            "query": "-- ***************************************************************************\r\n-- * SQL-SPACESETPOINT\r\n-- ***************************************************************************\r\nSELECT\r\n    CAST(SUBSTRING(EventProcessedUtcTime ,1 ,4)+'/'+SUBSTRING(EventProcessedUtcTime ,6 ,2)+'/'+SUBSTRING(EventProcessedUtcTime ,9 ,2)+SUBSTRING(EventProcessedUtcTime ,11 ,9) AS DATETIME) as [Datetime],\r\n    setpoint as [Point-Value]\r\nINTO [out-sql-spacesetpoint]\r\nFROM [in-iothub]\r\nWHERE deviceId ='SMARTSPACE-IOTDEVICE'\r\n-- ***************************************************************************\r\n-- * SQL-SPACETEMP\r\n-- ***************************************************************************\r\nSELECT\r\n    CAST(SUBSTRING(EventProcessedUtcTime ,1 ,4)+'/'+SUBSTRING(EventProcessedUtcTime ,6 ,2)+'/'+SUBSTRING(EventProcessedUtcTime ,9 ,2)+SUBSTRING(EventProcessedUtcTime ,11 ,9) AS DATETIME) as [Datetime],\r\n    currentTemperature as [Point-Value]\r\nINTO [out-sql-spacetemp]\r\nFROM [in-iothub]\r\nWHERE deviceId ='SMARTSPACE-IOTDEVICE'\r\n-- ***************************************************************************\r\n-- * SQL-SQL-HVACSummaryIntermediate\r\n-- ***************************************************************************\r\nSELECT\r\n    UPPER(deviceId) as [ChillerName],\r\n    CAST(SUBSTRING(EventProcessedUtcTime ,1 ,4)+'/'+SUBSTRING(EventProcessedUtcTime ,6 ,2)+'/'+SUBSTRING(EventProcessedUtcTime ,9 ,2)+SUBSTRING(EventProcessedUtcTime ,11 ,9) AS DATETIME) as [Datetime],\r\n    setpoint as [SystemChilledWaterSetpoint],\r\n    tempenter as [SystemChilledWaterSupplyTemperature],\r\n    templeave as [SystemChilledWaterReturnTemperature]\r\nINTO [out-sql-hvacsummaryintermediate]\r\nFROM [in-iothub]\r\nWHERE UPPER(deviceId) LIKE '%HVAC%'\r\n-- ***************************************************************************\r\n-- * SQL-HVACUnitIntermediate\r\n-- ***************************************************************************\r\nSELECT\r\n    CAST(SUBSTRING(EventProcessedUtcTime ,1 ,4)+'/'+SUBSTRING(EventProcessedUtcTime ,6 ,2)+'/'+SUBSTRING(EventProcessedUtcTime ,9 ,2)+SUBSTRING(EventProcessedUtcTime ,11 ,9) AS DATETIME) as [DateTimeUTC],\r\n    UPPER(deviceId) as [ChillerName],\r\n    tempenter as [ChillerTempEnter],\r\n    templeave as [ChillerTempLeave],\r\n    runstate as  [HvacRunStatus]\r\n INTO [out-sql-hvacunitintermediate]\r\nFROM [in-iothub]\r\nWHERE UPPER(deviceId) LIKE '%HVAC%'\r\n-- ***************************************************************************\r\n-- * SQL-EnergyDataIntermediate\r\n-- ***************************************************************************\r\nSELECT\r\n    CAST(SUBSTRING(EventProcessedUtcTime ,1 ,4)+'/'+SUBSTRING(EventProcessedUtcTime ,6 ,2)+'/'+SUBSTRING(EventProcessedUtcTime ,9 ,2)+SUBSTRING(EventProcessedUtcTime ,11 ,9) AS DATETIME) as [DateTimeUTC],\r\n    UPPER(deviceId) as [plantname],\r\n    realpower as  [REALPOWER]\r\n INTO [out-sql-energydataintermediate]\r\nFROM [in-iothub]\r\nWHERE UPPER(deviceId) LIKE '%HVAC%'\r\n"
+          }
+        },
+        "inputs": [
+          {
+            "name": "in-iothub",
+            "properties": {
+              "type": "Stream",
+              "datasource": {
+                "type": "Microsoft.Devices/IotHubs",
+                "properties": {
+                  "iotHubNamespace": "[variables('ASA-Input_in-iothub_iotHubNamespace')]",
+                  "consumerGroupName": "[variables('ASA-Input_in-iothub_consumerGroupName')]",
+                  "endpoint": "[variables('ASA-Input_in-iothub_endpoint')]",
+                  "sharedAccessPolicyName": "[variables('ASA-Input_in-iothub_sharedAccessPolicyName')]",
+                  "sharedAccessPolicyKey": "[concat(listKeys(resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).value[0].primaryKey)]"
+                }
+              },
+              "compression": {
+                "type": "None"
+              },
+              "partitionKey": "3",
+              "serialization": {
+                "type": "Json",
+                "properties": {
+                  "encoding": "UTF8"
+                }
+              }
+            }
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out-sql-energydataintermediate",
+            "properties": {
+              "datasource": {
+                "type": "Microsoft.Sql/Server/Database",
+                "properties": {
+                  "server": "[variables('serverName')]",
+                  "database": "[variables('sqlDBName')]",
+                  "user": "[variables('administratorLogin')]",
+                  "table": "[variables('ASA-Output_out-sql-energydataintermediate_table')]",
+                  "password": "[variables('administratorLoginPassword')]",
+                  "maxWriterCount": "[variables('sql_maxWriterCount')]",
+                  "maxBatchCount": "[variables('sql_maxBatchCount')]",
+                  "authenticationMode": "[variables('sql_authenticationMode')]"
+                }
+              }
+            }
+          },
+          {
+            "name": "out-sql-hvacsummaryIntermediate",
+            "properties": {
+              "datasource": {
+                "type": "Microsoft.Sql/Server/Database",
+                "properties": {
+                  "server": "[variables('serverName')]",
+                  "database": "[variables('sqlDBName')]",
+                  "user": "[variables('administratorLogin')]",
+                  "table": "[variables('ASA-Output_out-sql-hvacsummaryIntermediate_table')]",
+                  "password": "[variables('administratorLoginPassword')]",
+                  "maxWriterCount": "[variables('sql_maxWriterCount')]",
+                  "maxBatchCount": "[variables('sql_maxBatchCount')]",
+                  "authenticationMode": "[variables('sql_authenticationMode')]"
+                }
+              }
+            }
+          },
+
+
+
+
+          {
+            "name": "out-sql-hvacunitIntermediate",
+            "properties": {
+              "datasource": {
+                "type": "Microsoft.Sql/Server/Database",
+                "properties": {
+                  "server": "[variables('serverName')]",
+                  "database": "[variables('sqlDBName')]",
+                  "user": "[variables('administratorLogin')]",
+                  "table": "[variables('ASA-Output_out-sql-hvacunitIntermediate_table')]",
+                  "password": "[variables('administratorLoginPassword')]",
+                  "maxWriterCount": "[variables('sql_maxWriterCount')]",
+                  "maxBatchCount": "[variables('sql_maxBatchCount')]",
+                  "authenticationMode": "[variables('sql_authenticationMode')]"
+                }
+              }
+            }
+          },
+          {
+            "name": "out-sql-spacesetpoint",
+            "properties": {
+              "datasource": {
+                "type": "Microsoft.Sql/Server/Database",
+                "properties": {
+                  "server": "[variables('serverName')]",
+                  "database": "[variables('sqlDBName')]",
+                  "user": "[variables('administratorLogin')]",
+                  "table": "[variables('ASA-Output_out-sql-spacesetpoint_table')]",
+                  "password": "[variables('administratorLoginPassword')]",
+                  "maxWriterCount": "[variables('sql_maxWriterCount')]",
+                  "maxBatchCount": "[variables('sql_maxBatchCount')]",
+                  "authenticationMode": "[variables('sql_authenticationMode')]"
+                }
+              }
+            }
+          },
+          {
+            "name": "out-sql-spacetemp",
+            "properties": {
+              "datasource": {
+                "type": "Microsoft.Sql/Server/Database",
+                "properties": {
+                  "server": "[variables('serverName')]",
+                  "database": "[variables('sqlDBName')]",
+                  "user": "[variables('administratorLogin')]",
+                  "table": "[variables('ASA-Output_out-sql-spacetemp_table')]",
+                  "password": "[variables('administratorLoginPassword')]",
+                  "maxWriterCount": "[variables('sql_maxWriterCount')]",
+                  "maxBatchCount": "[variables('sql_maxBatchCount')]",
+                  "authenticationMode": "[variables('sql_authenticationMode')]"
+                }
+              }
+            }
+          }
+
+
+
+
+
+        ]
+      }
+    }
+
+
+  ]
+}
