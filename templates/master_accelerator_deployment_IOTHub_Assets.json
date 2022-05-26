@@ -58,7 +58,7 @@
       "type": "String"
     },
     "blobStorageName": {
-      "defaultValue": "acelsalrs2",
+      "defaultValue": "acelsalrs33",
       "type": "String"
     },
     "managedIdentityName": {
@@ -410,8 +410,8 @@
           "containerGroupName": "script-container-ps-2-7-tmp"
         },
         "storageAccountSettings": {
-          "storageAccountName": "acelsalrs2",
-          "storageAccountKey": "QZovfTI/Z5FH4l2ztp6BkeljJMnVA28vGNa9muy9JaJ9RHPSIRkFzn2cefozv03EO1DR9X2QaVzdSaOVMbqjwA=="
+          "storageAccountName": "acelsalrs33",
+          "storageAccountKey": "AYHkFmIvZsVhfclVvs46TxRnNyXi+NB8XCRxTrnUV+ZQvsUhN5sI1rhaIx7634AulYyAsQOB0lsL+AStJZsUDA=="
         },
         "azPowerShellVersion": "7.4.0",
         "arguments": "[concat('-RG ',variables('singlequote'), resourceGroup().name,variables('singlequote'), ' -iothubname ',variables('singlequote'), parameters('iotHubName'),variables('singlequote') )]",
