@@ -182,7 +182,44 @@
       "metadata": {
         "description": "The name of the Azure Logic app to STOP the ASA job."
       }
-    }
+    },
+
+    "keyVaultName": {
+      "defaultValue": "keyVaultlpia66tmf2so2",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure Key Vault previously deployed"
+      }
+    },
+    "serverName": {
+      "defaultValue": "sqlserver-f6loe3b5y7gqw",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure SQL Server previously deployed"
+      }
+    },
+    "sqlDBName": {
+      "defaultValue": "sqlserver-f6loe3b5y7gqw",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure SQL Database previously deployed"
+      }
+    },
+    "administratorLogin": {
+      "defaultValue": "testAdmin",
+      "type": "String",
+      "metadata": {
+        "description": "The name of the Azure SQL Server User previously provisioned"
+      }
+    },
+    "administratorLoginPassword": {
+      "defaultValue": "Pv34pz7otqyugex!",
+      "type": "String",
+      "metadata": {
+        "description": "The Azure SQL Server User password previously provisioned"
+      }
+    },
+ 
 
 
   },
@@ -230,26 +267,7 @@
     "ASA-Input_in-iothub_endpoint": "messages/events",
     "ASA-Input_in-iothub_sharedAccessPolicyName": "iothubowner",
 
-    /*
-    "sqlDBName": "[concat('sqlDB-', uniqueString( resourceGroup().id, deployment().name ))]",
-    "serverName": "[concat('sqlserver-', uniqueString( resourceGroup().id, deployment().name ))]",
-    */
-
-    /* HARDCODE COMMON SQL VALUES FOR NOW */
-    "serverName": "sqlserver-f6loe3b5y7gqw",
-    "sqlDBName": "sqlDB-f6loe3b5y7gqw",
-    "administratorLogin": "testAdmin",
-    "administratorLoginPassword": "Pv34pz7otqyugex!",
-    /*
-        "administratorLoginPassword": {
-          "reference": {
-            "keyVault": {
-              "id": "[resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.KeyVault/vaults', parameters('KeyVaultName'))]"
-            },
-            "secretName": "sqlpwd"
-          }
-        },
-    */
+  
     "sql_maxWriterCount": 1,
     "sql_maxBatchCount": 1000,
     "sql_authenticationMode": "ConnectionString",
@@ -261,7 +279,7 @@
     "ASA-Output_out-sql-spacetemp_table": "SpaceTempIntermediate",
 
     "functionWorkerRuntime": "dotnet",
-    "keyVaultName": "keyVaultf6loe3b5y7gqw",
+  
     "copy": [
       {
         "name": "roleAssignmentsToCreate",
@@ -482,7 +500,7 @@
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
       "apiVersion": "2021-04-01-preview",
-      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funcsmartspacehvacStorageAccountKey')]",
+      "name": "[format('{0}/{1}', parameters('keyVaultName'), 'funcsmartspacehvacStorageAccountKey')]",
       "properties": {
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcsmartspacehvacstorageAccountName'), ';AccountKey=', variables('funcsmartspacehvacstorageAccesskey'),';EndpointSuffix=core.windows.net')]"
       },
@@ -650,7 +668,7 @@
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
       "apiVersion": "2021-04-01-preview",
-      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funcsmartspaceStorageAccountKey')]",
+      "name": "[format('{0}/{1}', parameters('keyVaultName'), 'funcsmartspaceStorageAccountKey')]",
       "properties": {
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcsmartspacestorageAccountName'), ';AccountKey=', variables('funcsmartspacestorageAccesskey'),';EndpointSuffix=core.windows.net')]"
       },
@@ -818,7 +836,7 @@
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
       "apiVersion": "2021-04-01-preview",
-      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funccreatetokenjwtStorageAccountKey')]",
+      "name": "[format('{0}/{1}', parameters('keyVaultName'), 'funccreatetokenjwtStorageAccountKey')]",
       "properties": {
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funccreatetokenjwtstorageAccountName'), ';AccountKey=', variables('funccreatetokenjwtstorageAccesskey'),';EndpointSuffix=core.windows.net')]"
       },
