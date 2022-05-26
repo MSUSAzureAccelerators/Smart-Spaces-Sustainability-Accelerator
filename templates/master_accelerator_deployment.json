@@ -31,6 +31,8 @@
     }
   },
   "resources": [
+
+    /* Create Azure Data Factory (ADF) */
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
@@ -49,6 +51,7 @@
       },
       "dependsOn": []
     },
+    /* Create Key Vault */
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
@@ -89,6 +92,7 @@
         "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]"
       ]
     },
+    /* Create Storage */
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
@@ -112,6 +116,7 @@
         "[resourceId('Microsoft.Resources/deployments', 'adf')]"
       ]
     },
+    /* Create Batch Account */
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
@@ -143,6 +148,7 @@
         "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]"
       ]
     },
+    /* Create AzureML Workspace */
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
@@ -177,6 +183,7 @@
         "[resourceId('Microsoft.Resources/deployments', 'storage')]"
       ]
     },
+    /* Create Managed Identity for deploy Scripts */
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
@@ -197,6 +204,7 @@
         "[resourceId('Microsoft.Resources/deployments', 'storage')]"
       ]
     },
+    /* Create Managed Identity Role - Assignments for deploy Scripts */
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
@@ -221,6 +229,7 @@
         "[resourceId('Microsoft.Resources/deployments', 'batchAccount')]"
       ]
     },
+    /* Create Deploy Scripts */
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
@@ -249,6 +258,7 @@
         "[resourceId('Microsoft.Resources/deployments', 'storage')]"
       ]
     },
+    /* Create SQL Server DB */
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
@@ -284,6 +294,7 @@
         "[resourceId('Microsoft.Resources/deployments', 'storage')]"
       ]
     },
+    /* Create ADF Pipelines */
     {
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2020-10-01",
