@@ -244,7 +244,9 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityRoleAssign')]"
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityRoleAssign')]",
+        "[resourceId('Microsoft.Resources/deployments', 'managedIdentityforDeployScripts')]",
+        "[resourceId('Microsoft.Resources/deployments', 'storage')]"
       ]
     },
     {
