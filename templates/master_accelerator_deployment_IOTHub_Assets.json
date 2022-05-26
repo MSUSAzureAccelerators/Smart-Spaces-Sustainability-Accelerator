@@ -191,6 +191,7 @@
         "description": "The name of the Azure Key Vault previously deployed"
       }
     },
+
     "serverName": {
       "defaultValue": "sqlserver-f6loe3b5y7gqw",
       "type": "String",
@@ -218,7 +219,7 @@
       "metadata": {
         "description": "The Azure SQL Server User password previously provisioned"
       }
-    },
+    }
  
 
 
@@ -267,7 +268,7 @@
     "ASA-Input_in-iothub_endpoint": "messages/events",
     "ASA-Input_in-iothub_sharedAccessPolicyName": "iothubowner",
 
-  
+
     "sql_maxWriterCount": 1,
     "sql_maxBatchCount": 1000,
     "sql_authenticationMode": "ConnectionString",
@@ -278,8 +279,10 @@
     "ASA-Output_out-sql-spacesetpoint_table": "SpaceSetPointIntermediate",
     "ASA-Output_out-sql-spacetemp_table": "SpaceTempIntermediate",
 
+    "keyVaultName": "[parameters('keyVaultName')]",
+
     "functionWorkerRuntime": "dotnet",
-  
+
     "copy": [
       {
         "name": "roleAssignmentsToCreate",
@@ -500,7 +503,7 @@
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
       "apiVersion": "2021-04-01-preview",
-      "name": "[format('{0}/{1}', parameters('keyVaultName'), 'funcsmartspacehvacStorageAccountKey')]",
+      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funcsmartspacehvacStorageAccountKey')]",
       "properties": {
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcsmartspacehvacstorageAccountName'), ';AccountKey=', variables('funcsmartspacehvacstorageAccesskey'),';EndpointSuffix=core.windows.net')]"
       },
@@ -668,7 +671,7 @@
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
       "apiVersion": "2021-04-01-preview",
-      "name": "[format('{0}/{1}', parameters('keyVaultName'), 'funcsmartspaceStorageAccountKey')]",
+      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funcsmartspaceStorageAccountKey')]",
       "properties": {
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcsmartspacestorageAccountName'), ';AccountKey=', variables('funcsmartspacestorageAccesskey'),';EndpointSuffix=core.windows.net')]"
       },
@@ -836,7 +839,7 @@
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
       "apiVersion": "2021-04-01-preview",
-      "name": "[format('{0}/{1}', parameters('keyVaultName'), 'funccreatetokenjwtStorageAccountKey')]",
+      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funccreatetokenjwtStorageAccountKey')]",
       "properties": {
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funccreatetokenjwtstorageAccountName'), ';AccountKey=', variables('funccreatetokenjwtstorageAccesskey'),';EndpointSuffix=core.windows.net')]"
       },
@@ -1370,11 +1373,11 @@
               "datasource": {
                 "type": "Microsoft.Sql/Server/Database",
                 "properties": {
-                  "server": "[variables('serverName')]",
-                  "database": "[variables('sqlDBName')]",
-                  "user": "[variables('administratorLogin')]",
+                  "server": "[parameters('serverName')]",
+                  "database": "[parameters('sqlDBName')]",
+                  "user": "[parameters('administratorLogin')]",
                   "table": "[variables('ASA-Output_out-sql-energydataintermediate_table')]",
-                  "password": "[variables('administratorLoginPassword')]",
+                  "password": "[parameters('administratorLoginPassword')]",
                   "maxWriterCount": "[variables('sql_maxWriterCount')]",
                   "maxBatchCount": "[variables('sql_maxBatchCount')]",
                   "authenticationMode": "[variables('sql_authenticationMode')]"
@@ -1388,11 +1391,11 @@
               "datasource": {
                 "type": "Microsoft.Sql/Server/Database",
                 "properties": {
-                  "server": "[variables('serverName')]",
-                  "database": "[variables('sqlDBName')]",
-                  "user": "[variables('administratorLogin')]",
+                  "server": "[parameters('serverName')]",
+                  "database": "[parameters('sqlDBName')]",
+                  "user": "[parameters('administratorLogin')]",
                   "table": "[variables('ASA-Output_out-sql-hvacsummaryIntermediate_table')]",
-                  "password": "[variables('administratorLoginPassword')]",
+                  "password": "[parameters('administratorLoginPassword')]",
                   "maxWriterCount": "[variables('sql_maxWriterCount')]",
                   "maxBatchCount": "[variables('sql_maxBatchCount')]",
                   "authenticationMode": "[variables('sql_authenticationMode')]"
@@ -1410,11 +1413,11 @@
               "datasource": {
                 "type": "Microsoft.Sql/Server/Database",
                 "properties": {
-                  "server": "[variables('serverName')]",
-                  "database": "[variables('sqlDBName')]",
-                  "user": "[variables('administratorLogin')]",
+                  "server": "[parameters('serverName')]",
+                  "database": "[parameters('sqlDBName')]",
+                  "user": "[parameters('administratorLogin')]",
                   "table": "[variables('ASA-Output_out-sql-hvacunitIntermediate_table')]",
-                  "password": "[variables('administratorLoginPassword')]",
+                  "password": "[parameters('administratorLoginPassword')]",
                   "maxWriterCount": "[variables('sql_maxWriterCount')]",
                   "maxBatchCount": "[variables('sql_maxBatchCount')]",
                   "authenticationMode": "[variables('sql_authenticationMode')]"
@@ -1428,11 +1431,11 @@
               "datasource": {
                 "type": "Microsoft.Sql/Server/Database",
                 "properties": {
-                  "server": "[variables('serverName')]",
-                  "database": "[variables('sqlDBName')]",
-                  "user": "[variables('administratorLogin')]",
+                  "server": "[parameters('serverName')]",
+                  "database": "[parameters('sqlDBName')]",
+                  "user": "[parameters('administratorLogin')]",
                   "table": "[variables('ASA-Output_out-sql-spacesetpoint_table')]",
-                  "password": "[variables('administratorLoginPassword')]",
+                  "password": "[parameters('administratorLoginPassword')]",
                   "maxWriterCount": "[variables('sql_maxWriterCount')]",
                   "maxBatchCount": "[variables('sql_maxBatchCount')]",
                   "authenticationMode": "[variables('sql_authenticationMode')]"
@@ -1446,11 +1449,11 @@
               "datasource": {
                 "type": "Microsoft.Sql/Server/Database",
                 "properties": {
-                  "server": "[variables('serverName')]",
-                  "database": "[variables('sqlDBName')]",
-                  "user": "[variables('administratorLogin')]",
+                  "server": "[parameters('serverName')]",
+                  "database": "[parameters('sqlDBName')]",
+                  "user": "[parameters('administratorLogin')]",
                   "table": "[variables('ASA-Output_out-sql-spacetemp_table')]",
-                  "password": "[variables('administratorLoginPassword')]",
+                  "password": "[parameters('administratorLoginPassword')]",
                   "maxWriterCount": "[variables('sql_maxWriterCount')]",
                   "maxBatchCount": "[variables('sql_maxBatchCount')]",
                   "authenticationMode": "[variables('sql_authenticationMode')]"

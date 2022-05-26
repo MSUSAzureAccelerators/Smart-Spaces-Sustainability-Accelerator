@@ -14,11 +14,11 @@
 ####################################################
 # Set the variables below to match your Azure Environment
 ####################################################
-$IOTHubName = 'accelIoTHubzzz'
-$RGP = 'Accel-Smart-SpacesRG2'
-$KVName = "keyVaultf6loe3b5y7gqw"
-$FuncHVACName = "Accel-Smart-Spaces-FuncSMARTSPACE-HVACzzz"
-$FuncSmartSpaceName = "Accel-Smart-Spaces-FuncSMARTSPACEzzz"
+$IOTHubName = 'accelIoTHubii'
+$RGP = 'Accel-Smart-SpacesRG33'
+$KVName = "keyVaultlpia66tmf2so2"
+$FuncHVACName = "Accel-Smart-Spaces-FuncSMARTSPACE-HVACii"
+$FuncSmartSpaceName = "Accel-Smart-Spaces-FuncSMARTSPACEii"
 
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 # Do Not modify below
