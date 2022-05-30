@@ -9,17 +9,17 @@ This step entails the deployment of the Azure SQL database, an Azure  Data Facto
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMSUSSolutionAccelerators%2FSmart-Spaces-Sustainability-Solution-Accelerator%2Fmain%2Ftemplates%2Fmaster_accelerator_deployment.json)
 
 
-- Make sure that URL used in above button is URL Encoded.  This is the only raw git URL that needs to be encoded. 
-- free encooding website https://www.urlencoder.org/
-
 
 
 ### Step 2 - Deploy "Front-end" Azure IOTHub Simulator Resources:
 This step entails the deployment of the IotHub "Simulator" resources; namely an IotHub with (4) devices, along with supporting Azure Functions, Logic Apps and an Azure Stream Anlytics job - which all work together to produce simulated temperature and HVAC cooling information readings for a representative "Smart Space".  
 
 ##### Note: #####
-This deployment step relies on the Azure SQL Database that was provisioned in Step #1 above.  
-Please make sure to review and confirm the Azure SQL database name and associated credentials are correctly specified in the #2 deployment script.
+This deployment step relies on (2) artifacts from previous deployment in Step #1 above:
+- The Key Vault Name that was provisioned.
+- The Azure SQL Database info that was provisioned 
+   
+#### Please make sure to review and confirm the Azure Key Vault Name, SQL database name, and associated SQL credentials are correctly specified in the #2 deployment script.
 
 You can confirm these settings by retrieving the following Key Valut Secret: sqlConnectString
 Once you have displayed and copied this value, 
@@ -29,8 +29,16 @@ you can paste the contents into your favorite editor (or notepad) and then look 
 - Uid=
 - Pwd= 
 
+##### Note: #####
 You will need these values for the steps below.
+Key Vault:
+- Key Vault Name:
 
+Azure SQL:
+- Server=
+- Database=
+- Uid=
+- Pwd= 
 
 
 Click the link below to automatically navigate to the Azure Custom deployment template editor: 
