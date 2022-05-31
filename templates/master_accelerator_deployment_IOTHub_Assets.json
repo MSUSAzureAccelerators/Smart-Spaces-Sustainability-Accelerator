@@ -54,7 +54,11 @@
     "roleDefinitionIds": [ "b24988ac-6180-42a0-ab88-20f7382dd24c" ],
     "roleAssignmentDescription": "Contributor",
     "location": "[resourceGroup().location]",
-    "blobStorageName": "acelsalrs33",
+
+    "blobStorageName": "[toLower(concat('sabloblrs', uniqueString( resourceGroup().id, deployment().name )))]",
+    "blobStorageKey": "[toLower(concat('sabloblrs', uniqueString( resourceGroup().id, deployment().name )))]",
+    "blobStorageAcctId": "[resourceId('Microsoft.Storage/storageAccounts', variables('blobStorageName'))]",
+
 
 
     "containerGroups_script_container_ps_2_7_name": "[concat('script-container-ps-2-7-', uniqueString( resourceGroup().id, deployment().name ))]",
@@ -253,6 +257,19 @@
 
       }
     },
+
+    /* Resources/deploymentScripts - Storage/storageAccounts */
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('blobStorageName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Standard_LRS"
+      },
+      "kind": "StorageV2"
+    },
+
     /* Resources/deploymentScripts */
     {
       "type": "Microsoft.Resources/deploymentScripts",
@@ -261,7 +278,8 @@
       "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('containerGroups_script_container_ps_2_7_name'))]",
-        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]"
+        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('blobStorageName'))]"
       ],
       "kind": "AzurePowerShell",
       "identity": {
@@ -275,10 +293,7 @@
         "containerSettings": {
           "containerGroupName": "script-container-ps-2-7-tmp"
         },
-        "storageAccountSettings": {
-          "storageAccountName": "acelsalrs33",
-          "storageAccountKey": "AYHkFmIvZsVhfclVvs46TxRnNyXi+NB8XCRxTrnUV+ZQvsUhN5sI1rhaIx7634AulYyAsQOB0lsL+AStJZsUDA=="
-        },
+
         "azPowerShellVersion": "7.4.0",
         "arguments": "[concat('-RG ',variables('singlequote'), resourceGroup().name,variables('singlequote'), ' -iothubname ',variables('singlequote'), variables('iotHubName'),variables('singlequote') )]",
         "environmentVariables": [
@@ -320,6 +335,7 @@
       "apiVersion": "2021-02-01",
       "name": "[variables('funcsmartspacehvachostingPlanName')]",
       "location": "[resourceGroup().location]",
+      "dependsOn": [ "[resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacehvacstorageAccountName'))]" ],
       "sku": {
         "name": "Y1",
         "tier": "Dynamic",
@@ -488,6 +504,7 @@
       "apiVersion": "2021-02-01",
       "name": "[variables('funcsmartspacehostingPlanName')]",
       "location": "[resourceGroup().location]",
+      "dependsOn": [ "[resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacestorageAccountName'))]" ],
       "sku": {
         "name": "Y1",
         "tier": "Dynamic",
@@ -803,6 +820,7 @@
         }
       ]
     },
+
 
     /***************************************************/
     /* LOGIC APP: SMARTSPACE-HVAC01
@@ -1316,5 +1334,12 @@
     }
 
 
-  ]
+  ],
+
+  "outputs": {
+    "exampleOutput": {
+      "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('blobStorageName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0])]",
+      "type": "object"
+    }
+  }
 }
