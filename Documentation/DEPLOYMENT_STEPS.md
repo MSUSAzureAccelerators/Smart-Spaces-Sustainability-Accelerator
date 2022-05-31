@@ -1,7 +1,7 @@
 # Deployment Steps
 
 ### Step 0 - Gather Pre-requisites:
-Be sure to follow the pre-requisites guidance in the this document: [PREREQUISITES.md](https://github.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/blob/featureIOTHubDeploy/Documentation/PREREQUISITES.md) 
+Be sure to follow the pre-requisites guidance in the this document: [PREREQUISITES.md](https://github.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/blob/main/Documentation/PREREQUISITES.md) 
 
 ### Step 1 - Deploy "Back-end" Azure Resources:
 This step entails the deployment of the Azure SQL database, an Azure  Data Factory for ingesting inputs, a Machine Learning batch processingenvironment, and reporting functionality.  Please follow these steps for 
