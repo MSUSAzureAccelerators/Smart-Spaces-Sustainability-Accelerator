@@ -16,8 +16,8 @@ This step entails the deployment of the IotHub "Simulator" resources; namely an 
 
 ##### Note: #####
 This deployment step relies on (2) artifacts from previous deployment in Step #1 above:
-- The Key Vault Name that was provisioned.
-- The Azure SQL Database info that was provisioned 
+- The Key Vault Name that was previously provisioned.
+- The Azure SQL Database info and credentials that were previously provisioned. 
    
 #### Please make sure to review and confirm the Azure Key Vault Name, SQL database name, and associated SQL credentials are correctly specified in the #2 deployment script.
 
@@ -31,36 +31,46 @@ you can paste the contents into your favorite editor (or notepad) and then look 
 
 ##### Note: #####
 You will need these values for the steps below.
-Key Vault:
+
+##### Key Vault:
 - Key Vault Name:
 
-Azure SQL:
+##### Azure SQL:
 - Server=
 - Database=
 - Uid=
 - Pwd= 
 
 
-Click the link below to automatically navigate to the Azure Custom deployment template editor: 
+Click the link below to automatically navigate to the Azure Custom deployment template: 
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMSUSSolutionAccelerators%2FSmart-Spaces-Sustainability-Solution-Accelerator%2Fmain%2Ftemplates%2Fmaster_accelerator_deployment_IOTHub_Assets.json)
 
-Once in the Azure Custom deployment template editor:
-- Click on the EDIT TEMPLATE icon
-- Click to expand the VARIABLES section of the deployment.
-- SCROLL down to the "serverName" variable.
-- UPDATE THE VALUES FOR THE BELOW VARIABLES:
-  - "serverName": "<Your SQL Server Name>",
-  - "sqlDBName": "<Your SQL Server DB Name>",
-  - "administratorLogin": "<Your SQL User Name>",
-  - "administratorLoginPassword": "<Your SQL User Password>", 
+Once in the Azure Custom deployment template:
+- UPDATE the Deployment Parameters to MATCH YOUR installation:
 
-##### REMEMBER to click on the SAVE button at the bottom!
-
-Now you can complete the deployment by selecting the appropriate deployment settings for your Azure environment.
+    ##### resourcegroup:
+        - Select a NEW or EXISTING Resource Group in your desired deployment region 
+    ##### Region: 
+        - NOTE: This should AUTO-FILL after the Resource Group has been selected 
+    ##### Key Vault Name:
+        - This should MATCH your existing Key Valult Name.
+    ##### Server Name:
+        - This should match the values for the SERVER from the Azure SQL values retrieved from Key Vault above.
+    ##### SQL DB Name: 
+        - This should match the values for the SQL DB Name from the Azure SQL values retrieved from Key Vault above.   
+    ##### Administrator Login: 
+        - This should match the values for the User Name from the Azure SQL values retrieved from Key Vault above.   
+    ##### Administrator Login Password:
+        - This should match the values for the User Password from the Azure SQL values retrieved from Key Vault above.   
 
 ##### Note: The resources that are provisioned in this script should be deployed into the SAME resource group as Step #1 above.
 
+
+##### REMEMBER to click on the [Review+create] button at the bottom!
+
+
+##### Note: The resources that are provisioned in this script should be deployed into the SAME resource group as Step #1 above.
 
 1. When done - click on "Review + create" icon in the lower left of the web form.
 2. Next, the script will display the status "Running final validation".
