@@ -136,7 +136,8 @@ if __name__ == "__main__":
 
     client = SecretClient(vault_url=kv_uri, credential=credential)
     
-    location = data['typeProperties']['extendedProperties']['location']
+    #location = data['typeProperties']['extendedProperties']['location']
+    location = client.get_secret('ssslocation')
     
     api_key = client.get_secret('visualCrossingAPIKey')
 
