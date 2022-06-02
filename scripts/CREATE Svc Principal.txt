@@ -5,7 +5,6 @@
 $SvcPrinName = "acel-smart-spaces-svcprinjb20"
 $RoleName="Contributor"
 $RGP = "Accel-Smart-SpacesRG33"
-$TenantID =  (az account show --query tenantId -o tsv)
 #########################################
 # Do NOT mofify code below
 #########################################
@@ -21,10 +20,10 @@ $SvcPrinPwd
 $SvcPrinAppId = az ad sp list --display-name $SvcPrinName --query [].appId -o tsv
 $SvcPrinAppId
 
-# Retreive Tenant ID
+# Retrieve Tenant ID
 $TenantID =  (az account show --query tenantId -o tsv)
 
-# Retreive Subscription ID
+# Retrieve Subscription ID
 $Sub_ID = (az account show --query id -o tsv)
 
 #Re-Display values:
