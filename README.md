@@ -65,4 +65,4 @@ Any use of third-party trademarks or logos are subject to those third-party's po
 ## Get Started
 To get started, follow the steps outlined in the link below: 
 
-[DEPLOYMENT_STEPS.md](https://github.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/blob/main/Documentation/DEPLOYMENT_STEPS.md) 
+[DEPLOYMENT_STEPS](https://github.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/blob/main/Documentation/DEPLOYMENT_STEPS.md) 

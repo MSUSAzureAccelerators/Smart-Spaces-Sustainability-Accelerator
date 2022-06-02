@@ -245,7 +245,7 @@
     },
     "vnetLocation": {
       "type": "string",
-      "defaultValue": "[parameters('location')]",
+      "defaultValue": "[resourceGroup().location]",
       "metadata": {
         "description": "Required if existing VNET location differs from workspace location"
       }
@@ -371,12 +371,12 @@
       "azureusgovernment": "privatelink.api.ml.azure.us",
       "azurechinacloud": "privatelink.api.ml.azure.cn",
       "azurecloud": "privatelink.api.azureml.ms"
-      },
-    "privateAznbDnsZoneName":{
+    },
+    "privateAznbDnsZoneName": {
       "azureusgovernment": "privatelink.notebooks.usgovcloudapi.net",
       "azurecloud": "privatelink.notebooks.azure.net",
       "azurechinacloud": "privatelink.notebooks.chinacloudapi.cn"
-      },
+    },
     "privateEndpointName": "[concat(parameters('workspaceName'), '-PrivateEndpoint')]",
     "enablePE": "[not(equals(parameters('privateEndpointType'), 'none'))]",
     "networkRuleSetBehindVNet": {
@@ -421,21 +421,21 @@
       }
     },
     "defaultPEConnections": "[array(variables('privateEndpointSettings'))]",
-	"userAssignedIdentities": "[union(variables('userAssignedIdentitiesPrimary'), variables('userAssignedIdentitiesCmk'))]",
-	"userAssignedIdentityPrimary": {
+    "userAssignedIdentities": "[union(variables('userAssignedIdentitiesPrimary'), variables('userAssignedIdentitiesCmk'))]",
+    "userAssignedIdentityPrimary": {
       "[variables('primaryUserAssignedIdentity')]": {}
     },
-	"userAssignedIdentitiesPrimary": "[if(not(equals(parameters('primaryUserAssignedIdentityName'), '')), variables('userAssignedIdentityPrimary'), json('{}'))]",
-	"primaryUserAssignedIdentity": "[resourceId(parameters('primaryUserAssignedIdentityResourceGroup'), 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('primaryUserAssignedIdentityName'))]",
-	"userAssignedIdentityCmk": {
+    "userAssignedIdentitiesPrimary": "[if(not(equals(parameters('primaryUserAssignedIdentityName'), '')), variables('userAssignedIdentityPrimary'), json('{}'))]",
+    "primaryUserAssignedIdentity": "[resourceId(parameters('primaryUserAssignedIdentityResourceGroup'), 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('primaryUserAssignedIdentityName'))]",
+    "userAssignedIdentityCmk": {
       "[variables('cmkUserAssignedIdentity')]": {}
     },
-	"userAssignedIdentitiesCmk": "[if(not(equals(parameters('cmkUserAssignedIdentityName'), '')), variables('userAssignedIdentityCmk'), json('{}'))]",
-	"cmkUserAssignedIdentity": "[resourceId(parameters('cmkUserAssignedIdentityResourceGroup'), 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('cmkUserAssignedIdentityName'))]",
-	"encryptionUserAssignedIdentity": {
-		"userAssignedIdentity": "[variables('cmkUserAssignedIdentity')]"
-	},
-	"encryptionIdentity": "[if(not(equals(parameters('cmkUserAssignedIdentityName'), '')), variables('encryptionUserAssignedIdentity'), json('{}'))]",
+    "userAssignedIdentitiesCmk": "[if(not(equals(parameters('cmkUserAssignedIdentityName'), '')), variables('userAssignedIdentityCmk'), json('{}'))]",
+    "cmkUserAssignedIdentity": "[resourceId(parameters('cmkUserAssignedIdentityResourceGroup'), 'Microsoft.ManagedIdentity/userAssignedIdentities', parameters('cmkUserAssignedIdentityName'))]",
+    "encryptionUserAssignedIdentity": {
+      "userAssignedIdentity": "[variables('cmkUserAssignedIdentity')]"
+    },
+    "encryptionIdentity": "[if(not(equals(parameters('cmkUserAssignedIdentityName'), '')), variables('encryptionUserAssignedIdentity'), json('{}'))]",
     "azAppInsightsLocationMap": {
       "eastasia": "eastasia",
       "southeastasia": "southeastasia",
@@ -470,7 +470,7 @@
       "usgovvirginia": "usgovvirginia",
       "chinaeast2": "chinaeast2"
     },
-    "appInsightsLocation": "[variables('azAppInsightsLocationMap')[parameters('location')]]"
+    "appInsightsLocation": "[variables('azAppInsightsLocationMap')[resourceGroup().location]]"
   },
   "resources": [
     {
@@ -478,7 +478,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2020-06-01",
       "name": "[parameters('vnetName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "tags": "[parameters('tagValues')]",
       "properties": {
         "addressSpace": {
@@ -530,7 +530,7 @@
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2019-06-01",
       "name": "[parameters('storageAccountName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "sku": {
         "name": "[parameters('storageAccountType')]"
       },
@@ -560,7 +560,7 @@
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2019-09-01",
       "name": "[parameters('keyVaultName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "dependsOn": [
         "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
       ],
@@ -580,7 +580,7 @@
       "type": "Microsoft.ContainerRegistry/registries",
       "apiVersion": "2019-12-01-preview",
       "name": "[parameters('containerRegistryName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "sku": {
         "name": "[parameters('containerRegistrySku')]"
       },
@@ -609,7 +609,7 @@
       "type": "Microsoft.MachineLearningServices/workspaces",
       "apiVersion": "2020-09-01-preview",
       "name": "[parameters('workspaceName')]",
-      "location": "[parameters('location')]",
+      "location": "[resourceGroup().location]",
       "identity": {
         "type": "[parameters('identityType')]",
         "userAssignedIdentities": "[if(or(equals(parameters('identityType'), 'userAssigned'), equals(parameters('identityType'), 'systemAssigned,userAssigned')), variables('userAssignedIdentities'), json('null'))]"
@@ -631,14 +631,14 @@
         "primaryUserAssignedIdentity": "[if(equals(parameters('identityType'), 'userAssigned'), variables('primaryUserAssignedIdentity'), json('null'))]",
         "encryption": {
           "status": "[parameters('encryption_status')]",
-		  "identity": "[variables('encryptionIdentity')]",
+          "identity": "[variables('encryptionIdentity')]",
           "keyVaultProperties": {
             "keyVaultArmId": "[parameters('cmk_keyvault')]",
             "keyIdentifier": "[parameters('resource_cmk_uri')]"
           },
-		  "CosmosDbArmId": "[parameters('encryption_cosmosdb_armid')]",
-		  "StorageAccountArmId": "[parameters('encryption_storage_armid')]",
-		  "SearchAccountArmId": "[parameters('encryption_search_armid')]"
+          "CosmosDbArmId": "[parameters('encryption_cosmosdb_armid')]",
+          "StorageAccountArmId": "[parameters('encryption_storage_armid')]",
+          "SearchAccountArmId": "[parameters('encryption_search_armid')]"
         },
         "hbiWorkspace": "[parameters('confidential_data')]"
       }
