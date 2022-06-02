@@ -285,9 +285,9 @@
         }
       },
       "properties": {
-        "forceUpdateTag": "13",
+        "forceUpdateTag": "14",
         "containerSettings": {
-          "containerGroupName": "script-container-ps-2-7-tmp"
+          "containerGroupName": "[variables('containerGroups_script_container_ps_2_7_name')]"
         },
 
         "azPowerShellVersion": "7.4.0",
