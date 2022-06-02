@@ -334,7 +334,8 @@
             "value": "[reference('storage').outputs.storageAccessKey.value]"
           },
           "location": {
-            "value": "[parameters('location')]"
+            "value": "[resourceGroup().location]"
+
           }
         }
       },

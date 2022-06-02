@@ -1200,10 +1200,10 @@
                                 "type": "LinkedServiceReference"
                             },
                             "folderPath": "scripts",
-                            "extendedProperties": {
-                                "kvURI": "[variables('kvURI')]",
-                                "location": "[parameters('location')]"
-                            },
+                          "extendedProperties": {
+                            "kvURI": "[variables('kvURI')]",
+                            "location": "[resourceGroup().location]"
+                          },
                             "referenceObjects": {
                                 "linkedServices": [],
                                 "datasets": []
@@ -1826,10 +1826,10 @@
                                 "type": "LinkedServiceReference"
                             },
                             "folderPath": "scripts",
-                            "extendedProperties": {
-                                "kvURI": "[variables('kvURI')]",
-                                "location": "[parameters('location')]"
-                            },
+                          "extendedProperties": {
+                            "kvURI": "[variables('kvURI')]",
+                            "location": "[resourceGroup().location]"
+                          },
                             "referenceObjects": {
                                 "linkedServices": [],
                                 "datasets": []
