@@ -3,7 +3,6 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "keyVaultName": {
-      "defaultValue": "keyVaultlpia66tmf2so2",
       "type": "String",
       "metadata": {
         "description": "The name of the Azure Key Vault previously deployed"
@@ -11,14 +10,12 @@
     },
 
     "serverName": {
-      "defaultValue": "sqlserver-lpia66tmf2so2",
       "type": "String",
       "metadata": {
         "description": "The name of the Azure SQL Server previously deployed"
       }
     },
     "sqlDBName": {
-      "defaultValue": "sqlDB-lpia66tmf2so2",
       "type": "String",
       "metadata": {
         "description": "The name of the Azure SQL Database previously deployed"
@@ -32,7 +29,6 @@
       }
     },
     "administratorLoginPassword": {
-      "defaultValue": "Pvr25yq2cdx5mmx!",
       "type": "String",
       "metadata": {
         "description": "The Azure SQL Server User password previously provisioned"
@@ -364,7 +360,7 @@
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
       "apiVersion": "2021-04-01-preview",
-      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funcsmartspacehvacStorageAccountKey')]",
+      "name": "[format('{0}/{1}', parameters('keyVaultName'), 'funcsmartspacehvacStorageAccountKey')]",
       "properties": {
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcsmartspacehvacstorageAccountName'), ';AccountKey=', variables('funcsmartspacehvacstorageAccesskey'),';EndpointSuffix=core.windows.net')]"
       },
@@ -533,7 +529,7 @@
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
       "apiVersion": "2021-04-01-preview",
-      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funcsmartspaceStorageAccountKey')]",
+      "name": "[format('{0}/{1}', parameters('keyVaultName'), 'funcsmartspaceStorageAccountKey')]",
       "properties": {
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funcsmartspacestorageAccountName'), ';AccountKey=', variables('funcsmartspacestorageAccesskey'),';EndpointSuffix=core.windows.net')]"
       },
@@ -701,7 +697,7 @@
     {
       "type": "Microsoft.KeyVault/vaults/secrets",
       "apiVersion": "2021-04-01-preview",
-      "name": "[format('{0}/{1}', variables('keyVaultName'), 'funccreatetokenjwtStorageAccountKey')]",
+      "name": "[format('{0}/{1}', parameters('keyVaultName'), 'funccreatetokenjwtStorageAccountKey')]",
       "properties": {
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funccreatetokenjwtstorageAccountName'), ';AccountKey=', variables('funccreatetokenjwtstorageAccesskey'),';EndpointSuffix=core.windows.net')]"
       },
