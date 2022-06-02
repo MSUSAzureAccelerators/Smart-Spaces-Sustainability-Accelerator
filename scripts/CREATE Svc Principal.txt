@@ -2,34 +2,40 @@
 # CREATE Svc Principal
 # 
 #########################################
-$Sub_ID = (az account show --query id -o tsv)
-$SvcPrinName = "acel-smart-spaces-svcprin"
+$SvcPrinName = "acel-smart-spaces-svcprinjb20"
 $RoleName="Contributor"
-$RGP = "Accel-Smart-SpacesRG2"
+$RGP = "Accel-Smart-SpacesRG33"
+$TenantID =  (az account show --query tenantId -o tsv)
+#########################################
+# Do NOT mofify code below
+#########################################
 
+#Create Svc Principal
 az ad sp create-for-rbac --name $SvcPrinName --role $RoleName --scopes /subscriptions/$Sub_ID/resourceGroups/$RGP
 
+# Retrieve Svc Principal - password (clientSecret)
 $SvcPrinPwd = az ad sp create-for-rbac --name $SvcPrinName --query password -o tsv
+$SvcPrinPwd
 
-# objectId
-az ad sp list --display-name $SvcPrinName --query [].objectId -o tsv
+# Retrieve Svc Principal AppId
+$SvcPrinAppId = az ad sp list --display-name $SvcPrinName --query [].appId -o tsv
+$SvcPrinAppId
 
-# appId
-az ad sp list --display-name $SvcPrinName --query [].appId -o tsv
+# Retreive Tenant ID
+$TenantID =  (az account show --query tenantId -o tsv)
 
+# Retreive Subscription ID
+$Sub_ID = (az account show --query id -o tsv)
+
+#Re-Display values:
+$SvcPrinAppId
+$SvcPrinPwd
+$TenantID
 
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-
-
-{
-  "applicationid": "4b9e7d11-e719-48d7-acd6-7835d63d10b2",
-  "clientsecret": "cNoaRjObtLX5mh1~dddXR-yd6sj3BEHe_J",
-  "resource": "https://management.azure.com",
-  "tenantid": "9d025ee6-a016-4374-a1d9-120b9005c55f"
-}
-"acell-smart-spaces-svcprin"
-
-$RGP = "Accel-Smart-SpacesRG2"
-$SvcPrin  = "42922921-10c9-4f85-8c7f-4184815e9f8e" 
-$RoleName = "Contributor" 
-az role assignment create --assignee $SvcPrin --role $RoleName --resource-group $RGP
+#{
+#  "applicationid": "<Your App ID>",
+#  "clientsecret": "<Your Client Secret>",
+#  "resource": "https://management.azure.com",
+#  "tenantid": "<Your Tenant ID>"
+#}

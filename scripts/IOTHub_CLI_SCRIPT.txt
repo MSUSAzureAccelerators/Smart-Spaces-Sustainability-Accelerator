@@ -17,7 +17,7 @@
 $IOTHubName = 'IoTHubbuxdfg6bqen7c'
 $RGP = 'Accel-Smart-SpacesRG33'
 $KVName = "keyVaultlpia66tmf2so2"
-$FuncHVACName = "FFuncSMARTSPACE-HVACbuxdfg6bqen7c"
+$FuncHVACName = "FuncSMARTSPACE-HVACbuxdfg6bqen7c"
 $FuncSmartSpaceName = "FuncSMARTSPACEbuxdfg6bqen7c"
 
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
