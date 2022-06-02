@@ -1,22 +1,27 @@
 # Bonus Content
 
-#### NOTE: This accelerator contains (3) additional Azure resources to help you effectively manage your cloud spend.
+#### NOTE: This accelerator contains (3) additional Azure resources to help you effectively manage your Azure cloud spend.
 
 Specifically, the (3) Azure resources consist of the following Items: 
 
-### (1) Azure Function App  
-##### * FuncCreateJWTTOKEN...
+#### (1) Azure Function App  
+     * FuncCreateJWTTOKEN...
 
-### (2) Logic Apps:
+#### (2) Logic Apps:
 
-#####    * LogicApp-ASA-START-...
+        * LogicApp-ASA-START-...
 
-#####    * LogicApp-ASA-STOP-...
+        * LogicApp-ASA-STOP-...
 
-These additional Azure resources will allow you to control exactly when and for how long - the Azure Stream Anlaytics service is running.
+These additional Azure resources will allow you to control exactly when and for how long - the Azure Stream Analytics service is running.  
+
+Best practice guidance would be to run the START Logic App every Hour. 
+Then trigger the STOP Logic App to run every Hour - BUT FIVE MINUTES After the START Logic App has been triggered.
+ 
 
 
-### Get Started
+
+### Getting Started
 Follow the steps below to complete the configuration for these additional Azure resources:
 
 (1) Navigate to one of the the Logic Apps highlighted above.
@@ -75,7 +80,9 @@ Follow the steps below to complete the configuration for these additional Azure 
         }
 
 - Then, PASTE this into the REQUEST Body of the FuncCreateJWTToken workflow step as depicted below:
-![Logic App](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logic App")
+![Logic App](https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/images/Logic_App_ASA_Start.png "Logic App")
 
-  
+- Click on SAVE to save the changes.
+
+- You can click on RUN TRIGGER to test your changes and see that the Logic App completes successfully.   
  

@@ -160,3 +160,9 @@ This step will confirm the "back-end" deployment, the "front-end" IOTHub deploym
 
 A successful deployment will display newly added records to the Azure SQL table -> [dbo].[HVACUnitIntermediate]
 
+### CONGRATULATIONS! 
+
+You have now successfully provisioned and configured the Solution Accelerator!
+
+- Refer to this link for Additional BONUS Content: https://github.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/blob/main/Documentation/BONUS_CONTENT.md
+
