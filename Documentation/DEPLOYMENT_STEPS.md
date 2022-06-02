@@ -164,5 +164,5 @@ A successful deployment will display newly added records to the Azure SQL table 
 
 You have now successfully provisioned and configured the Solution Accelerator!
 
-- Refer to this link for Additional BONUS Content: https://github.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/blob/main/Documentation/BONUS_CONTENT.md
+- Refer to this link to configure Additional [BONUS_CONTENT](https://github.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/blob/main/Documentation/BONUS_CONTENT.md) 
 
