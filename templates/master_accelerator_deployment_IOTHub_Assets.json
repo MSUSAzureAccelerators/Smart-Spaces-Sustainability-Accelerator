@@ -287,7 +287,7 @@
       "properties": {
         "forceUpdateTag": "14",
         "containerSettings": {
-          "containerGroupName": "[variables('containerGroups_script_container_ps_2_7_name')]"
+          "containerGroupName": "container_ps_2_7_tmp"
         },
 
         "azPowerShellVersion": "7.4.0",
@@ -699,7 +699,9 @@
       "apiVersion": "2021-04-01-preview",
       "name": "[format('{0}/{1}', parameters('keyVaultName'), 'funccreatetokenjwtStorageAccountKey')]",
       "properties": {
-        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funccreatetokenjwtstorageAccountName'), ';AccountKey=', variables('funccreatetokenjwtstorageAccesskey'),';EndpointSuffix=core.windows.net')]"
+
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funccreatetokenjwtstorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funccreatetokenjwtstorageAccountName')), '2015-05-01-preview').key1)]"
+
       },
       "dependsOn": [ "[resourceId('Microsoft.Storage/storageAccounts',variables('funccreatetokenjwtstorageAccountName'))]" ]
     },
