@@ -703,9 +703,7 @@
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funccreatetokenjwtstorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funccreatetokenjwtstorageAccountName')), '2015-05-01-preview').key1)]"
 
       },
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts',variables('funccreatetokenjwtstorageAccountName'))]"
-      ]
+      "dependsOn": ["[resourceId('Microsoft.Storage/storageAccounts',variables('funccreatetokenjwtstorageAccountName'))]"]
     },
     /* FUNC createtokenjwt- Web/sites */
     {
