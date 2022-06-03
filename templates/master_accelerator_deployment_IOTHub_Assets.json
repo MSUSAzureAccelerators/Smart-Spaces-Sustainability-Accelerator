@@ -703,7 +703,9 @@
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funccreatetokenjwtstorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funccreatetokenjwtstorageAccountName')), '2015-05-01-preview').key1)]"
 
       },
-      "dependsOn": [ "[resourceId('Microsoft.Storage/storageAccounts',variables('funccreatetokenjwtstorageAccountName'))]" ]
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts',variables('funccreatetokenjwtstorageAccountName'))]",
+      ]
     },
     /* FUNC createtokenjwt- Web/sites */
     {
@@ -829,7 +831,11 @@
       "name": "[variables('LogicAppSSMARTSPACEHVAC01Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('funcsmartspacehvacAppName'))]"
+        "[resourceId('Microsoft.Web/sites', variables('funcsmartspacehvacAppName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehvachostingPlanName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('funcsmartspacehvacapplicationInsightsName'))]",
+        "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('containerGroups_script_container_ps_2_7_name'))]",
+        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]"
       ],
 
       "properties": {
@@ -880,8 +886,13 @@
       "name": "[variables('LogicAppSSMARTSPACEHVAC02Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('funcsmartspacehvacAppName'))]"
+        "[resourceId('Microsoft.Web/sites', variables('funcsmartspacehvacAppName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehvachostingPlanName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('funcsmartspacehvacapplicationInsightsName'))]",
+        "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('containerGroups_script_container_ps_2_7_name'))]",
+        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]"
       ],
+
       "properties": {
         "state": "Enabled",
         "definition": {
@@ -930,8 +941,13 @@
       "name": "[variables('LogicAppSSMARTSPACEHVAC03Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('funcsmartspacehvacAppName'))]"
+        "[resourceId('Microsoft.Web/sites', variables('funcsmartspacehvacAppName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehvachostingPlanName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('funcsmartspacehvacapplicationInsightsName'))]",
+        "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('containerGroups_script_container_ps_2_7_name'))]",
+        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]"
       ],
+
       "properties": {
         "state": "Enabled",
         "definition": {
