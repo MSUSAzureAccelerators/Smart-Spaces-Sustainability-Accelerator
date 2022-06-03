@@ -704,7 +704,7 @@
 
       },
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts',variables('funccreatetokenjwtstorageAccountName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts',variables('funccreatetokenjwtstorageAccountName'))]"
       ]
     },
     /* FUNC createtokenjwt- Web/sites */
