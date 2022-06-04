@@ -1,3 +1,4 @@
+CLS
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 #$ STEP 3 = IOTHub CLI Deployment SCRIPT
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -180,3 +181,5 @@ $smartspaceprinappid = (az ad sp show --id $smartspaceprin --query "appId")
 az role assignment create --assignee-object-id $smartspaceprin --assignee-principal-type "ServicePrincipal" --role "Contributor" --resource-group $RGP
 az role assignment create --assignee-object-id $smartspaceprin --assignee-principal-type "ServicePrincipal" --role "Key Vault Contributor" --resource-group $RGP
 az keyvault set-policy --name $KVName --spn $smartspaceprinappid  --secret-permissions get
+
+

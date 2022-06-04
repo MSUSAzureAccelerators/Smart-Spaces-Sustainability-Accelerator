@@ -60,6 +60,7 @@
     "containerGroups_script_container_ps_2_7_name": "[concat('script-container-ps-2-7-', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspaceAppName": "[concat('FuncSMARTSPACE', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspacepackageuri": "https://accelsmartspaceslrs.blob.core.windows.net/zipdeploycode/FuncSMARTSPACE_APP_Code.zip",
+
     "funcsmartspacehvacAppName": "[concat('FuncSMARTSPACE-HVAC', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspacehvacpackageuri": "https://accelsmartspaceslrs.blob.core.windows.net/zipdeploycode/FuncSMARTSPACE-HVAC_App_Code.zip",
     "funccreatetokenjwtAppName": "[concat('FuncCreateJWTTOKEN', uniqueString( resourceGroup().id, deployment().name ))]",
@@ -76,21 +77,21 @@
     "funcsmartspacehvacName": "[concat('funcSmartSpaceHVAC-', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspacehvachostingPlanName": "[concat('ahfuncsmartspacehvac-', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspacehvacapplicationInsightsName": "[concat('aifuncsmartspacehvac-', uniqueString( resourceGroup().id, deployment().name ))]",
-    "funcsmartspacehvacstorageAccountName": "[toLower('azrstgfuncSMARTSPACEHVAC')]",
+    "funcsmartspacehvacstorageAccountName": "azrstgfuncsmartspacehvac",
     "funcsmartspacehvacstorageAccountType": "Standard_LRS",
     "funcsmartspacehvacstorageAccesskey": "[toLower('azrstgfuncSMARTSPACEHVAC')]",
 
     "funcsmartspaceName": "[concat('funcSmartSpace-', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspacehostingPlanName": "[concat('ahfuncsmartspace-', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspaceapplicationInsightsName": "[concat('aifuncsmartspace-', uniqueString( resourceGroup().id, deployment().name ))]",
-    "funcsmartspacestorageAccountName": "[toLower('azrstgfuncSMARTSPACE')]",
+    "funcsmartspacestorageAccountName": "azrstgfuncsmartspace",
     "funcsmartspacestorageAccountType": "Standard_LRS",
     "funcsmartspacestorageAccesskey": "[toLower('azrstgfuncSMARTSPACE')]",
 
     "funccreatetokenjwtName": "[concat('funccreatetokenjwt-', uniqueString( resourceGroup().id, deployment().name ))]",
     "funccreatetokenjwthostingPlanName": "[concat('ahfunccreatetokenjwt-', uniqueString( resourceGroup().id, deployment().name ))]",
     "funccreatetokenjwtapplicationInsightsName": "[concat('aifunccreatetokenjwt-', uniqueString( resourceGroup().id, deployment().name ))]",
-    "funccreatetokenjwtstorageAccountName": "[toLower('azrstgfunccreatetokenjwt')]",
+    "funccreatetokenjwtstorageAccountName": "azrstgfunccreatetokenjwt",
     "funccreatetokenjwtstorageAccountType": "Standard_LRS",
     "funccreatetokenjwtstorageAccesskey": "[toLower('azrstgfunccreatetokenjwt')]",
 
