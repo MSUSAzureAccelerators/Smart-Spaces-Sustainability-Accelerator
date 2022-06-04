@@ -60,6 +60,7 @@
     "containerGroups_script_container_ps_2_7_name": "[concat('script-container-ps-2-7-', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspaceAppName": "[concat('FuncSMARTSPACE', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspacepackageuri": "https://accelsmartspaceslrs.blob.core.windows.net/zipdeploycode/FuncSMARTSPACE_APP_Code.zip",
+
     "funcsmartspacehvacAppName": "[concat('FuncSMARTSPACE-HVAC', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspacehvacpackageuri": "https://accelsmartspaceslrs.blob.core.windows.net/zipdeploycode/FuncSMARTSPACE-HVAC_App_Code.zip",
     "funccreatetokenjwtAppName": "[concat('FuncCreateJWTTOKEN', uniqueString( resourceGroup().id, deployment().name ))]",
