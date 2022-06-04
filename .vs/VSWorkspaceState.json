@@ -3,8 +3,9 @@
     "",
     "\\Documentation",
     "\\scripts",
-    "\\templates"
+    "\\templates",
+    "\\templates\\sql"
   ],
-  "SelectedNode": "\\scripts\\IOTHub_CLI_SCRIPT.txt",
+  "SelectedNode": "\\templates\\master_accelerator_deployment_IOTHub_Assets.json",
   "PreviewInSolutionExplorer": false
 }

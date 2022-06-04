@@ -6,10 +6,14 @@ Be sure to follow the pre-requisites guidance in the this document: [PREREQUISIT
 ### Step 1 - Deploy "Back-end" Azure Resources:
 This step entails the deployment of the Azure SQL database, an Azure  Data Factory for ingesting inputs, a Machine Learning batch processingenvironment, and reporting functionality.  Please follow these steps for 
 
+Below is a view of the deployment screen and the values required:
+
+![Azure Portal Deploy Step One](https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/images/CloudShellPortal2.png "[Azure Portal Deploy Step One")
+
+
+When you are reday to DEPLOY - Click the Image below:
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMSUSSolutionAccelerators%2FSmart-Spaces-Sustainability-Solution-Accelerator%2Fmain%2Ftemplates%2Fmaster_accelerator_deployment.json)
-
-
-
 
 ### Step 2 - Deploy "Front-end" Azure IOTHub Simulator Resources:
 This step entails the deployment of the IotHub "Simulator" resources; namely an IotHub with (4) devices, along with supporting Azure Functions, Logic Apps and an Azure Stream Anlytics job - which all work together to produce simulated temperature and HVAC cooling information readings for a representative "Smart Space".  

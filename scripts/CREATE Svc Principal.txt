@@ -1,15 +1,17 @@
+CLS
 #########################################
 # CREATE Svc Principal
 # 
 #########################################
-$SvcPrinName = "acel-smart-spaces-svcprinjb20"
+$SvcPrinName = "acel-smart-spaces-svcprin55"
 $RoleName="Contributor"
-$RGP = "Accel-Smart-SpacesRG33"
+$RGP = "Accel-Smart-SpacesRG55"
 #########################################
 # Do NOT mofify code below
 #########################################
 
 #Create Svc Principal
+$Sub_ID = (az account show --query id -o tsv)
 az ad sp create-for-rbac --name $SvcPrinName --role $RoleName --scopes /subscriptions/$Sub_ID/resourceGroups/$RGP
 
 # Retrieve Svc Principal - password (clientSecret)
