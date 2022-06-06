@@ -6,9 +6,9 @@ Be sure to follow the pre-requisites guidance in the this document: [PREREQUISIT
 ### Step 1 - Deploy "Back-end" Azure Resources:
 This step entails the deployment of the Azure SQL database, an Azure  Data Factory for ingesting inputs, a Machine Learning batch processingenvironment, and reporting functionality.  Please follow these steps for 
 
-Below is a view of the deployment screen and the values required:
+Below is a sample view of the initial Azure deployment screen and the parameter values required:
 
-![Azure Portal Deploy Step One](https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/images/CloudShellPortal2.png "[Azure Portal Deploy Step One")
+![Azure Portal Deploy Step One](https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/images/Deploy_Step_1.png "[Azure Portal Deploy Step One")
 
 
 When you are reday to DEPLOY - Click the Image below:
@@ -44,6 +44,11 @@ You will need these values for the steps below.
 - Database=
 - Uid=
 - Pwd= 
+
+
+Below is a sample view of the Azure deployment screen and the parameter values required:
+
+![Azure Portal Deploy Step Two](https://raw.githubusercontent.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/main/images/Deploy_Step_2.png "[Azure Portal Deploy Step Two")
 
 
 Click the link below to automatically navigate to the Azure Custom deployment template: 
