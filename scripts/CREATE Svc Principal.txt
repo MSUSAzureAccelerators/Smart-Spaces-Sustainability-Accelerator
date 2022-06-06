@@ -3,9 +3,9 @@ CLS
 # CREATE Svc Principal
 # 
 #########################################
-$SvcPrinName = "acel-smart-spaces-svcprin55"
+$SvcPrinName = "acel-smart-spaces-svcprin77"
 $RoleName="Contributor"
-$RGP = "Accel-Smart-SpacesRG55"
+$RGP = "Accel-Smart-SpacesRG77"
 #########################################
 # Do NOT mofify code below
 #########################################
@@ -40,3 +40,7 @@ $TenantID
 #  "resource": "https://management.azure.com",
 #  "tenantid": "<Your Tenant ID>"
 #}
+
+
+
+

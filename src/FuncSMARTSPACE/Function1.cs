@@ -20,8 +20,8 @@ namespace FuncSMARTSPACE
         private static string deviceName = "SMARTSPACE-IOTDEVICE";
         private static string conn_iotHubConnectionStringDevice = System.Environment.GetEnvironmentVariable("iotHubConnectionStringDevice");
         private static string conn_iotHubConnectionStringDeviceTwin = System.Environment.GetEnvironmentVariable("iotHubConnectionStringDeviceTwin");
-        private static string conn_smart_space_device = System.Environment.GetEnvironmentVariable("smartspace-iotdevice-connstr");
-        private static string conn_smartspace_twin = System.Environment.GetEnvironmentVariable("smartspace-iotdevice-twin-connstr");
+        private static string conn_smart_space_device = System.Environment.GetEnvironmentVariable("conn_smart_Space");
+        private static string conn_smartspace_twin = System.Environment.GetEnvironmentVariable("conn_smart_Space_DeviceTwin");
 
         [FunctionName("FuncSMARTSPACE")]
         public static async Task<IActionResult> Run(
@@ -29,14 +29,14 @@ namespace FuncSMARTSPACE
             ILogger log)
         {
             log.LogInformation("FuncSMARTSPACE processing a request.");
-            log.LogInformation("FuncSMARTSPACE - IOTHubConnStr = " + conn_iotHubConnectionStringDevice);
-            log.LogInformation("FuncSMARTSPACE - iotHubConnectionStringDeviceTwin = " + conn_iotHubConnectionStringDeviceTwin);
+            log.LogInformation("FuncSMARTSPACE - IOTHubConnStr = " + conn_smart_space_device);
+            log.LogInformation("FuncSMARTSPACE - iotHubConnectionStringDeviceTwin = " + conn_smartspace_twin);
 
-            log.LogInformation("FuncSMARTSPACE - conn_smart_space_connstr = " + conn_iotHubConnectionStringDevice);  //conn_smart_space_device);
-            log.LogInformation("FuncSMARTSPACE - conn_smartspace_twin = " + conn_iotHubConnectionStringDeviceTwin);  //conn_smartspace_twin);
+            log.LogInformation("FuncSMARTSPACE - conn_smart_space_connstr = " + conn_smart_space_device);  //conn_smart_space_device);
+            log.LogInformation("FuncSMARTSPACE - conn_smartspace_twin = " + conn_smartspace_twin);  //conn_smartspace_twin);
 
             //using var deviceClient = DeviceClient.CreateFromConnectionString(conn_smart_space_device);
-            using var deviceClient = DeviceClient.CreateFromConnectionString(conn_iotHubConnectionStringDevice);
+            using var deviceClient = DeviceClient.CreateFromConnectionString(conn_smart_space_device);
             log.LogInformation("DeviceClient Created successfuly... ");
 
             // open connection explicitly
@@ -145,7 +145,7 @@ namespace FuncSMARTSPACE
         }
         private static async void UpdateDeviceTwinPropPATCH(string patch)
         {
-            RegistryManager registryManager = RegistryManager.CreateFromConnectionString(conn_iotHubConnectionStringDeviceTwin);
+            RegistryManager registryManager = RegistryManager.CreateFromConnectionString(conn_smartspace_twin);
             var twin = await registryManager.GetTwinAsync("smartspace-iotdevice");
             await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
             Console.Write("The Devicetwin has been UPDATED!");
