@@ -79,7 +79,7 @@
               "imageReference": {
                 "publisher": "microsoft-dsvm",
                 "offer": "dsvm-win-2019",
-                "sku": "server-2019",
+                "sku": "winserver-2019",
                 "version": "latest"
               },
               "nodeAgentSkuId": "batch.node.windows amd64",
