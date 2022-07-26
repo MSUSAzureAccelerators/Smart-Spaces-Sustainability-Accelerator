@@ -868,7 +868,8 @@
         "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehvachostingPlanName'))]",
         "[resourceId('Microsoft.Insights/components', variables('funcsmartspacehvacapplicationInsightsName'))]",
         "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('containerGroups_script_container_ps_2_7_name'))]",
-        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]"
+        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]",
+        "[resourceId('Microsoft.Resources/deploymentScripts', 'WaitSection')]"
       ],
 
       "properties": {
@@ -923,7 +924,9 @@
         "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehvachostingPlanName'))]",
         "[resourceId('Microsoft.Insights/components', variables('funcsmartspacehvacapplicationInsightsName'))]",
         "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('containerGroups_script_container_ps_2_7_name'))]",
-        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]"
+        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]",
+        "[resourceId('Microsoft.Resources/deploymentScripts', 'WaitSection')]"
+
       ],
 
       "properties": {
@@ -978,7 +981,9 @@
         "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehvachostingPlanName'))]",
         "[resourceId('Microsoft.Insights/components', variables('funcsmartspacehvacapplicationInsightsName'))]",
         "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('containerGroups_script_container_ps_2_7_name'))]",
-        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]"
+        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]",
+        "[resourceId('Microsoft.Resources/deploymentScripts', 'WaitSection')]"
+
       ],
 
       "properties": {
@@ -1029,7 +1034,9 @@
       "name": "[variables('LogicAppSSMARTSPACEName')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('funcsmartspaceAppName'))]"
+        "[resourceId('Microsoft.Web/sites', variables('funcsmartspaceAppName'))]",
+        "[resourceId('Microsoft.Resources/deploymentScripts', 'WaitSection')]"
+
 
       ],
       "properties": {
@@ -1077,7 +1084,9 @@
       "name": "[variables('LogicAppStart-ASA_Start_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('funccreatetokenjwtAppName'))]"
+        "[resourceId('Microsoft.Web/sites', variables('funccreatetokenjwtAppName'))]",
+        "[resourceId('Microsoft.Resources/deploymentScripts', 'WaitSection')]"
+
       ],
       "properties": {
         "state": "Enabled",
@@ -1148,7 +1157,9 @@
       "name": "[variables('LogicAppStart-ASA_Stop_Name')]",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('funccreatetokenjwtAppName'))]"
+        "[resourceId('Microsoft.Web/sites', variables('funccreatetokenjwtAppName'))]",
+        "[resourceId('Microsoft.Resources/deploymentScripts', 'WaitSection')]"
+
       ],
       "properties": {
         "state": "Enabled",
@@ -1221,7 +1232,9 @@
         "[resourceId('Microsoft.Web/sites', variables('funcsmartspacehvacAppName'))]",
         "[resourceId('Microsoft.Web/sites', variables('funcsmartspaceAppName'))]",
         "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('containerGroups_script_container_ps_2_7_name'))]",
-        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]"
+        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]",
+        "[resourceId('Microsoft.Resources/deploymentScripts', 'WaitSection')]"
+
       ],
 
       "identity": {
