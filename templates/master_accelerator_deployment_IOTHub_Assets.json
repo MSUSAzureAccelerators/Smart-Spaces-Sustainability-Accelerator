@@ -60,12 +60,13 @@
     "containerGroups_script_container_ps_2_7_name": "[concat('script-container-ps-2-7-', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspaceAppName": "[concat('FuncSMARTSPACE', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspacepackageuri": "https://accelsmartspaceslrs.blob.core.windows.net/zipdeploycode/FuncSMARTSPACE_APP_Code.zip",
-
+    
     "funcsmartspacehvacAppName": "[concat('FuncSMARTSPACE-HVAC', uniqueString( resourceGroup().id, deployment().name ))]",
     "funcsmartspacehvacpackageuri": "https://accelsmartspaceslrs.blob.core.windows.net/zipdeploycode/FuncSMARTSPACE-HVAC_App_Code.zip",
+    
     "funccreatetokenjwtAppName": "[concat('FuncCreateJWTTOKEN', uniqueString( resourceGroup().id, deployment().name ))]",
     "funccreatetokenjwtpackageuri": "https://accelsmartspaceslrs.blob.core.windows.net/zipdeploycode/FuncCreateJWTToken_App_Code.zip",
-
+    
     "LogicAppSSMARTSPACEName": "[concat('LogicApp-SMARTSPACE-', uniqueString( resourceGroup().id, deployment().name ))]",
     "LogicAppSSMARTSPACEHVAC01Name": "[concat('LogicApp-SMARTSPACE-HVAC01-', uniqueString( resourceGroup().id, deployment().name ))]",
     "LogicAppSSMARTSPACEHVAC02Name": "[concat('LogicApp-SMARTSPACE-HVAC-02-', uniqueString( resourceGroup().id, deployment().name ))]",
@@ -704,7 +705,7 @@
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('funccreatetokenjwtstorageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('funccreatetokenjwtstorageAccountName')), '2015-05-01-preview').key1)]"
 
       },
-      "dependsOn": ["[resourceId('Microsoft.Storage/storageAccounts',variables('funccreatetokenjwtstorageAccountName'))]"]
+      "dependsOn": [ "[resourceId('Microsoft.Storage/storageAccounts',variables('funccreatetokenjwtstorageAccountName'))]" ]
     },
     /* FUNC createtokenjwt- Web/sites */
     {
@@ -820,6 +821,39 @@
       ]
     },
 
+
+    /***************************************************/
+    /*   SCRIPT - POWERSHELL - WAIT for 2 minutes                          */
+    /***************************************************/
+    {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "kind": "AzurePowerShell",
+      "name": "WaitSection",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('funccreatetokenjwtstorageAccountName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('funccreatetokenjwthostingPlanName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('funccreatetokenjwtapplicationInsightsName'))]",
+
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacehvacstorageAccountName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehvachostingPlanName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('funcsmartspacehvacapplicationInsightsName'))]",
+
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('funcsmartspacestorageAccountName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('funcsmartspacehostingPlanName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('funcsmartspaceapplicationInsightsName'))]",
+
+        "[resourceId('Microsoft.ContainerInstance/containerGroups', variables('containerGroups_script_container_ps_2_7_name'))]",
+        "[resourceId('Microsoft.Devices/IotHubs', variables('iotHubName'))]"
+      ],
+      "properties": {
+        "azPowerShellVersion": "3.0",
+        "scriptContent": "start-sleep -Seconds 120",
+        "cleanupPreference": "Always",
+        "retentionInterval": "PT1H"
+      }
+    },
 
     /***************************************************/
     /* LOGIC APP: SMARTSPACE-HVAC01
