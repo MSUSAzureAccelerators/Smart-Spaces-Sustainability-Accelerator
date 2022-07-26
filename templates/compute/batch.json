@@ -54,65 +54,65 @@
           ]
         }
       },
-        {
-            "type": "Microsoft.Batch/batchAccounts/pools",
-            "apiVersion": "2021-06-01",
-            "name": "[concat(parameters('batchAccountName'), '/', parameters('batchPoolName'))]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Batch/batchAccounts', parameters('batchAccountName'))]"
-            ],
-            "identity": {
-                "type": "UserAssigned",
-                "userAssignedIdentities": {
-                    "[resourceID('Microsoft.ManagedIdentity/userAssignedIdentities/',parameters('managedIdentity'))]": {}
-                 }
-            },
-            "properties": {
-                "vmSize": "STANDARD_d11",
-                "interNodeCommunication": "Disabled",
-                "taskSlotsPerNode": 1,
-                "taskSchedulingPolicy": {
-                    "nodeFillType": "Pack"
-                },
-                "deploymentConfiguration": {
-                    "virtualMachineConfiguration": {
-                        "imageReference": {
-                            "publisher": "microsoft-dsvm",
-                            "offer": "dsvm-win-2019",
-                            "sku": "server-2019",
-                            "version": "latest"
-                        },
-                        "nodeAgentSkuId": "batch.node.windows amd64",
-                        "nodePlacementConfiguration": {
-                            "policy": "Regional"
-                        }
-                    }
-                },
-                "networkConfiguration": {
-                    "publicIPAddressConfiguration": {
-                        "provision": "BatchManaged"
-                    }
-                },
-                "scaleSettings": {
-                    "fixedScale": {
-                        "targetDedicatedNodes": 1,
-                        "targetLowPriorityNodes": 0,
-                        "resizeTimeout": "PT30M"
-                    }
-                },
-                "startTask": {
-                    "commandLine": "cmd /c \"pip install azure-storage-blob && pip install azure-appconfiguration && pip install azure-identity && pip install azure-keyvault-secrets && pip install sqlalchemy && pip install pyodbc && pip install statsmodels\"",
-                    "userIdentity": {
-                        "autoUser": {
-                            "scope": "Pool",
-                            "elevationLevel": "NonAdmin"
-                        }
-                    },
-                    "maxTaskRetryCount": 1,
-                    "waitForSuccess": true
-                }
-            }
+      {
+        "type": "Microsoft.Batch/batchAccounts/pools",
+        "apiVersion": "2021-06-01",
+        "name": "[concat(parameters('batchAccountName'), '/', parameters('batchPoolName'))]",
+        "dependsOn": [
+          "[resourceId('Microsoft.Batch/batchAccounts', parameters('batchAccountName'))]"
+        ],
+        "identity": {
+          "type": "UserAssigned",
+          "userAssignedIdentities": {
+            "[resourceID('Microsoft.ManagedIdentity/userAssignedIdentities/',parameters('managedIdentity'))]": {}
+          }
         },
+        "properties": {
+          "vmSize": "STANDARD_DS11",
+          "interNodeCommunication": "Disabled",
+          "taskSlotsPerNode": 1,
+          "taskSchedulingPolicy": {
+            "nodeFillType": "Pack"
+          },
+          "deploymentConfiguration": {
+            "virtualMachineConfiguration": {
+              "imageReference": {
+                "publisher": "microsoft-dsvm",
+                "offer": "dsvm-win-2019",
+                "sku": "server-2019",
+                "version": "latest"
+              },
+              "nodeAgentSkuId": "batch.node.windows amd64",
+              "nodePlacementConfiguration": {
+                "policy": "Regional"
+              }
+            }
+          },
+          "networkConfiguration": {
+            "publicIPAddressConfiguration": {
+              "provision": "BatchManaged"
+            }
+          },
+          "scaleSettings": {
+            "fixedScale": {
+              "targetDedicatedNodes": 1,
+              "targetLowPriorityNodes": 0,
+              "resizeTimeout": "PT30M"
+            }
+          },
+          "startTask": {
+            "commandLine": "cmd /c \"pip install azure-storage-blob && pip install azure-appconfiguration && pip install azure-identity && pip install azure-keyvault-secrets && pip install sqlalchemy && pip install pyodbc && pip install statsmodels\"",
+            "userIdentity": {
+              "autoUser": {
+                "scope": "Pool",
+                "elevationLevel": "NonAdmin"
+              }
+            },
+            "maxTaskRetryCount": 1,
+            "waitForSuccess": true
+          }
+        }
+      },
         {
             "type": "Microsoft.Authorization/roleAssignments",
             "apiVersion": "2020-04-01-preview",
