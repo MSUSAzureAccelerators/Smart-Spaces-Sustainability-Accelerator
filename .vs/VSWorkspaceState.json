@@ -4,8 +4,9 @@
     "\\Documentation",
     "\\scripts",
     "\\templates",
+    "\\templates\\compute",
     "\\templates\\sql"
   ],
-  "SelectedNode": "\\Documentation\\DEPLOYMENT_STEPS.md",
+  "SelectedNode": "\\templates\\compute\\batch.json",
   "PreviewInSolutionExplorer": false
 }
