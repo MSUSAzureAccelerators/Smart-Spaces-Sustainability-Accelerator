@@ -23,7 +23,7 @@ The Smart Spaces Accelerator helps facilities managers optimize HVAC systems qui
 * **Integrate with your existing BMS** and draw from external data to generate rich, predictive analytics.
 * **Generate real-time predictive modeling** to optimize lead times for temperature setpoints.
 * **Provide a holistic, mobile dashboard** so facilities managers can track and adjust systems on the go.
-* **Easily launch a solution simulation**using pre-configured Microsoft IP.
+* **Easily launch a simulation** using pre-configured Microsoft IP.
 
 
 ## License
