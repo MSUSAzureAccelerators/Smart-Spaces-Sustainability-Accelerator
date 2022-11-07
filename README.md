@@ -16,9 +16,7 @@ The Smart Spaces Accelerator helps facilities managers optimize HVAC systems qui
 
 > Excess energy use could cost US building owners $5.2 billion each year if buildings return to pre-COVID occupancy levels.
 
-> 23% of facility managers cited a lack of resources available to interpret data and translate it into actionable goals as being a barrier to implementing building maintenance technologies
-
-![image](https://user-images.githubusercontent.com/117296627/200422884-5647f1c3-dcbb-440b-a61d-5e86bfcf000c.png)
+> 23% of facility managers cited a lack of resources available to interpret data and translate it into actionable goals as being a barrier to implementing building maintenance technologies.
 
 ### Benefits
 
