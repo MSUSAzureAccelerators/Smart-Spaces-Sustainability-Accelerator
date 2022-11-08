@@ -14,9 +14,9 @@ The Smart Spaces Accelerator helps facilities managers optimize HVAC systems qui
 * Lack of fast and accurate predictive modeling makes it difficult to effectively forecast energy needs.
 * A mobile application is needed so facilities managers can work from anywhere.
 
-> Excess energy use could cost US building owners $5.2 billion each year if buildings return to pre-COVID occupancy levels.
 
 > 23% of facility managers cited a lack of resources available to interpret data and translate it into actionable goals as being a barrier to implementing building maintenance technologies.
+
 
 ### Benefits
 
