@@ -26,6 +26,12 @@ The Smart Spaces Accelerator helps facilities managers optimize HVAC systems qui
 * **Easily launch a simulation** using pre-configured Microsoft IP.
 
 
+## Get Started
+To get started, follow the steps outlined in the link below: 
+
+[DEPLOYMENT_STEPS](https://github.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/blob/main/Documentation/DEPLOYMENT_STEPS.md) 
+
+
 ## License
 Copyright (c) Microsoft Corporation
 
@@ -56,13 +62,7 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Trademarks
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft trademarks or logos is subject to and must follow 
 [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
-
-## Get Started
-To get started, follow the steps outlined in the link below: 
-
-[DEPLOYMENT_STEPS](https://github.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/blob/main/Documentation/DEPLOYMENT_STEPS.md) 
