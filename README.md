@@ -28,7 +28,6 @@ The Smart Spaces Accelerator helps facilities managers optimize HVAC systems qui
 
 ## Get Started
 To get started, follow the steps outlined in the link below: 
-
 [DEPLOYMENT_STEPS](https://github.com/MSUSSolutionAccelerators/Smart-Spaces-Sustainability-Solution-Accelerator/blob/main/Documentation/DEPLOYMENT_STEPS.md) 
 
 
