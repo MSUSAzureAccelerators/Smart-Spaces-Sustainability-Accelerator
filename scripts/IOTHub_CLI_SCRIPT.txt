@@ -15,11 +15,11 @@ CLS
 ####################################################
 # Set the variables below to match your Azure Environment
 ####################################################
-$IOTHubName = 'IoTHubbuxdfg6bqen7c'
-$RGP = 'Accel-Smart-SpacesRG33'
-$KVName = "keyVaultlpia66tmf2so2"
-$FuncHVACName = "FuncSMARTSPACE-HVACbuxdfg6bqen7c"
-$FuncSmartSpaceName = "FuncSMARTSPACEbuxdfg6bqen7c"
+$IOTHubName = 'IoTHubq2ywifh5c3op4'
+$RGP = 'rg-aa-ss-c-001'
+$KVName = "keyVaulttb7epwah7uz22"
+$FuncHVACName = "FuncSMARTSPACE-HVACq2ywifh5c3op4"
+$FuncSmartSpaceName = "FuncSMARTSPACEq2ywifh5c3op4"
 
 #$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 # Do Not modify below
@@ -29,57 +29,57 @@ $FuncSmartSpaceName = "FuncSMARTSPACEbuxdfg6bqen7c"
 $newDeviceID = "smartspace-iotdevice" # New DeviceID
 #---
 # Set Digital Twin Properties:
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/TEMP_UNITS\", \"value\": \"F\"}' 
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/SETPOINT\", \"value\": \"67\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CURRTEMP\", \"value\": \"67\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/LASTUPDT\", \"value\": \"2022-05-12 16:52:16.5\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CHILL_RATE\", \"value\": \"-1.5\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/RUN_STATE\", \"value\": \"Stopped\"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/TEMP_UNITS", "value": "F"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/SETPOINT", "value": "67"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/CURRTEMP", "value": "67"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/LASTUPDT", "value": "2022-05-12 16:52:16.5"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/CHILL_RATE", "value": "-1.5"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/RUN_STATE", "value": "Stopped"}'
 
 #---
 $newDeviceID = "smartspace-hvac01-iotdevice" # New DeviceID
 #---
 # Set Digital Twin Properties:
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/TEMP_UNITS\", \"value\": \"F\"}' 
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/LASTUPDT\", \"value\": \"2022-05-12 16:52:16.5\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CHILL_RATE\", \"value\": \"-2.0\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CURRTEMP\", \"value\": \"63\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/REALPOWER\", \"value\": \"0\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/REALPOWER_RATE\", \"value\": \"3500\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/RUN_STATE\", \"value\": \"Running\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/H2O_SETPOINT\", \"value\": \"45\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/H2O_TEMP_ENTER\", \"value\": \"66\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/H2O_TEMP_LEAVE\", \"value\": \"63\"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/TEMP_UNITS", "value": "F"}' 
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/LASTUPDT", "value": "2022-05-12 16:52:16.5"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/CHILL_RATE", "value": "-2.0"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/CURRTEMP", "value": "63"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/REALPOWER", "value": "0"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/REALPOWER_RATE", "value": "3500"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/RUN_STATE", "value": "Running"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/H2O_SETPOINT", "value": "45"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/H2O_TEMP_ENTER", "value": "66"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/H2O_TEMP_LEAVE", "value": "63"}'
 
 #---
 $newDeviceID = "smartspace-hvac02-iotdevice" # New DeviceID
 #---
 # Set Digital Twin Properties:
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/TEMP_UNITS\", \"value\": \"F\"}' 
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/LASTUPDT\", \"value\": \"2022-05-12 16:52:16.5\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CHILL_RATE\", \"value\": \"-2.0\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CURRTEMP\", \"value\": \"63\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/REALPOWER\", \"value\": \"0\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/REALPOWER_RATE\", \"value\": \"3500\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/RUN_STATE\", \"value\": \"Running\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/H2O_SETPOINT\", \"value\": \"45\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/H2O_TEMP_ENTER\", \"value\": \"66\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/H2O_TEMP_LEAVE\", \"value\": \"63\"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/TEMP_UNITS", "value": "F"}' 
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/LASTUPDT", "value": "2022-05-12 16:52:16.5"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/CHILL_RATE", "value": "-2.0"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/CURRTEMP", "value": "63"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/REALPOWER", "value": "0"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/REALPOWER_RATE", "value": "3500"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/RUN_STATE", "value": "Running"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/H2O_SETPOINT", "value": "45"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/H2O_TEMP_ENTER", "value": "66"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/H2O_TEMP_LEAVE", "value": "63"}'
 
 #---
 $newDeviceID = "smartspace-hvac03-iotdevice" # New DeviceID
 #---
 # Set Digital Twin Properties:
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/TEMP_UNITS\", \"value\": \"F\"}' 
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/LASTUPDT\", \"value\": \"2022-05-12 16:52:16.5\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CHILL_RATE\", \"value\": \"-2.0\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/CURRTEMP\", \"value\": \"63\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/REALPOWER\", \"value\": \"0\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/REALPOWER_RATE\", \"value\": \"3500\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/RUN_STATE\", \"value\": \"Running\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/H2O_SETPOINT\", \"value\": \"45\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/H2O_TEMP_ENTER\", \"value\": \"66\"}'
-az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{\"op\":\"add\", \"path\":\"/H2O_TEMP_LEAVE\", \"value\": \"63\"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/TEMP_UNITS", "value": "F"}' 
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/LASTUPDT", "value": "2022-05-12 16:52:16.5"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/CHILL_RATE", "value": "-2.0"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/CURRTEMP", "value": "63"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/REALPOWER", "value": "0"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/REALPOWER_RATE", "value": "3500"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/RUN_STATE", "value": "Running"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/H2O_SETPOINT", "value": "45"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/H2O_TEMP_ENTER", "value": "66"}'
+az iot hub digital-twin update --hub-name $IoTHubName --device-id $newDeviceID --json-patch '{"op":"add", "path":"/H2O_TEMP_LEAVE", "value": "63"}'
 
 ######################################
 # Retrieve IOTHub Connection Strings
@@ -171,15 +171,21 @@ az functionapp config appsettings set --name $FuncSmartSpaceName --resource-grou
 # Set KV Access Policy - so can read from Azr Function
 #########################################
 $hvacprin =  az functionapp identity show --name $FuncHVACName --resource-group $RGP --query "principalId"  
+$hvacprin = $hvacprin.Remove(0,1)
+$hvacprin = $hvacprin.Remove($hvacprin.Length-1,1)
 $hvacprinappid = (az ad sp show --id $hvacprin --query "appId")
+$hvacprinappid = $hvacprinappid.Remove(0,1)
+$hvacprinappid = $hvacprinappid.Remove($hvacprinappid.Length-1,1)
 az role assignment create --assignee-object-id $hvacprin --assignee-principal-type "ServicePrincipal" --role "Contributor" --resource-group $RGP
 az role assignment create --assignee-object-id $hvacprin --assignee-principal-type "ServicePrincipal" --role "Key Vault Contributor" --resource-group $RGP
 az keyvault set-policy --name $KVName --spn $hvacprinappid  --secret-permissions get
 
 $smartspaceprin =  az functionapp identity show --name $FuncSmartSpaceName --resource-group $RGP --query "principalId"  
-$smartspaceprinappid = (az ad sp show --id $smartspaceprin --query "appId")
+$smartspaceprin = $smartspaceprin.Remove(0,1)
+$smartspaceprin = $smartspaceprin.Remove($smartspaceprin.Length-1,1)
+$smartspaceprinappid = (az ad sp show --id $smartspaceprin --query "appId") 
+$smartspaceprinappid = $smartspaceprinappid.Remove(0,1)
+$smartspaceprinappid = $smartspaceprinappid.Remove($smartspaceprinappid.Length-1,1)
 az role assignment create --assignee-object-id $smartspaceprin --assignee-principal-type "ServicePrincipal" --role "Contributor" --resource-group $RGP
 az role assignment create --assignee-object-id $smartspaceprin --assignee-principal-type "ServicePrincipal" --role "Key Vault Contributor" --resource-group $RGP
 az keyvault set-policy --name $KVName --spn $smartspaceprinappid  --secret-permissions get
-
-
